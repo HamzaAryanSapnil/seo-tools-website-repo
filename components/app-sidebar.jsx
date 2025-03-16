@@ -1,0 +1,266 @@
+import {
+  Book,
+  BookOpen,
+  Calendar,
+  ChevronRight,
+  createLucideIcon,
+  Home,
+  Inbox,
+  LayoutDashboard,
+  Megaphone,
+  MoveRight,
+  PenTool,
+  Search,
+  Settings,
+  Text,
+  User,
+  WalletCards,
+} from "lucide-react";
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import Image from "next/image";
+import Link from "next/link";
+import NavMain from "./nav-main";
+import { NavUser } from "./nav-user";
+import { NavTools } from "./nav-tools";
+
+export function AppSidebar() {
+  const items = [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    // {
+    //   title: "Inbox",
+    //   url: "/inbox",
+    //   icon: Inbox,
+    // },
+    // {
+    //   title: "Calendar",
+    //   url: "#",
+    //   icon: Calendar,
+    // },
+    // {
+    //   title: "Search",
+    //   url: "#",
+    //   icon: Search,
+    // },
+    // {
+    //   title: "Settings",
+    //   url: "#",
+    //   icon: Settings,
+    // },
+  ];
+
+  const blogPages = [
+    {
+      title: "Create Blog",
+      url: "/dashboard/blog/create-blog",
+      icon: MoveRight,
+    },
+    {
+      title: "Manage All Blogs",
+      url: "/dashboard/blog/manage-blogs",
+      icon: Book,
+    },
+  ];
+
+  const data = {
+    navMain: [
+      {
+        title: "Pages",
+        url: "#",
+        icon: <Book />,
+        isActive: true,
+        items: [
+          {
+            title: "Create Pages",
+            url: "/dashboard/pages/create-pages",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Manage Pages",
+            url: "/dashboard/pages/manage-pages",
+            icon: <ChevronRight />,
+          },
+        ],
+      },
+      {
+        title: "Posts",
+        url: "#",
+        icon: <Text />,
+        items: [
+          {
+            title: "All Posts",
+            url: "/dashboard/posts/all-posts",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Create Post",
+            url: "/dashboard/posts/create-post",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Categories",
+            url: "/dashboard/posts/categories",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Tags",
+            url: "/dashboard/posts/tags",
+            icon: <ChevronRight />,
+          },
+        ],
+      },
+      {
+        title: "Users",
+        url: "#",
+        icon: <User />,
+        items: [
+          {
+            title: "Manage All Users",
+            url: "/dashboard/users/manage-all-users",
+          },
+        ],
+      },
+
+      {
+        title: "Plans",
+        url: "#",
+        icon: <WalletCards />,
+        items: [
+          {
+            title: "All Plans",
+            url: "/dashboard/plans/all-plans",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Create Plan",
+            url: "/dashboard/plans/create-plan",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "FAQ's",
+            url: "/dashboard/plans/faqs",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Transactions",
+            url: "/dashboard/plans/transactions",
+            icon: <ChevronRight />,
+          },
+        ],
+      },
+      {
+        title: "Advertisements",
+        url: "#",
+        icon: <Megaphone />,
+        items: [
+          {
+            title: "All Advertisements",
+            url: "/dashboard/advertisements/all-advertisements",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Create Advertisement",
+            url: "/dashboard/advertisements/create-advertisement",
+            icon: <ChevronRight />,
+          },
+        ],
+      },
+    ],
+    navTools: [
+      {
+        title: "Tools",
+        url: "#",
+        icon: <PenTool />,
+        items: [
+          {
+            title: "Tools",
+            url: "/dashboard/tools/all-tools",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Homepage Tools",
+            url: "/dashboard/tools/homepage-tools",
+            icon: <ChevronRight />,
+          },
+          {
+            title: "Tools Categories",
+            url: "/dashboard/tools/tools-categories",
+            icon: <ChevronRight />,
+          },
+        ],
+      },
+    ],
+    user: {
+      name: "shadcn",
+      email: "m@example.com",
+      avatar: "/avatars/shadcn.jpg",
+    },
+  };
+
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        {/* <TeamSwitcher teams={data.teams} /> */}
+        <Link href={"/dashboard"}>
+          <Image
+            className="my-5 mx-auto"
+            src="/logo.png"
+            alt="Website Logo"
+            width={150}
+            height={50}
+          />
+        </Link>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarContent>
+            <NavMain items={data.navMain} />
+          </SidebarContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Tools</SidebarGroupLabel>
+          <SidebarContent>
+            <NavMain items={data.navTools} />
+          </SidebarContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  );
+}
