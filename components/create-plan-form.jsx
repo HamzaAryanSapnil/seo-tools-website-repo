@@ -11,7 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -19,11 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "./ui/textarea";
-import MDEditor from "@uiw/react-md-editor";
-import { useState } from "react";
 import { Separator } from "./ui/separator";
-import { categoryFormSchema } from "@/schemas/category-form-schema";
 import { Switch } from "./ui/switch";
 import { planFormSchema } from "@/schemas/planFormSchema";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
@@ -57,10 +54,37 @@ const CreatePlanForm = () => {
         {}
       ),
     },
+    // defaultValues: {
+    //   name: "",
+    //   description: "",
+    //   yearlyPrice: 0,
+    //   monthlyPrice: 0,
+    //   allow_api: false,
+    //   no_ads: false,
+    //   tools: TOOLS_CONFIG.reduce(
+    //     (acc, tool) => ({
+    //       ...acc,
+    //       [tool.slug]: tool.fields.reduce(
+    //         (toolAcc, field) => ({
+    //           ...toolAcc,
+    //           [field.name]: field.defaultValue,
+    //         }),
+    //         {}
+    //       ),
+    //     }),
+    //     {}
+    //   ),
+    // },
   });
 
   function onSubmit(values) {
     console.log(values);
+    try {
+      planFormSchema.parse(values);
+      console.log("Validation success!", values);
+    } catch (error) {
+      console.error("Validation errors:", error.errors);
+    }
   }
 
   return (
@@ -331,11 +355,42 @@ const CreatePlanForm = () => {
                               formField.onChange(Number(e.target.value))
                             }
                           />
-                        ) : (
-                          <Switch
-                            checked={formField.value}
-                            onCheckedChange={formField.onChange}
+                        ) : field.type === "text" ? (
+                          <Input
+                            type="text"
+                            {...formField}
+                            onChange={(e) => formField.onChange(e.target.value)}
                           />
+                        ) : field.type === "select" ? (
+                          <Select
+                            defaultValue={formField.value}
+                            onValueChange={formField.onChange}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue
+                                  placeholder={`Select ${field.label}`}
+                                />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {field.options?.map((option) => (
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          field.type === "boolean" && (
+                            <Switch
+                              checked={formField.value}
+                              onCheckedChange={formField.onChange}
+                            />
+                          )
                         )}
                       </FormControl>
                       <FormDescription>{field.description}</FormDescription>
