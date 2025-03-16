@@ -35,7 +35,7 @@ const CreatePlanForm = () => {
       monthlyPrice: 0,
       allow_api: false,
       no_ads: false,
-      dailyUsege: 10,
+      dailyUsage: 10,
       wordCount: 100,
       fileSize: 10,
       numberOfImage: 10,
@@ -218,7 +218,7 @@ const CreatePlanForm = () => {
               {/* daily usage */}
               <FormField
                 control={form.control}
-                name="dailyUsege"
+                name="dailyUsage"
                 render={({ field }) => (
                   <FormItem className={"max-w-sm"}>
                     <FormLabel>Daily Usage</FormLabel>
