@@ -25,18 +25,23 @@ import { useState } from "react";
 import { Separator } from "./ui/separator";
 import { categoryFormSchema } from "@/schemas/category-form-schema";
 import { Switch } from "./ui/switch";
+import { planFormSchema } from "@/schemas/planFormSchema";
 
 const CreatePlanForm = () => {
   const form = useForm({
-    resolver: zodResolver(categoryFormSchema),
+    resolver: zodResolver(planFormSchema),
     defaultValues: {
       name: "",
-      slug: "",
-      title: "",
       description: "",
-      metaTitle: "",
-      metaDescription: "",
-      parentCategory: "",
+      yearlyPrice: 0,
+      monthlyPrice: 0,
+      allow_api: false,
+      no_ads: false,
+      dailyUsege: 10,
+      wordCount: 100,
+      fileSize: 10,
+      numberOfImage: 10,
+      numberOfDomain: 10,
     },
   });
 
@@ -95,6 +100,7 @@ const CreatePlanForm = () => {
                     <FormLabel>Yearly Price</FormLabel>
                     <FormControl>
                       <Input
+                        type={"number"}
                         className={"max-w-sm"}
                         placeholder="Enter Yearly Price"
                         {...field}
@@ -113,6 +119,7 @@ const CreatePlanForm = () => {
                     <FormLabel>Monthly Price</FormLabel>
                     <FormControl>
                       <Input
+                        type={"number"}
                         className={"max-w-sm"}
                         placeholder="Enter Monthly Price"
                         {...field}
@@ -163,13 +170,13 @@ const CreatePlanForm = () => {
             </div>
           </div>
 
-             <Separator className={"xl:hidden block my-4"} />   
+          <Separator className={"xl:hidden block my-4"} />
           {/* options form */}
 
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold">Options</h2>
             {/* options form fields */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4" >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* daily usage */}
               <FormField
                 control={form.control}
@@ -178,7 +185,11 @@ const CreatePlanForm = () => {
                   <FormItem className={"max-w-sm"}>
                     <FormLabel>Daily Usage</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter Daily Usage" {...field} />
+                      <Input
+                        type={"number"}
+                        placeholder="Enter Daily Usage"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       Daily usage restrictions refer to the limitations placed
@@ -198,7 +209,11 @@ const CreatePlanForm = () => {
                   <FormItem className={"max-w-sm"}>
                     <FormLabel>Word Count</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter Word Count" {...field} />
+                      <Input
+                        type={"number"}
+                        placeholder="Enter Word Count"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       Word count limitation refers to the maximum number of
@@ -217,7 +232,11 @@ const CreatePlanForm = () => {
                   <FormItem className={"max-w-sm"}>
                     <FormLabel>File Size</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter File Size" {...field} />
+                      <Input
+                        type={"number"}
+                        placeholder="Enter File Size"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       File size limitation refers to the maximum size of a file
@@ -235,7 +254,11 @@ const CreatePlanForm = () => {
                   <FormItem className={"max-w-sm"}>
                     <FormLabel>Number Of Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter Number Of Image" {...field} />
+                      <Input
+                        type={"number"}
+                        placeholder="Enter Number Of Image"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       Image limitation refers to the maximum number of images
@@ -253,7 +276,11 @@ const CreatePlanForm = () => {
                   <FormItem className={"max-w-sm"}>
                     <FormLabel>Number Of Domain</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter Number Of Domain" {...field} />
+                      <Input
+                        type={"number"}
+                        placeholder="Enter Number Of Domain"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       Domain limitation refers to the maximum number of domains
@@ -267,7 +294,7 @@ const CreatePlanForm = () => {
           </div>
         </div>
 
-        <Button type="submit">Save</Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
