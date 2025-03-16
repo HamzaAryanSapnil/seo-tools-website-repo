@@ -24,6 +24,14 @@ import { Separator } from "./ui/separator";
 import { Switch } from "./ui/switch";
 import { planFormSchema } from "@/schemas/planFormSchema";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const CreatePlanForm = () => {
   const form = useForm({
@@ -333,74 +341,82 @@ const CreatePlanForm = () => {
         </div>
 
         {/*Tools Section */}
-        <div className="space-y-6 mt-8">
+        <div className="space-y-6 mt-8  ">
           <h2 className="text-2xl font-semibold">Tools Configuration</h2>
-          {TOOLS_CONFIG.map((tool) => (
-            <div key={tool.slug} className="space-y-4 p-4 border rounded-lg">
-              <h3 className="text-lg font-medium">{tool.name}</h3>
-              {tool.fields.map((field) => (
-                <FormField
-                  key={`${tool.slug}.${field.name}`}
-                  control={form.control}
-                  name={`tools.${tool.slug}.${field.name}`}
-                  render={({ field: formField }) => (
-                    <FormItem>
-                      <FormLabel>{field.label}</FormLabel>
-                      <FormControl>
-                        {field.type === "number" ? (
-                          <Input
-                            type="number"
-                            {...formField}
-                            onChange={(e) =>
-                              formField.onChange(Number(e.target.value))
-                            }
-                          />
-                        ) : field.type === "text" ? (
-                          <Input
-                            type="text"
-                            {...formField}
-                            onChange={(e) => formField.onChange(e.target.value)}
-                          />
-                        ) : field.type === "select" ? (
-                          <Select
-                            defaultValue={formField.value}
-                            onValueChange={formField.onChange}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue
-                                  placeholder={`Select ${field.label}`}
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {TOOLS_CONFIG.map((tool) => (
+              <Card key={tool.slug} className="space-y-4 p-4 border rounded-lg">
+                <CardHeader>
+                  <h3 className="text-lg font-medium">{tool.name}</h3>
+                </CardHeader>
+                <CardContent>
+                  {tool.fields.map((field) => (
+                    <FormField
+                      key={`${tool.slug}.${field.name}`}
+                      control={form.control}
+                      name={`tools.${tool.slug}.${field.name}`}
+                      render={({ field: formField }) => (
+                        <FormItem>
+                          <FormLabel>{field.label}</FormLabel>
+                          <FormControl>
+                            {field.type === "number" ? (
+                              <Input
+                                type="number"
+                                {...formField}
+                                onChange={(e) =>
+                                  formField.onChange(Number(e.target.value))
+                                }
+                              />
+                            ) : field.type === "text" ? (
+                              <Input
+                                type="text"
+                                {...formField}
+                                onChange={(e) =>
+                                  formField.onChange(e.target.value)
+                                }
+                              />
+                            ) : field.type === "select" ? (
+                              <Select
+                                defaultValue={formField.value}
+                                onValueChange={formField.onChange}
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue
+                                      placeholder={`Select ${field.label}`}
+                                    />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {field.options?.map((option) => (
+                                    <SelectItem
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            ) : (
+                              field.type === "boolean" && (
+                                <Switch
+                                  checked={formField.value}
+                                  onCheckedChange={formField.onChange}
                                 />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {field.options?.map((option) => (
-                                <SelectItem
-                                  key={option.value}
-                                  value={option.value}
-                                >
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        ) : (
-                          field.type === "boolean" && (
-                            <Switch
-                              checked={formField.value}
-                              onCheckedChange={formField.onChange}
-                            />
-                          )
-                        )}
-                      </FormControl>
-                      <FormDescription>{field.description}</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ))}
-            </div>
-          ))}
+                              )
+                            )}
+                          </FormControl>
+                          <FormDescription>{field.description}</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
         <Button type="submit">Submit</Button>
