@@ -12,4 +12,12 @@ export const planFormSchema = z.object({
   fileSize: z.coerce.number().min(0, "Must be 0 or higher"),
   numberOfImage: z.coerce.number().min(0, "Must be 0 or higher"),
   numberOfDomain: z.coerce.number().min(0, "Must be 0 or higher"),
+  tools: z.record(
+    z.string(),
+    z.object({
+      dailyUsage: z.coerce.number().min(0).optional(),
+      fileSize: z.coerce.number().min(0).optional(),
+      // ... other tool-specific fields
+    })
+  ),
 });

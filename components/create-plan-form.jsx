@@ -26,6 +26,7 @@ import { Separator } from "./ui/separator";
 import { categoryFormSchema } from "@/schemas/category-form-schema";
 import { Switch } from "./ui/switch";
 import { planFormSchema } from "@/schemas/planFormSchema";
+import { TOOLS_CONFIG } from "@/data/toolConfig";
 
 const CreatePlanForm = () => {
   const form = useForm({
@@ -42,6 +43,19 @@ const CreatePlanForm = () => {
       fileSize: 10,
       numberOfImage: 10,
       numberOfDomain: 10,
+      tools: TOOLS_CONFIG.reduce(
+        (acc, tool) => ({
+          ...acc,
+          [tool.slug]: tool.fields.reduce(
+            (toolAcc, field) => ({
+              ...toolAcc,
+              [field.name]: field.defaultValue,
+            }),
+            {}
+          ),
+        }),
+        {}
+      ),
     },
   });
 
@@ -292,6 +306,46 @@ const CreatePlanForm = () => {
               />
             </div>
           </div>
+        </div>
+
+        {/*Tools Section */}
+        <div className="space-y-6 mt-8">
+          <h2 className="text-2xl font-semibold">Tools Configuration</h2>
+          {TOOLS_CONFIG.map((tool) => (
+            <div key={tool.slug} className="space-y-4 p-4 border rounded-lg">
+              <h3 className="text-lg font-medium">{tool.name}</h3>
+              {tool.fields.map((field) => (
+                <FormField
+                  key={`${tool.slug}.${field.name}`}
+                  control={form.control}
+                  name={`tools.${tool.slug}.${field.name}`}
+                  render={({ field: formField }) => (
+                    <FormItem>
+                      <FormLabel>{field.label}</FormLabel>
+                      <FormControl>
+                        {field.type === "number" ? (
+                          <Input
+                            type="number"
+                            {...formField}
+                            onChange={(e) =>
+                              formField.onChange(Number(e.target.value))
+                            }
+                          />
+                        ) : (
+                          <Switch
+                            checked={formField.value}
+                            onCheckedChange={formField.onChange}
+                          />
+                        )}
+                      </FormControl>
+                      <FormDescription>{field.description}</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+          ))}
         </div>
 
         <Button type="submit">Submit</Button>
