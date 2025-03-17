@@ -158,6 +158,11 @@ export function AppSidebar() {
             icon: <ChevronRight />,
           },
           {
+            title: "FAQ's",
+            url: "/dashboard/plans/faqs/create-faqs",
+            icon: <ChevronRight />,
+          },
+          {
             title: "Transactions",
             url: "/dashboard/plans/transactions",
             icon: <ChevronRight />,
