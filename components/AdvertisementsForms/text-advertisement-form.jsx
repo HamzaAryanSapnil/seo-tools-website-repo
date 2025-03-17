@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import MDEditor from "@uiw/react-md-editor";
-import { z } from "zod";
 import { toast } from "sonner";
+import { textAdvertisementFormSchema } from "@/schemas/text-advertisement-schema";
 
 const TextAdvertisementForm = () => {
   const form = useForm({
-    resolver: zodResolver(),
+    resolver: zodResolver(textAdvertisementFormSchema),
     defaultValues: {
       name: "",
       title: "",
@@ -30,17 +30,30 @@ const TextAdvertisementForm = () => {
   function onSubmit(values) {
     try {
       console.log(values);
-      toast.success("Advertisement created successfully!");
+      toast.success("Text Advertisement created successfully!");
     } catch (error) {
-      toast.error("Error creating advertisement");
+      toast.error("Error creating text advertisement");
     }
   }
 
   return (
-    <div className="container mx-auto my-10 min-h-screen flex flex-col justify-center items-center">
-      <h2 className="text-2xl font-semibold text-center mb-10" > Text Advertisement</h2>
+    <div className="container mx-auto my-10  flex flex-col justify-center items-center">
+      <h2 className="text-2xl font-semibold text-center mb-10">
+        {" "}
+        Text Advertisement
+      </h2>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
+        <form
+          onSubmit={form.handleSubmit(onSubmit, (errors) => {
+            // Handle validation errors
+            Object.values(errors).forEach((error) => {
+              if (error.message) {
+                toast.error(error.message);
+              }
+            });
+          })}
+          className="space-y-6 w-full"
+        >
           {/* name field and title field */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
             <FormField
