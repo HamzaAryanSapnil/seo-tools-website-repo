@@ -25,6 +25,16 @@ export const DynamicBreadCrumb = () => {
     <Breadcrumb className="w-full pl-5">
       <BreadcrumbList>
         {path?.map((item, index) => {
+          console.log("Breadcrumb", item);
+          const normalizedItem = item.toLowerCase(); // Ensure case-insensitivity
+          const disabledLinks = [
+            "pages",
+            "advertisements",
+            "posts",
+            "plans",
+            "users",
+          ];
+          const isDisabled = disabledLinks.includes(normalizedItem);
           return (
             <div
               key={index}
@@ -33,17 +43,16 @@ export const DynamicBreadCrumb = () => {
               <BreadcrumbItem>
                 <BreadcrumbLink
                   key={index + 11}
-                  href={`${
-                    [
-                      "pages",
-                      "advertisements",
-                      "posts",
-                      "plans",
-                      "users",
-                    ].includes(item)
-                      ? "#"
-                      : `/${path.slice(0, index + 1).join("/")}`
+                  href={
+                    isDisabled ? "#" : `/${path.slice(0, index + 1).join("/")}`
+                  }
+                  className={`${
+                    isDisabled
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "hover:text-blue-500 transition-colors duration-200 ease-in-out"
                   }`}
+                  onClick={(e) => isDisabled && e.preventDefault()} // Prevent navigation for disabled links
+
                   // /${path.slice(0, index + 1).join("/")}
                 >
                   {" "}
