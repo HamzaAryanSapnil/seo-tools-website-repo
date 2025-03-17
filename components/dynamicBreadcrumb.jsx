@@ -15,13 +15,12 @@ const routes = [
   { title: "Manage All Blogs", url: "/dashboard/blog/manage-blogs" },
 ];
 
-
 // Breadcrumb component
 export const DynamicBreadCrumb = () => {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    // get the path name from this pathname
-    const path = pathname.split("/").filter(Boolean);
+  // get the path name from this pathname
+  const path = pathname.split("/").filter(Boolean);
   return (
     <Breadcrumb className="w-full pl-5">
       <BreadcrumbList>
@@ -35,7 +34,13 @@ export const DynamicBreadCrumb = () => {
                 <BreadcrumbLink
                   key={index + 11}
                   href={`${
-                    item === "blog"
+                    [
+                      "pages",
+                      "advertisements",
+                      "posts",
+                      "plans",
+                      "users",
+                    ].includes(item)
                       ? "#"
                       : `/${path.slice(0, index + 1).join("/")}`
                   }`}
@@ -57,4 +62,3 @@ export const DynamicBreadCrumb = () => {
     </Breadcrumb>
   );
 };
-
