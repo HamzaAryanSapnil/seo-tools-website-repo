@@ -157,11 +157,11 @@ export function AppSidebar() {
             url: "/dashboard/plans/faqs",
             icon: <ChevronRight />,
           },
-          {
-            title: "FAQ's",
-            url: "/dashboard/plans/faqs/create-faqs",
-            icon: <ChevronRight />,
-          },
+          // {
+          //   title: "FAQ's",
+          //   url: "/dashboard/plans/faqs/create-faqs",
+          //   icon: <ChevronRight />,
+          // },
           {
             title: "Transactions",
             url: "/dashboard/plans/transactions",
