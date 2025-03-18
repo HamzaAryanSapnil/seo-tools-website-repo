@@ -8,10 +8,18 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-seo-primary: var(--seo-primary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-libre: var(--font-libre-franklin);
+  --font-roboto: var(--font-roboto);
+  --font-playfair: var(--font-playfair-display);
+  --font-playfair-sc: var(--font-playfair-display-sc);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,6 +57,7 @@
 }
 
 :root {
+  --seo-primary: #35456d;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
