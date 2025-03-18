@@ -24,11 +24,12 @@ import MDEditor from "@uiw/react-md-editor";
 import { useState } from "react";
 import { Separator } from "./ui/separator";
 import { categoryFormSchema } from "@/schemas/category-form-schema";
+import { toolsCategoryFormSchema } from "@/schemas/tools-category-form-schema";
 
 
 const ToolsCategoryForm = () => {
     const form = useForm({
-      resolver: zodResolver(categoryFormSchema),
+      resolver: zodResolver(toolsCategoryFormSchema),
       defaultValues: {
         name: "",
         slug: "",

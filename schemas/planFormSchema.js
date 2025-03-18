@@ -27,6 +27,7 @@ export const planFormSchema = z.object({
       )
     )
     .optional(), 
+  });
   // tools: z.record(
   //   z.string(),
   //   z
@@ -62,7 +63,6 @@ export const planFormSchema = z.object({
   //       });
   //     }, "Invalid field values detected")
   // ),
-});
 
 
 
