@@ -194,7 +194,7 @@ export function AppSidebar() {
         icon: <PenTool />,
         items: [
           {
-            title: "Tools",
+            title: "All Tools Management",
             url: "/dashboard/tools/all-tools",
             icon: <ChevronRight />,
           },
