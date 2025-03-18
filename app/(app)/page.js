@@ -69,7 +69,6 @@ export default function Home() {
       <HeroSection />
       <CategoriesGrid categories={categories} />
 
-      {/* Add other sections (Pricing, Blog) */}
     </main>
   );
 }
