@@ -35,7 +35,7 @@ const FeedBackSlider = () => {
   return (
     <div className="container mx-auto px-4 py-12 font-roboto my-10">
       <Swiper
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        autoplay={{ delay: 1000, disableOnInteraction: false }}
         slidesPerView={1}
         breakpoints={{
           640: { slidesPerView: 1 },
