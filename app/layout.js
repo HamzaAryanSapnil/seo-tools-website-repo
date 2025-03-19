@@ -6,6 +6,7 @@ import {
   Playfair_Display,
   Playfair_Display_SC,
   Montserrat,
+  Inter
 } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -47,6 +48,11 @@ const montserrat = Montserrat({
   subsets: ["latin"],
 });
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+})
+
 export const metadata = {
   title: {
     default: "Seo Studio",
@@ -60,7 +66,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${libreFranklin.variable} ${roboto.variable} ${playfairDisplay.variable} ${playfairDisplaySC.variable} ${montserrat.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${libreFranklin.variable} ${roboto.variable} ${playfairDisplay.variable} ${playfairDisplaySC.variable} ${montserrat.variable} ${inter.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"

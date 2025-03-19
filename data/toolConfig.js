@@ -14,6 +14,90 @@ export const TOOLS_CONFIG = [
     ],
   },
   {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "1",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "2",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "3",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "4",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "5",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "6",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
     slug: "pdf-compressor",
     name: "PDF Compressor",
     category: "pdf-tools",

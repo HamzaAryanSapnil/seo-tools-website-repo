@@ -1,13 +1,16 @@
 // components/Homepage/CategoriesGrid.js
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export default function CategoriesGrid({ categories }) {
   return (
     <section className="container mx-auto px-4 py-12 space-y-16 font-roboto my-10">
-      {categories.map((category) => (
+      {categories.slice(0, 10).map((category) => (
         <div key={category.slug} className="mb-12">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-bold font-playfair-sc">{category.name}</h2>
+            <h2 className="text-4xl font-bold font-inter text-center text-seo-primary">
+              {category.name}
+            </h2>
             {category.tools.length > 10 && (
               <Link
                 href={`/categories/${category.slug}`}
@@ -54,6 +57,13 @@ export default function CategoriesGrid({ categories }) {
           )}
         </div>
       ))}
+      {categories.length > 10 && (
+        <div className="text-center">
+          <Link href="/our-services">
+            <Button className={"text-seo-primary text-lg bg-white shadow-lg py-5 hover:bg-seo-primary hover:text-white"} >See All Our Services</Button>
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
