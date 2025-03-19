@@ -4,6 +4,7 @@ import CategoriesGrid from "@/components/Homepage/CategoriesGrid";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
 import SeoStudioToolsStats from "@/components/Homepage/SeoStudioToolsStats";
 import FeedBackSliderDetails from "@/components/Homepage/FeedBackSliderDetails";
+import LatestInstagramArticlesSliderDetails from "@/components/Homepage/LatestInstagramArticlesSliderDetails";
 
 
 const getToolsByCategory = () => {
@@ -46,6 +47,7 @@ export default function Home() {
       <SeoStudioToolsStats/>
       <CategoriesGrid categories={categories} />
       <FeedBackSliderDetails/>
+      <LatestInstagramArticlesSliderDetails/>
 
     </main>
   );
