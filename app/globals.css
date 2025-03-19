@@ -17,6 +17,9 @@
   --font-roboto: var(--font-roboto);
   --font-playfair: var(--font-playfair-display);
   --font-playfair-sc: var(--font-playfair-display-sc);
+  --font-montserrat: var(--font-montserrat);
+  --font-playfair-display: var(--font-playfair-display);
+  --font-playfair-display-sc: var(--font-playfair-display-sc);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);

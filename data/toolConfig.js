@@ -2,6 +2,7 @@ export const TOOLS_CONFIG = [
   {
     slug: "md5-generator",
     name: "MD5 Generator",
+    category: "hashing",
     fields: [
       {
         name: "dailyUsage",
@@ -15,6 +16,7 @@ export const TOOLS_CONFIG = [
   {
     slug: "pdf-compressor",
     name: "PDF Compressor",
+    category: "pdf-tools",
     fields: [
       {
         name: "dailyUsage",
@@ -82,6 +84,7 @@ export const TOOLS_CONFIG = [
   {
     slug: "image-processor",
     name: "Image Processor",
+    category: "image-tools",
     fields: [
       {
         name: "format", // Different select field
@@ -99,6 +102,7 @@ export const TOOLS_CONFIG = [
   {
     slug: "video-converter",
     name: "Video Converter",
+    category: "video-tools",
     fields: [
       {
         name: "resolution",
@@ -116,6 +120,322 @@ export const TOOLS_CONFIG = [
   {
     slug: "ad-blocker",
     name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
+    fields: [
+      {
+        name: "enableTrackingProtection",
+        label: "Tracking Protection",
+        type: "boolean",
+        description: "Block trackers and analytics scripts",
+        defaultValue: true,
+      },
+      {
+        name: "allowAcceptableAds",
+        label: "Allow Non-Intrusive Ads",
+        type: "boolean",
+        description: "Permit acceptable ads as defined by AdBlock Plus",
+        defaultValue: false,
+      },
+    ],
+  },
+  {
+    slug: "ad-blocker",
+    name: "Ad Blocker",
+    category: "privacy-tools",
     fields: [
       {
         name: "enableTrackingProtection",
