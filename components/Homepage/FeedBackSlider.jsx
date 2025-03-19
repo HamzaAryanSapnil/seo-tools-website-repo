@@ -92,14 +92,27 @@ const FeedBackSlider = () => {
             nextEl: nextRef.current,
           }}
           autoplay={{ delay: 1000, disableOnInteraction: false }}
-          slidesPerView={3}
-          spaceBetween={20}
+          loop={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 15,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+          }}
           onInit={(swiper) => {
             swiper.params.navigation.prevEl = prevRef.current;
             swiper.params.navigation.nextEl = nextRef.current;
             swiper.navigation.init();
             swiper.navigation.update();
-            swiperRef.current = swiper;
+            // swiperRef.current = swiper;
           }}
           onSlideChange={(swiper) => {
             setIsBeginning(swiper.isBeginning);
@@ -110,12 +123,12 @@ const FeedBackSlider = () => {
         >
           {feedbacks.map((item, index) => (
             <SwiperSlide key={index}>
-              <Card className="p-6 shadow-lg rounded-lg text-center flex flex-col justify-between h-[440px]">
+              <Card className="p-1 md:p-6 shadow-lg rounded-lg text-center flex flex-col justify-center items-center h-96">
                 <CardContent>
                   <div className="text-red-500 text-lg flex justify-center gap-1">
                     {Array(item.rating).fill("⭐")}
                   </div>
-                  <p className="italic text-gray-600 mt-2">{item.text}</p>
+                  <p className="italic text-gray-600 mt-2">{item.text.length > 100 ? item.text.slice(0, 100) + "..." : item.text}</p>
                   <h4 className="font-bold mt-4">{item.name}</h4>
                   <p className="text-sm text-gray-500">
                     {item.role} <br /> {item.company} | {item.employees}
@@ -134,13 +147,13 @@ const FeedBackSlider = () => {
         <div className="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-4 z-10">
           <button
             ref={prevRef}
-            className="p-3 rounded-full bg-black/25 text-white hover:bg-orange-600"
+            className="p-3 rounded-full text-white bg-orange-600 hover:bg-seo-primary "
           >
             <ChevronLeft size={24} />
           </button>
           <button
             ref={nextRef}
-            className="p-3 rounded-full bg-black/25 text-white hover:bg-orange-600"
+            className="p-3 rounded-full  text-white bg-orange-600 hover:bg-seo-primary"
           >
             <ChevronRight size={24} />
           </button>
