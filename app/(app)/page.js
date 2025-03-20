@@ -5,6 +5,8 @@ import { TOOLS_CONFIG } from "@/data/toolConfig";
 import SeoStudioToolsStats from "@/components/Homepage/SeoStudioToolsStats";
 import FeedBackSliderDetails from "@/components/Homepage/FeedBackSliderDetails";
 import LatestInstagramArticlesSliderDetails from "@/components/Homepage/LatestInstagramArticlesSliderDetails";
+import WhyShouldYouSec from "@/components/Homepage/WhyShouldYouSec";
+import SiteOverviewCard from "@/components/Homepage/SiteOverviewCard";
 
 
 const getToolsByCategory = () => {
@@ -42,13 +44,14 @@ export default function Home() {
 
   
   return (
-    <main>
+    <main className="bg-seo-" >
       <HeroSection />
       <SeoStudioToolsStats/>
       <CategoriesGrid categories={categories} />
       <FeedBackSliderDetails/>
       <LatestInstagramArticlesSliderDetails/>
-
+      <WhyShouldYouSec/>
+      <SiteOverviewCard/>
     </main>
   );
 }

@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
-@plugin "daisyui"{
-  themes: light --default, dark ;
-};
+@plugin "daisyui" {
+  themes: light --default, dark;
+}
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-seo-primary: var(--seo-primary);
+  --color-seo-light-green: var(--seo-light-green);
+  --color-seo-secondary: var(--seo-secondary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -62,6 +64,8 @@
 
 :root {
   --seo-primary: #35456d;
+  --seo-light-green: #54ff00;
+  --seo-secondary: #0100fe;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

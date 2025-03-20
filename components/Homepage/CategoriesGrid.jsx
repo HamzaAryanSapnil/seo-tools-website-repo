@@ -8,7 +8,7 @@ export default function CategoriesGrid({ categories }) {
       {categories.slice(0, 10).map((category) => (
         <div key={category.slug} className="mb-12">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-4xl font-bold font-inter text-center text-seo-primary">
+            <h2 className="text-4xl font-bold font-inter text-center text-seo-secondary">
               {category.name}
             </h2>
             {category.tools.length > 10 && (
@@ -60,7 +60,7 @@ export default function CategoriesGrid({ categories }) {
       {categories.length > 10 && (
         <div className="text-center">
           <Link href="/our-services">
-            <Button className={"text-seo-primary text-lg bg-white shadow-lg py-5 hover:bg-seo-primary hover:text-white"} >See All Our Services</Button>
+            <Button className={"text-seo-secondary text-lg bg-white shadow-lg py-5 hover:bg-seo-light-green hover:text-white"} >See All Our Services</Button>
           </Link>
         </div>
       )}

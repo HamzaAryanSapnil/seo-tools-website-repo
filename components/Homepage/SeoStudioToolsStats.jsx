@@ -14,7 +14,7 @@ const SeoStudioToolsStats = () => {
     <section className="my-14 font-roboto p-4">
       <div className="container mx-auto flex flex-col justify-center items-center gap-y-10">
         <div className="flex flex-col justify-center items-center gap-y-6">
-          <h1 className="text-4xl font-bold font-playfair text-seo-primary ">
+          <h1 className="text-4xl font-bold font-playfair text-seo-secondary ">
             SEOStudio Tools
           </h1>
           <p className="text-gray-600 text-center md:w-3xl text-base/6">
@@ -25,7 +25,7 @@ const SeoStudioToolsStats = () => {
         </div>
         <div className="flex flex-col justify-center items-center gap-y-6">
           <div className="flex  flex-col  justify-center items-center gap-y-10 gap-6">
-            <h1 className="text-4xl font-bold font-montserrat text-seo-primary uppercase">
+            <h1 className="text-4xl font-bold font-montserrat text-seo-secondary uppercase">
               {" "}
               As Seen In:{" "}
             </h1>
@@ -64,7 +64,7 @@ const SeoStudioToolsStats = () => {
           </div>
         </div>
         <div className="flex justify-center items-center flex-col gap-y-6 my-5">
-          <h1 className="text-2xl text-center font-bold font-playfair-display text-seo-primary uppercase">
+          <h1 className="text-2xl text-center font-bold font-playfair-display text-seo-secondary uppercase">
             {" "}
             We are growing together
           </h1>
@@ -73,7 +73,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-primary">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
                   170+
                 </CardTitle>
               </CardHeader>
@@ -86,7 +86,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-primary">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
                   6.2M+
                 </CardTitle>
               </CardHeader>
@@ -99,7 +99,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-primary">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
                   9K+
                 </CardTitle>
               </CardHeader>
@@ -112,7 +112,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-primary">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
                   800K+
                 </CardTitle>
               </CardHeader>
@@ -125,7 +125,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-primary">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
                   320K+
                 </CardTitle>
               </CardHeader>
