@@ -44,7 +44,7 @@ export default function Home() {
 
   
   return (
-    <main className="bg-seo-" >
+    <main className="" >
       <HeroSection />
       <SeoStudioToolsStats/>
       <CategoriesGrid categories={categories} />

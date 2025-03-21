@@ -34,13 +34,13 @@ const SeoStudioToolsStats = () => {
                 <img
                   src="./producthunt-logo.jpg"
                   alt="product hunt logo"
-                  srcset=""
+             
                   className="w-20  "
                 />
                 <img
                   src="./producthunt-text.jpg"
                   alt="product hunt logo"
-                  srcset=""
+                  
                   className="w-36  "
                 />
               </div>
@@ -48,7 +48,7 @@ const SeoStudioToolsStats = () => {
                 <img
                   src="./reddit.jpg"
                   alt="reddit logo"
-                  srcset=""
+                  
                   className="w-36 "
                 />
               </div>
@@ -56,7 +56,7 @@ const SeoStudioToolsStats = () => {
                 <img
                   src="./brave.png"
                   alt="brave browser logo"
-                  srcset=""
+                  
                   className="w-36 "
                 />
               </div>
