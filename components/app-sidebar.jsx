@@ -199,6 +199,11 @@ export function AppSidebar() {
             icon: <ChevronRight />,
           },
           {
+            title: "Create New Tool",
+            url: "/dashboard/tools/create-new-tool",
+            icon: <ChevronRight />,
+          },
+          {
             title: "Homepage Tools",
             url: "/dashboard/tools/homepage-tools",
             icon: <ChevronRight />,

@@ -1,4 +1,3 @@
-
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
@@ -10,8 +9,9 @@ export async function generateStaticParams() {
   }));
 }
 
-const DashboardToolsEditPage = ({ params }) => {
-  const tool = TOOLS_CONFIG.find((t) => t.slug === params.slug);
+const DashboardToolsEditPage = async ({ params }) => {
+  const { slug } = await params;
+  const tool = TOOLS_CONFIG.find((t) => t.slug === slug);
 
   if (!tool) {
     return notFound();

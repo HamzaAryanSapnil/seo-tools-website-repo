@@ -27,7 +27,7 @@ export default function CategoriesGrid({ categories }) {
               {category.tools.slice(0, 10).map((tool) => (
                 <div key={tool.slug} className="py-3 border-b last:border-0">
                   <Link
-                    href={`/tool/${tool.slug}`}
+                    href={`/tools/${tool.slug}`}
                     className="flex justify-between items-center hover:bg-gray-50 p-2 rounded"
                   >
                     <span className="font-medium ">{tool.name}</span>
@@ -44,7 +44,7 @@ export default function CategoriesGrid({ categories }) {
               {category.tools.slice(0, 10).map((tool) => (
                 <Link
                   key={tool.slug}
-                  href={`/tool/${tool.slug}`}
+                  href={`/tools/${tool.slug}`}
                   className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 >
                   <div className="font-medium">{tool.name}</div>

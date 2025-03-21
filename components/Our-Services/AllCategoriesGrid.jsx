@@ -1,8 +1,7 @@
-import Link from 'next/link';
-import React from 'react'
+import Link from "next/link";
+import React from "react";
 
-const AllCategoriesGrid = ({categories}) => {
-    
+const AllCategoriesGrid = ({ categories }) => {
   return (
     <section className="container mx-auto px-4 py-12 space-y-16 font-roboto my-10">
       {categories.map((category) => (
@@ -27,7 +26,7 @@ const AllCategoriesGrid = ({categories}) => {
               {category.tools.slice(0, 10).map((tool) => (
                 <div key={tool.slug} className="py-3 border-b last:border-0">
                   <Link
-                    href={`/tool/${tool.slug}`}
+                    href={`/tools/${tool.slug}`}
                     className="flex justify-between items-center hover:bg-gray-50 p-2 rounded"
                   >
                     <span className="font-medium ">{tool.name}</span>
@@ -44,7 +43,7 @@ const AllCategoriesGrid = ({categories}) => {
               {category.tools.slice(0, 10).map((tool) => (
                 <Link
                   key={tool.slug}
-                  href={`/tool/${tool.slug}`}
+                  href={`/tools/${tool.slug}`}
                   className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 >
                   <div className="font-medium">{tool.name}</div>
@@ -57,9 +56,8 @@ const AllCategoriesGrid = ({categories}) => {
           )}
         </div>
       ))}
-      
     </section>
   );
-}
+};
 
-export default AllCategoriesGrid
+export default AllCategoriesGrid;

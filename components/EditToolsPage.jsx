@@ -255,7 +255,7 @@ const EditToolForm = () => {
                 )}
               />
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2  md:grid-cols-4 gap-4">
               {iconOptions.map((icon) => (
                 <div
                   key={icon.name}
