@@ -6,45 +6,42 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Copy, Check, RefreshCw, Key } from 'lucide-react';
-// import phpass from 'phpass';
+import md5 from 'blueimp-md5'; // Client-side MD5 implementation
 
 class WordPressHasher {
   constructor() {
-    this.itoa64 =
-      "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    this.iteration_count = 8;
-    this.portable_hashes = true;
+    this.itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    this.iterationCount = 8;
+    this.portableHashes = true;
   }
 
-  // Core hashing algorithm
   hash(password) {
     const salt = this.gensalt();
-    const hash = this.crypt(password, salt);
-    return hash;
+    return this.crypt(password, salt);
   }
 
   gensalt() {
-    const salt = this.portable_hashes ? "$P$" : "$S$";
-    return salt + this.encode64(this.random(6), this.iteration_count);
+    const salt = this.portableHashes ? '$P$' : '$S$';
+    return salt + this.encode64(this.random(6), this.iterationCount);
   }
 
-  // Helper methods
   random(count) {
     const array = new Uint8Array(count);
     crypto.getRandomValues(array);
-    return Array.from(array, (byte) => String.fromCharCode(byte)).join("");
+    return Array.from(array, byte => String.fromCharCode(byte)).join('');
   }
 
   encode64(input, count) {
-    let output = "";
+    let output = '';
     let i = 0;
+    const str = String(input);
     do {
-      let value = input.charCodeAt(i++); // Changed from const to let
+      let value = str.charCodeAt(i++);
       output += this.itoa64[value & 0x3f];
-      if (i < count) value |= input.charCodeAt(i) << 8;
+      if (i < count) value |= str.charCodeAt(i) << 8;
       output += this.itoa64[(value >> 6) & 0x3f];
       if (i++ >= count) break;
-      if (i < count) value |= input.charCodeAt(i) << 16;
+      if (i < count) value |= str.charCodeAt(i) << 16;
       output += this.itoa64[(value >> 12) & 0x3f];
       if (i++ >= count) break;
       output += this.itoa64[(value >> 18) & 0x3f];
@@ -53,9 +50,11 @@ class WordPressHasher {
   }
 
   crypt(password, setting) {
-    // Full implementation of WordPress crypt method
-    // (Implementation details excluded for brevity)
-    return "$$" + this.encode64(this.random(16), 16); // Simplified return
+    let hash = md5(password);
+    for (let i = 0; i < (1 << this.iterationCount); i++) {
+      hash = md5(hash + password);
+    }
+    return setting + this.encode64(hash, 16);
   }
 }
 
@@ -64,55 +63,46 @@ const WordPressPasswordGenerator = () => {
   const [hash, setHash] = useState('');
   const [salts, setSalts] = useState({});
   const [copied, setCopied] = useState({});
+  const [loading, setLoading] = useState(false);
 
-   
-  // Initialize WordPress-compatible hasher
-//   const hasher = new phpass({
-//     iteration_count: 8,
-//     portable_hashes: true
-//   });
-
-  // Custom salt generator
-//   const generateSalt = (length = 64) => {
-//     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-//     return Array.from({ length }, () => 
-//       chars[Math.floor(Math.random() * chars.length)]
-//     ).join('');
-//   };
+  const generateSalt = (length = 64) => {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+    const array = new Uint8Array(length);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => chars[byte % chars.length]).join('');
+  };
 
   const generatePassword = () => {
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=";
-    const newPassword = Array.from(
-      { length: 16 },
-      () => chars[Math.floor(Math.random() * chars.length)]
-    ).join("");
+    setLoading(true);
+    try {
+      // Generate password
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=';
+      const newPassword = Array.from({ length: 16 }, () => 
+        chars[Math.floor(Math.random() * chars.length)]
+      ).join('');
 
-    const hasher = new WordPressHasher();
-    const newHash = hasher.hash(newPassword);
+      // Generate hash
+      const hasher = new WordPressHasher();
+      const newHash = hasher.hash(newPassword);
 
-    // Generate salts using Web Crypto API
-    const generateSalt = (length = 64) => {
-      const array = new Uint8Array(length);
-      crypto.getRandomValues(array);
-      return Array.from(array, (byte) =>
-        byte.toString(16).padStart(2, "0")
-      ).join("");
-    };
-
-    setPassword(newPassword);
-    setHash(newHash);
-    setSalts({
-      AUTH_KEY: generateSalt(),
-      SECURE_AUTH_KEY: generateSalt(),
-      LOGGED_IN_KEY: generateSalt(),
-      NONCE_KEY: generateSalt(),
-      AUTH_SALT: generateSalt(),
-      SECURE_AUTH_SALT: generateSalt(),
-      LOGGED_IN_SALT: generateSalt(),
-      NONCE_SALT: generateSalt(),
-    });
-    setCopied({});
+      // Generate salts
+      setPassword(newPassword);
+      setHash(newHash);
+      setSalts({
+        AUTH_KEY: generateSalt(),
+        SECURE_AUTH_KEY: generateSalt(),
+        LOGGED_IN_KEY: generateSalt(),
+        NONCE_KEY: generateSalt(),
+        AUTH_SALT: generateSalt(),
+        SECURE_AUTH_SALT: generateSalt(),
+        LOGGED_IN_SALT: generateSalt(),
+        NONCE_SALT: generateSalt(),
+      });
+    } catch (error) {
+      console.error('Generation error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const copyToClipboard = async (text, field) => {
@@ -136,9 +126,9 @@ const WordPressPasswordGenerator = () => {
       
       <CardContent className="space-y-6">
         <div className="flex flex-col gap-4">
-          <Button onClick={generatePassword} className="gap-2">
-            <RefreshCw className="w-4 h-4" />
-            Generate New Password
+          <Button onClick={generatePassword} disabled={loading} className="gap-2">
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            {loading ? 'Generating...' : 'Generate New Password'}
           </Button>
 
           {password && (
@@ -175,7 +165,7 @@ const WordPressPasswordGenerator = () => {
 
               {/* Salts Section */}
               <div className="space-y-4">
-                <h3 className="font-medium">Recommended Salts</h3>
+                <h3 className="font-medium">Authentication Salts</h3>
                 <div className="grid gap-4 md:grid-cols-2">
                   {Object.entries(salts).map(([key, value]) => (
                     <div key={key} className="space-y-1">
