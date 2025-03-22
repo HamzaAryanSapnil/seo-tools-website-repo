@@ -2,16 +2,20 @@
 "use client";
 
 import dynamic from "next/dynamic";
-// import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ToolRenderer = ({ toolSlug }) => {
   const ToolComponent = dynamic(() => import(`@/tools/${toolSlug}`), {
-    loading: () => <div>Loading...</div>,
+    loading: () => <Skeleton className="h-[400px] w-full" />,
     ssr: false,
   });
 
   try {
-    return <ToolComponent />;
+    return (
+      <div className="  flex justify-center items-center w-full">
+        <ToolComponent />
+      </div>
+    );
   } catch (error) {
     return (
       <div className="text-red-500 p-4 border rounded-lg bg-red-50">

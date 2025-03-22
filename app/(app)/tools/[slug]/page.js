@@ -14,7 +14,7 @@ export async function generateMetadata({
 
 export default function ToolPage({ params }) {
   return (
-    <div className="container py-8">
+    <div className="container py-8 mx-auto min-h-screen ">
       <ToolRenderer toolSlug={params.slug} />
     </div>
   );
