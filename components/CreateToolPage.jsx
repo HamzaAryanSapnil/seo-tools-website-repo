@@ -1,97 +1,526 @@
+// components/admin/ToolsForm.jsx
 "use client";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { toolFormSchema } from "@/schemas/toolFormSchema";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { AlertCircle, CheckCircle2, Loader2, Plus, Trash } from "lucide-react";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import axios from "axios";
 
-const toolSchema = z.object({
-  title: z.string().min(3, "Title must be at least 3 characters"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  content: z.string().min(10, "Content must be at least 10 characters"),
-  seoTitle: z.string().optional(),
-  seoDescription: z.string().optional(),
-});
+const generateSlug = (str) => {
+  return str
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "") // Remove special characters
+    .replace(/[\s_-]+/g, "-") // Replace spaces and underscores with hyphens
+    .replace(/^-+|-+$/g, ""); // Trim hyphens from both ends
+};
 
-const CreateToolPageForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: zodResolver(toolSchema) });
+export default function CreateToolsForm({ initialData }) {
+  const [isCheckingSlug, setIsCheckingSlug] = useState(false);
+  const [isSlugUnique, setIsSlugUnique] = useState(true);
+  const [slugMessage, setSlugMessage] = useState("");
+  const [isSlugManuallyModified, setIsSlugManuallyModified] = useState(false);
+  const form = useForm({
+    resolver: zodResolver(toolFormSchema),
+    defaultValues: initialData || {
+      slug: "",
+      name: "",
+      category: "",
+      description: "",
+      fields: [
+        {
+          name: "",
+          label: "",
+          type: "text", // Default type
+          description: "",
+          defaultValue: "",
+        },
+      ],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "fields",
+    rules: {
+      minLength: { value: 1, message: "At least one field is required" },
+    },
+  });
+  const getFieldType = (index) => {
+    return form.watch(`fields.${index}.type`) || "text";
+  };
+
+  // Watch name and slug fields
+  const nameValue = form.watch("name");
+  const slugValue = form.watch("slug");
+
+  // Options management functions
+  const handleAddOption = (fieldIndex) => {
+    const currentFields = form.getValues("fields");
+    const currentOptions = currentFields[fieldIndex].options || [];
+    form.setValue(`fields.${fieldIndex}.options`, [
+      ...currentOptions,
+      { value: "", label: "" },
+    ]);
+  };
+
+  const handleRemoveOption = (fieldIndex, optionIndex) => {
+    const currentFields = form.getValues("fields");
+    const currentOptions = currentFields[fieldIndex].options || [];
+    currentOptions.splice(optionIndex, 1);
+    form.setValue(`fields.${fieldIndex}.options`, currentOptions);
+  };
+
+  useEffect(() => {
+    if (!isSlugManuallyModified && nameValue) {
+      const generatedSlug = generateSlug(nameValue);
+      form.setValue("slug", generatedSlug, { shouldValidate: true });
+    }
+  }, [nameValue, form, isSlugManuallyModified]);
+
+  // Check slug uniqueness
+  
+
+  // Trigger slug check when slug changes
+  useEffect(() => {
+    if (slugValue) {
+      setIsCheckingSlug(true);
+      
+      const checkSlugUniqueness = async () => {
+        if (!slugValue) {
+          setIsSlugUnique(true);
+          setIsCheckingSlug(false);
+          setSlugMessage("");
+          return;
+        }
+        try {
+          setIsCheckingSlug(true);
+          setSlugMessage("");
+          const response = await axios.get(
+            `/api/tools/check-slug?slug=${slugValue}`
+          );
+          console.log("Slug check response:", response);
+          setIsSlugUnique(response?.data?.isUnique);
+          setSlugMessage(response?.data?.message);
+          console.log("checking slug message", response?.data?.message);
+          
+
+          if (response?.data?.isUnique === false) {
+            setIsSlugUnique(false);
+
+            form.setError("slug", { message: "Slug must be unique" });
+          }
+
+          setIsCheckingSlug(false);
+        } catch (error) {
+          console.error("Slug check error:", error);
+          setIsCheckingSlug(false);
+          setSlugMessage(error?.response?.data?.message);
+          setIsSlugUnique(false);
+        }
+      };
+      checkSlugUniqueness();
+    }
+  }, [slugValue]);
 
   const onSubmit = async (data) => {
-    console.log("Tool data:", data);
-    // Here you’d make an API call to save the tool in the database
+    if (isSlugUnique === false) {
+      form.setError("slug", { message: "Slug must be unique" });
+      return;
+    }
+
+    try {
+      console.log("Submitting data:", data);
+
+      const response = await axios.post("/api/admin/tools", data);
+
+      // Handle success
+      console.log("Submission successful:", response.data);
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
+    console.log(data);
   };
 
   return (
-    <div className="max-w-7xl mx-auto mt-10 p-4">
-      <Card className={"w-full"}>
-        <CardHeader>
-          <CardTitle>Create New Tool</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <Input
-              label="Tool Title"
-              placeholder="Enter tool title"
-              {...register("title")}
-              className="w-full"
-            />
-            {errors.title && (
-              <p className="text-red-500 text-sm">{errors.title.message}</p>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 p-4 w-full"
+      >
+        {/* Basic Information */}
+        <div className="grid grid-cols-1  gap-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tool Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Tool Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
+          />
 
-            <Textarea
-              label="Tool Description"
-              placeholder="Enter a short description"
-              {...register("description")}
-              className="w-full"
-            />
-            {errors.description && (
-              <p className="text-red-500 text-sm">
-                {errors.description.message}
-              </p>
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Slug
+                  {isCheckingSlug && (
+                    <span className="text-sm text-seo-secondary">
+                      Checking...
+                    </span>
+                  )}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="tool-slug"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setIsSlugManuallyModified(true);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage>
+                  {isCheckingSlug && <Loader2 className="animate-spin" />}
+                  {!isCheckingSlug && slugMessage && (
+                    <span
+                      className={`text-sm ${
+                        slugMessage === "Slug is unique"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {slugMessage}
+                    </span>
+                  )}
+                </FormMessage>
+              </FormItem>
             )}
+          />
 
-            <Textarea
-              label="Tool Content (Functionality)"
-              placeholder="Enter tool content or functionality"
-              {...register("content")}
-              className="w-full"
-            />
-            {errors.content && (
-              <p className="text-red-500 text-sm">{errors.content.message}</p>
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <Input placeholder="Tool Category" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Tool description" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-            <Input
-              label="SEO Title"
-              placeholder="Optional SEO Title"
-              {...register("seoTitle")}
-              className="w-full"
-            />
-
-            <Textarea
-              label="SEO Description"
-              placeholder="Optional SEO Description"
-              {...register("seoDescription")}
-              className="w-full"
-            />
-
+        {/* Configurable Fields */}
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-medium">Configuration Fields</h3>
             <Button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                append({
+                  name: "",
+                  label: "",
+                  type: "text",
+                  description: "",
+                  defaultValue: "",
+                })
+              }
             >
-              Create Tool
+              <Plus className="w-4 h-4 mr-2" /> Add Field
             </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+          </div>
 
-export default CreateToolPageForm;
+          {fields.map((field, index) => {
+            if (!field) {
+              return null;
+            }
+            return (
+              <div key={field.id} className="border p-4 rounded-lg space-y-4">
+                <div className="flex justify-end">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => remove(index)}
+                  >
+                    <Trash className="w-4 h-4 text-destructive" />
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name={`fields.${index}.name`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Field Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="dailyUsage" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`fields.${index}.label`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Display Label</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Daily Usage" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`fields.${index}.type`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Field Type</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select field type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {["text", "number", "boolean", "select"].map(
+                              (type) => (
+                                <SelectItem key={type} value={type}>
+                                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                                </SelectItem>
+                              )
+                            )}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`fields.${index}.description`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Field description" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {getFieldType(index) !== "select" && (
+                    <FormField
+                      control={form.control}
+                      name={`fields.${index}.defaultValue`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Default Value (Optional)</FormLabel>
+                          <FormControl>
+                            {getFieldType(index) === "boolean" ? (
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            ) : getFieldType(index) === "number" ? (
+                              <Input
+                                type="number"
+                                {...field}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
+                                value={field.value || ""}
+                              />
+                            ) : (
+                              <Input
+                                {...field}
+                                value={field.value || ""}
+                                placeholder="Optional default value"
+                              />
+                            )}
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+
+                  {form.watch(`fields.${index}.type`) === "select" && (
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <h4 className="text-sm font-medium">Select Options</h4>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleAddOption(index)}
+                        >
+                          <Plus className="w-4 h-4 mr-2" /> Add Option
+                        </Button>
+                      </div>
+
+                      {(form.watch(`fields.${index}.options`) || []).map(
+                        (option, optionIndex) => {
+                          const valueError =
+                            form.formState.errors.fields?.[index]?.options?.[
+                              optionIndex
+                            ]?.value;
+                          const labelError =
+                            form.formState.errors.fields?.[index]?.options?.[
+                              optionIndex
+                            ]?.label;
+                          const hasError = valueError || labelError;
+                          return (
+                            <div
+                              key={optionIndex}
+                              className={cn(
+                                "flex gap-2 items-start p-2 rounded-lg",
+                                hasError && "bg-red-50 border border-red-200"
+                              )}
+                            >
+                              <div className="flex-1 grid grid-cols-2 gap-2">
+                                <div className="space-y-1">
+                                  <Input
+                                    placeholder="Option value"
+                                    value={option.value}
+                                    className={cn(
+                                      valueError &&
+                                        "border-red-500 focus-visible:ring-red-500"
+                                    )}
+                                    onChange={(e) => {
+                                      const newOptions = [
+                                        ...form.getValues(
+                                          `fields.${index}.options`
+                                        ),
+                                      ];
+                                      newOptions[optionIndex].value =
+                                        e.target.value;
+                                      form.setValue(
+                                        `fields.${index}.options`,
+                                        newOptions
+                                      );
+                                    }}
+                                  />
+                                  {valueError && (
+                                    <p className="text-xs text-red-500">
+                                      {valueError.message}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="space-y-1">
+                                  <Input
+                                    placeholder="Option label"
+                                    value={option.label}
+                                    className={cn(
+                                      labelError &&
+                                        "border-red-500 focus-visible:ring-red-500"
+                                    )}
+                                    onChange={(e) => {
+                                      const newOptions = [
+                                        ...form.getValues(
+                                          `fields.${index}.options`
+                                        ),
+                                      ];
+                                      newOptions[optionIndex].label =
+                                        e.target.value;
+                                      form.setValue(
+                                        `fields.${index}.options`,
+                                        newOptions
+                                      );
+                                    }}
+                                  />
+                                  {labelError && (
+                                    <p className="text-xs text-red-500">
+                                      {labelError.message}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className={"mt-1"}
+                                onClick={() =>
+                                  handleRemoveOption(index, optionIndex)
+                                }
+                              >
+                                <Trash className="w-4 h-4 text-destructive" />
+                              </Button>
+                            </div>
+                          );
+                        }
+                      )}
+
+                      {form.formState.errors.fields?.[index]?.options && (
+                        <p className="text-sm font-medium text-destructive mt-2">
+                          {form.formState.errors.fields[index].options.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <Button type="submit" className="w-full">
+          {initialData ? "Update Tool" : "Create Tool"}
+        </Button>
+      </form>
+    </Form>
+  );
+}

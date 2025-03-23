@@ -31,50 +31,18 @@ export const TOOLS_CONFIG = [
   },
 
   {
-    slug: "ad-blocker",
-    name: "Ad Blocker",
-    category: "privacy-tools",
-    fields: [
-      {
-        name: "enableTrackingProtection",
-        label: "Tracking Protection",
-        type: "boolean",
-        description: "Block trackers and analytics scripts",
-        defaultValue: true,
-      },
-      {
-        name: "allowAcceptableAds",
-        label: "Allow Non-Intrusive Ads",
-        type: "boolean",
-        description: "Permit acceptable ads as defined by AdBlock Plus",
-        defaultValue: false,
-      },
-    ],
-  },
-
-  {
     slug: "seo-checker",
     name: "SEO Checker",
     category: "seo-tools",
     description: "Check the SEO of a website",
     fields: [
       {
-        name: "url",
-        label: "URL",
-        type: "text",
-        description: "Enter the URL to analyze",
-      },
-      {
-        name: "analyze",
-        label: "Analyze",
-        type: "submit",
-        description: "Analyze the URL",
-      },
-      {
-        name: "results",
-        label: "Results",
-        type: "text",
-        description: "The analysis results will be displayed here",
+        name: "dailyUsage",
+        label: "Daily Usage",
+        type: "number",
+        defaultValue: 3,
+        description:
+          "Daily usage restrictions refer to the limitations placed on the number of requests that a user can perform within a 24-hour period.",
       },
     ],
   },
@@ -85,22 +53,12 @@ export const TOOLS_CONFIG = [
     description: "Convert TypeScript code to plain JavaScript instantly",
     fields: [
       {
-        name: "url",
-        label: "URL",
-        type: "text",
-        description: "Enter the URL to analyze",
-      },
-      {
-        name: "analyze",
-        label: "Analyze",
-        type: "submit",
-        description: "Analyze the URL",
-      },
-      {
-        name: "results",
-        label: "Results",
-        type: "text",
-        description: "The analysis results will be displayed here",
+        name: "dailyUsage",
+        label: "Daily Usage",
+        type: "number",
+        defaultValue: 10,
+        description:
+          "Daily usage restrictions refer to the limitations placed on the number of requests that a user can perform within a 24-hour period.",
       },
     ],
   },
@@ -111,22 +69,12 @@ export const TOOLS_CONFIG = [
     description: "Convert TypeScript code to plain JavaScript instantly",
     fields: [
       {
-        name: "url",
-        label: "URL",
-        type: "text",
-        description: "Enter the URL to analyze",
-      },
-      {
-        name: "analyze",
-        label: "Analyze",
-        type: "submit",
-        description: "Analyze the URL",
-      },
-      {
-        name: "results",
-        label: "Results",
-        type: "text",
-        description: "The analysis results will be displayed here",
+        name: "dailyUsage",
+        label: "Daily Usage",
+        type: "number",
+        defaultValue: 10,
+        description:
+          "Daily usage restrictions refer to the limitations placed on the number of requests that a user can perform within a 24-hour period.",
       },
     ],
   },
@@ -137,22 +85,26 @@ export const TOOLS_CONFIG = [
     description: "Edit JSON files",
     fields: [
       {
-        name: "url",
-        label: "URL",
-        type: "text",
-        description: "Enter the URL to analyze",
+        name: "dailyUsage",
+        label: "Daily Usage",
+        type: "number",
+        description:
+          "Daily usage restrictions refer to the limitations placed on the number of requests that a user can perform within a 24-hour period.",
       },
+    ],
+  },
+  {
+    slug: "image-pdf-converter",
+    name: "Image to PDF Converter",
+    category: "Converters",
+    description: "Convert images to PDF files",
+    fields: [
       {
-        name: "analyze",
-        label: "Analyze",
-        type: "submit",
-        description: "Analyze the URL",
-      },
-      {
-        name: "results",
-        label: "Results",
-        type: "text",
-        description: "The analysis results will be displayed here",
+        name: "dailyUsage",
+        label: "Daily Usage",
+        type: "number",
+        description:
+          "Daily usage restrictions refer to the limitations placed on the number of requests that a user can perform within a 24-hour period.",
       },
     ],
   },
