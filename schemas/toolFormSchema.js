@@ -8,8 +8,7 @@ export const toolFormSchema = z.object({
   name: z.string().min(3),
   category: z.string().min(3),
   excerpt: z.string().min(10),
-  
-  
+
   fields: z.array(
     z.object({
       name: z.string().min(2),

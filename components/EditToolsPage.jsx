@@ -42,12 +42,11 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { editToolFormSchema } from "@/schemas/edit-tool-form-schema";
 import { updateToolServerAction } from "@/lib/actions/updateTool";
-import {  useState } from "react";
+import { useState } from "react";
 
 const EditToolForm = ({ tool }) => {
   const [image, setImage] = useState(null);
-  const [updateLoading, setUpdateLoading] = useState(false)
-  console.log(tool);
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(editToolFormSchema),
@@ -107,6 +106,7 @@ const EditToolForm = ({ tool }) => {
     { name: "articles-rewriter", component: <Pencil className="h-6 w-6" /> },
     { name: "bookmark-manager", component: <Bookmark className="h-6 w-6" /> },
     { name: "md5-generator", component: <Hash className="h-6 w-6" /> },
+    { name: "seo-tool", component: <CircleAlert className="h-6 w-6" /> },
   ];
 
   const uploadImageToImgbb = async (file) => {
@@ -137,27 +137,23 @@ const EditToolForm = ({ tool }) => {
 
   async function onSubmit(values) {
     try {
-      setUpdateLoading(true)
-   
+      setUpdateLoading(true);
 
       const formValue = { ...values, _id: tool?._id };
 
       const imgUrl = await uploadImageToImgbb(formValue.image);
-      console.log(imgUrl);
 
       formValue.image = imgUrl;
-      console.log(formValue);
 
       const res = await updateToolServerAction(formValue);
       if (res?.status === "SUCCESS") {
         toast.success(res?.message || "Tool updated successfully");
       }
 
-      setUpdateLoading(false)
-      
+      setUpdateLoading(false);
     } catch (error) {
       toast.error(error?.message || "Something went wrong");
-      setUpdateLoading(false)
+      setUpdateLoading(false);
     }
   }
 
@@ -717,7 +713,7 @@ const EditToolForm = ({ tool }) => {
             <h3 className="text-xl font-semibold">Image</h3>
             <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
               <Image
-                src={tool?.image ? tool.image : image}
+                src={tool?.image ? tool.image : image || ""}
                 alt="Tool Image"
                 width={2048}
                 height={1080}
@@ -747,7 +743,11 @@ const EditToolForm = ({ tool }) => {
           </div>
 
           <Button type="submit" className="w-full">
-            {updateLoading ? <Loader className="animate-spin h-7 w-7" /> : "Update Tool"}
+            {updateLoading ? (
+              <Loader className="animate-spin h-7 w-7" />
+            ) : (
+              "Update Tool"
+            )}
           </Button>
         </div>
       </form>

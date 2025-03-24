@@ -22,10 +22,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { AlertCircle, CheckCircle2, Loader2, Plus, Trash } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader, Loader2, Plus, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
+import {
+  checkSlugServerAction,
+  createToolServerAction,
+} from "@/lib/actions/updateTool";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const generateSlug = (str) => {
   return str
@@ -35,12 +41,14 @@ const generateSlug = (str) => {
     .replace(/^-+|-+$/g, ""); // Trim hyphens from both ends
 };
 
-export default function CreateToolsForm({  }) {
-  
+export default function CreateToolsForm({}) {
+  const [toolCreating, setToolCreating] = useState(false);
+
   const [isCheckingSlug, setIsCheckingSlug] = useState(false);
   const [isSlugUnique, setIsSlugUnique] = useState(true);
   const [slugMessage, setSlugMessage] = useState("");
   const [isSlugManuallyModified, setIsSlugManuallyModified] = useState(false);
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(toolFormSchema),
     defaultValues: {
@@ -100,13 +108,12 @@ export default function CreateToolsForm({  }) {
   }, [nameValue, form, isSlugManuallyModified]);
 
   // Check slug uniqueness
-  
 
   // Trigger slug check when slug changes
   useEffect(() => {
     if (slugValue) {
       setIsCheckingSlug(true);
-      
+
       const checkSlugUniqueness = async () => {
         if (!slugValue) {
           setIsSlugUnique(true);
@@ -117,16 +124,16 @@ export default function CreateToolsForm({  }) {
         try {
           setIsCheckingSlug(true);
           setSlugMessage("");
-          const response = await axios.get(
-            `/api/tools/check-slug?slug=${slugValue}`
-          );
-          console.log("Slug check response:", response);
-          setIsSlugUnique(response?.data?.isUnique);
-          setSlugMessage(response?.data?.message);
-          console.log("checking slug message", response?.data?.message);
-          
+          // const response = await axios.get(
+          //   `/api/tools/check-slug?slug=${slugValue}`
+          // );
 
-          if (response?.data?.isUnique === false) {
+          const slugUniqueResponse = await checkSlugServerAction(slugValue);
+
+          setIsSlugUnique(slugUniqueResponse?.isUnique);
+          setSlugMessage(slugUniqueResponse?.message);
+
+          if (slugUniqueResponse?.isUnique === false) {
             setIsSlugUnique(false);
 
             form.setError("slug", { message: "Slug must be unique" });
@@ -136,7 +143,7 @@ export default function CreateToolsForm({  }) {
         } catch (error) {
           console.error("Slug check error:", error);
           setIsCheckingSlug(false);
-          setSlugMessage(error?.response?.data?.message);
+          setSlugMessage(error?.message);
           setIsSlugUnique(false);
         }
       };
@@ -151,16 +158,24 @@ export default function CreateToolsForm({  }) {
     }
 
     try {
+      setToolCreating(true);
       console.log("Submitting data:", data);
 
-      const response = await axios.post("/api/admin/tools", data);
-
-      // Handle success
-      console.log("Submission successful:", response.data);
+      const response = await createToolServerAction(data);
+      console.log(response);
+      
+      if (response.status === "SUCCESS") {
+        // Redirect to the tool page
+        router.push(`/dashboard/tools/all-tools`);
+        toast.success(response?.message || "Tool created successfully");
+      }
+      setToolCreating(false);
     } catch (error) {
       console.error("Submission error:", error);
+      setToolCreating(false);
+      toast.error(error?.message || "Something went wrong");
     }
-    console.log(data);
+    
   };
 
   return (
@@ -193,8 +208,8 @@ export default function CreateToolsForm({  }) {
                 <FormLabel>
                   Slug
                   {isCheckingSlug && (
-                    <span className="text-sm text-seo-secondary">
-                      Checking...
+                    <span className="text-sm text-seo-secondary flex justify-center items-center">
+                      Checking... <Loader className="animate-spin w-4 h-4" />
                     </span>
                   )}
                 </FormLabel>
@@ -519,7 +534,7 @@ export default function CreateToolsForm({  }) {
         </div>
 
         <Button type="submit" className="w-full">
-          Create Tool
+          { toolCreating ? <Loader2 className="animate-spin w-4 h-4" /> : "Create Tool" }
         </Button>
       </form>
     </Form>

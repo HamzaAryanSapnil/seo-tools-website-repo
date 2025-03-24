@@ -8,6 +8,8 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/jpg",
   "image/png",
   "image/webp",
+  "image/svg+xml",
+  "image/gif",
 ];
 
 export const editToolFormSchema = z.object({

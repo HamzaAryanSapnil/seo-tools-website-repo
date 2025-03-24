@@ -1,6 +1,6 @@
 // models/Tool.js
 import mongoose from "mongoose";
-import { boolean } from "zod";
+import { boolean, optional } from "zod";
 
 const fieldSchema = new mongoose.Schema({
   name: {
@@ -60,6 +60,7 @@ const toolSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     auto: true,
     default: "",
+    
   },
   slug: {
     type: String,

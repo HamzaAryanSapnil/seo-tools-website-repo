@@ -50,7 +50,7 @@ export const TOOLS_CONFIG = [
     slug: "seo-checker",
     name: "SEO Checker",
     category: "seo-tools",
-    description: "Check the SEO of a website",
+    description: "Check the SEO results of a website",
     fields: [
       {
         name: "dailyUsage",
