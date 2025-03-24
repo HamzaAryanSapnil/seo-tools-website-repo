@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import MDEditor from "@uiw/react-md-editor";
-import { z } from "zod";
+
 import { toast } from "sonner";
 import {
   Select,
@@ -30,64 +30,134 @@ import {
   File,
   Bookmark,
   ImageIcon,
+  Trash,
+  Plus,
+  Hash,
+  CircleAlert,
+  Loader2,
+  Loader,
 } from "lucide-react";
+import axios from "axios";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { editToolFormSchema } from "@/schemas/edit-tool-form-schema";
+import { updateToolServerAction } from "@/lib/actions/updateTool";
+import {  useState } from "react";
 
-const editToolFormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  slug: z.string().min(1, "Slug is required"),
-  excerpt: z.string().min(1, "Excerpt is required"),
-  content: z.string().min(1, "Content is required"),
-  order: z.number().min(0, "Order must be positive"),
-  category: z.string().min(1, "Category is required"),
-  iconType: z.enum(["file", "class"]),
-  iconClass: z.string().optional(),
-  dailyUsage: z.object({
-    loggedIn: z.number().default(10),
-    guest: z.number().default(5),
-  }),
-  homepage: z.boolean().default(false),
-  metaTitle: z.string().optional(),
-  metaDescription: z.string().optional(),
-  ogTitle: z.string().optional(),
-  ogDescription: z.string().optional(),
-  image: z.instanceof(File).nullable().optional(),
-});
+const EditToolForm = ({ tool }) => {
+  const [image, setImage] = useState(null);
+  const [updateLoading, setUpdateLoading] = useState(false)
+  console.log(tool);
 
-const EditToolForm = () => {
   const form = useForm({
     resolver: zodResolver(editToolFormSchema),
     defaultValues: {
-      title: "",
-      slug: "",
-      excerpt: "",
-      content: "",
-      order: 0,
-      category: "",
-      iconType: "class",
-      iconClass: "",
-      dailyUsage: { loggedIn: 10, guest: 5 },
-      homepage: false,
-      metaTitle: "",
-      metaDescription: "",
-      ogTitle: "",
-      ogDescription: "",
+      name: tool?.name,
+      slug: tool?.slug,
+      excerpt: tool?.excerpt,
+      content: tool?.content ? tool?.content : "",
+      order: tool?.order ? tool?.order : 0,
+      category: tool?.category ? tool?.category : "conversion",
+      iconType: tool?.iconType ? tool?.iconType : "class",
+      iconClass: tool?.iconClass ? tool?.iconClass : "age-calculator",
+      fields: tool?.fields
+        ? tool?.fields
+        : [
+            {
+              name: "",
+              label: "",
+              type: "text", // Default type
+              description: "",
+              defaultValue: "",
+            },
+          ],
+
+      homepage: tool?.homepage ? tool?.homepage : false,
+      metaTitle: tool?.metaTitle ? tool?.metaTitle : "",
+      metaDescription: tool?.metaDescription ? tool?.metaDescription : "",
+      ogTitle: tool?.ogTitle ? tool?.ogTitle : "",
+      ogDescription: tool?.ogDescription ? tool?.ogDescription : "",
       image: null,
     },
   });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "fields",
+    rules: {
+      minLength: { value: 1, message: "At least one field is required" },
+    },
+  });
+  const getFieldType = (index) => {
+    return form.watch(`fields.${index}.type`) || "text";
+  };
+
+  const handleAddOption = (fieldIndex) => {
+    const currentFields = form.getValues("fields");
+    const currentOptions = currentFields[fieldIndex].options || [];
+    form.setValue(`fields.${fieldIndex}.options`, [
+      ...currentOptions,
+      { value: "", label: "" },
+    ]);
+  };
 
   const iconOptions = [
     { name: "age-calculator", component: <Calculator className="h-6 w-6" /> },
     { name: "area-converter", component: <Ruler className="h-6 w-6" /> },
     { name: "articles-rewriter", component: <Pencil className="h-6 w-6" /> },
     { name: "bookmark-manager", component: <Bookmark className="h-6 w-6" /> },
+    { name: "md5-generator", component: <Hash className="h-6 w-6" /> },
   ];
 
-  function onSubmit(values) {
+  const uploadImageToImgbb = async (file) => {
     try {
-      console.log(values);
-      toast.success("Tool updated successfully!");
+      const imgBBApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; // use NEXT_PUBLIC_ so it's exposed to client
+      const imgBBApiUrl = process.env.NEXT_PUBLIC_IMGBB_URL;
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await axios.post(imgBBApiUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        params: {
+          key: imgBBApiKey,
+        },
+      });
+
+      if (!response?.data?.data?.url) {
+        throw new Error("Image upload failed");
+      }
+
+      return response?.data?.data?.url || null;
     } catch (error) {
-      toast.error("Error updating tool");
+      toast.error(error?.message || "Image upload failed");
+    }
+  };
+
+  async function onSubmit(values) {
+    try {
+      setUpdateLoading(true)
+   
+
+      const formValue = { ...values, _id: tool?._id };
+
+      const imgUrl = await uploadImageToImgbb(formValue.image);
+      console.log(imgUrl);
+
+      formValue.image = imgUrl;
+      console.log(formValue);
+
+      const res = await updateToolServerAction(formValue);
+      if (res?.status === "SUCCESS") {
+        toast.success(res?.message || "Tool updated successfully");
+      }
+
+      setUpdateLoading(false)
+      
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong");
+      setUpdateLoading(false)
     }
   }
 
@@ -107,12 +177,12 @@ const EditToolForm = () => {
             <h3 className="text-xl font-semibold">Edit Tool</h3>
             <FormField
               control={form.control}
-              name="title"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Tool title" {...field} />
+                    <Input placeholder="Tool Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -204,9 +274,16 @@ const EditToolForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
+                        <SelectItem
+                          value={`${tool?.category ? tool.category : ""}`}
+                        >
+                          {" "}
+                          {`${tool?.category ? tool.category : ""}`}{" "}
+                        </SelectItem>
                         <SelectItem value="conversion">Conversion</SelectItem>
                         <SelectItem value="seo">SEO</SelectItem>
                         <SelectItem value="development">Development</SelectItem>
+                        <SelectItem value="Environment">Environment</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -279,52 +356,277 @@ const EditToolForm = () => {
           <div className="space-y-6 border-b pb-6">
             <h3 className="text-xl font-semibold">Properties</h3>
             <div className="space-y-4">
-              <div>
-                <FormLabel>Daily Usage</FormLabel>
-                <p className="text-sm text-muted-foreground">
-                  Daily usage restrictions refer to the limitations placed on
-                  the number of requests that a user can perform within a
-                  24-hour period.
-                </p>
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-medium">Configuration Fields</h3>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    append({
+                      name: "",
+                      label: "",
+                      type: "text",
+                      description: "",
+                      defaultValue: "",
+                    })
+                  }
+                >
+                  <Plus className="w-4 h-4 mr-2" /> Add Field
+                </Button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="dailyUsage.loggedIn"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>LoggedIn User</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
+
+              {fields.map((field, index) => {
+                if (!field) {
+                  return null;
+                }
+                return (
+                  <div
+                    key={field.id}
+                    className="border p-4 rounded-lg space-y-4"
+                  >
+                    <div className="flex justify-end">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => remove(index)}
+                      >
+                        <Trash className="w-4 h-4 text-destructive" />
+                      </Button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name={`fields.${index}.name`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Field Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="dailyUsage" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`fields.${index}.label`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Display Label</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Daily Usage" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`fields.${index}.type`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Field Type</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select field type" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {["text", "number", "boolean", "select"].map(
+                                  (type) => (
+                                    <SelectItem key={type} value={type}>
+                                      {type.charAt(0).toUpperCase() +
+                                        type.slice(1)}
+                                    </SelectItem>
+                                  )
+                                )}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`fields.${index}.description`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Field description"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {getFieldType(index) !== "select" && (
+                        <FormField
+                          control={form.control}
+                          name={`fields.${index}.defaultValue`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Default Value (Optional)</FormLabel>
+                              <FormControl>
+                                {getFieldType(index) === "boolean" ? (
+                                  <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                  />
+                                ) : getFieldType(index) === "number" ? (
+                                  <Input
+                                    type="number"
+                                    {...field}
+                                    onChange={(e) =>
+                                      field.onChange(Number(e.target.value))
+                                    }
+                                    value={field.value || ""}
+                                  />
+                                ) : (
+                                  <Input
+                                    {...field}
+                                    value={field.value || ""}
+                                    placeholder="Optional default value"
+                                  />
+                                )}
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="dailyUsage.guest"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Guest User</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) =>
-                            field.onChange(Number(e.target.value))
-                          }
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
+                      )}
+
+                      {form.watch(`fields.${index}.type`) === "select" && (
+                        <div className="space-y-4">
+                          <div className="flex justify-between items-center">
+                            <h4 className="text-sm font-medium">
+                              Select Options
+                            </h4>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleAddOption(index)}
+                            >
+                              <Plus className="w-4 h-4 mr-2" /> Add Option
+                            </Button>
+                          </div>
+
+                          {(form.watch(`fields.${index}.options`) || []).map(
+                            (option, optionIndex) => {
+                              const valueError =
+                                form.formState.errors.fields?.[index]
+                                  ?.options?.[optionIndex]?.value;
+                              const labelError =
+                                form.formState.errors.fields?.[index]
+                                  ?.options?.[optionIndex]?.label;
+                              const hasError = valueError || labelError;
+                              return (
+                                <div
+                                  key={optionIndex}
+                                  className={cn(
+                                    "flex gap-2 items-start p-2 rounded-lg",
+                                    hasError &&
+                                      "bg-red-50 border border-red-200"
+                                  )}
+                                >
+                                  <div className="flex-1 grid grid-cols-2 gap-2">
+                                    <div className="space-y-1">
+                                      <Input
+                                        placeholder="Option value"
+                                        value={option.value}
+                                        className={cn(
+                                          valueError &&
+                                            "border-red-500 focus-visible:ring-red-500"
+                                        )}
+                                        onChange={(e) => {
+                                          const newOptions = [
+                                            ...form.getValues(
+                                              `fields.${index}.options`
+                                            ),
+                                          ];
+                                          newOptions[optionIndex].value =
+                                            e.target.value;
+                                          form.setValue(
+                                            `fields.${index}.options`,
+                                            newOptions
+                                          );
+                                        }}
+                                      />
+                                      {valueError && (
+                                        <p className="text-xs text-red-500">
+                                          {valueError.message}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <div className="space-y-1">
+                                      <Input
+                                        placeholder="Option label"
+                                        value={option.label}
+                                        className={cn(
+                                          labelError &&
+                                            "border-red-500 focus-visible:ring-red-500"
+                                        )}
+                                        onChange={(e) => {
+                                          const newOptions = [
+                                            ...form.getValues(
+                                              `fields.${index}.options`
+                                            ),
+                                          ];
+                                          newOptions[optionIndex].label =
+                                            e.target.value;
+                                          form.setValue(
+                                            `fields.${index}.options`,
+                                            newOptions
+                                          );
+                                        }}
+                                      />
+                                      {labelError && (
+                                        <p className="text-xs text-red-500">
+                                          {labelError.message}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    className={"mt-1"}
+                                    onClick={() =>
+                                      handleRemoveOption(index, optionIndex)
+                                    }
+                                  >
+                                    <Trash className="w-4 h-4 text-destructive" />
+                                  </Button>
+                                </div>
+                              );
+                            }
+                          )}
+
+                          {form.formState.errors.fields?.[index]?.options && (
+                            <p className="text-sm font-medium text-destructive mt-2">
+                              {
+                                form.formState.errors.fields[index].options
+                                  .message
+                              }
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -413,6 +715,15 @@ const EditToolForm = () => {
           {/* Image Section */}
           <div className="space-y-6">
             <h3 className="text-xl font-semibold">Image</h3>
+            <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
+              <Image
+                src={tool?.image ? tool.image : image}
+                alt="Tool Image"
+                width={2048}
+                height={1080}
+                className="w-full h-full object-cover"
+              />
+            </div>
             <FormField
               control={form.control}
               name="image"
@@ -425,6 +736,7 @@ const EditToolForm = () => {
                       onChange={(e) => {
                         const file = e.target.files?.[0] || null;
                         field.onChange(file);
+                        setImage(URL.createObjectURL(file));
                       }}
                     />
                   </FormControl>
@@ -435,7 +747,7 @@ const EditToolForm = () => {
           </div>
 
           <Button type="submit" className="w-full">
-            Update Tool
+            {updateLoading ? <Loader className="animate-spin h-7 w-7" /> : "Update Tool"}
           </Button>
         </div>
       </form>

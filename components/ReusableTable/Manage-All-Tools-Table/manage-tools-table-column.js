@@ -30,7 +30,6 @@ import {
 } from "@/components/ui/tooltip";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./tableColumnHeader";
-import Link from "next/link";
 
 const dropdownItems = [
   {
@@ -78,15 +77,9 @@ export const columns = [
     ),
   },
   {
-    accessorKey: "icon",
+    accessorKey: "image",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Icon" />
-    ),
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Image" />
     ),
   },
   {
@@ -96,23 +89,29 @@ export const columns = [
     ),
   },
   {
-    accessorKey: "views",
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+  },
+  {
+    accessorKey: "amount",
     header: ({ column }) => (
       <DataTableColumnHeader
         className={"justify-end font-bold"}
         column={column}
-        title="Views"
+        title="Amount"
       />
     ),
-    // cell: ({ row }) => {
-    //   const amount = parseFloat(row.getValue("amount"));
-    //   const formattedAmount = new Intl.NumberFormat("en-US", {
-    //     style: "currency",
-    //     currency: "BDT",
-    //   }).format(amount);
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("amount"));
+      const formattedAmount = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "BDT",
+      }).format(amount);
 
-    //   return <div className="text-right font-medium"> {formattedAmount} </div>;
-    // },
+      return <div className="text-right font-medium"> {formattedAmount} </div>;
+    },
   },
   {
     accessorKey: "date",
@@ -124,7 +123,6 @@ export const columns = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
-      console.log(data);
 
       return (
         <DropdownMenu>
@@ -140,7 +138,7 @@ export const columns = [
           >
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(data._id)}
+              onClick={() => navigator.clipboard.writeText(data.id)}
             >
               Copy Pages ID
             </DropdownMenuItem>
@@ -150,13 +148,7 @@ export const columns = [
                 <DropdownMenuItem key={index}>
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger>
-                        {" "}
-                        <Link href={`http://localhost:3000/dashboard/tools/${data?.slug}`}>
-                          {" "}
-                          {item.icon}{" "}
-                        </Link>{" "}
-                      </TooltipTrigger>
+                      <TooltipTrigger>{item.icon}</TooltipTrigger>
                       <TooltipContent>
                         <p> {item.details} </p>
                       </TooltipContent>

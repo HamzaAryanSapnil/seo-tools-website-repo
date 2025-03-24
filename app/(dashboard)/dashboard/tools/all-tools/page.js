@@ -3,7 +3,16 @@ import { DataTable } from "@/components/ReusableTable/data-table";
 import { payments } from "@/data/payments";
 import React from "react";
 
-const AllToolsPage = () => {
+const AllToolsPage = async () => {
+
+  const response = await fetch("http://localhost:3000/api/admin/tools");
+  // const response = await fetch("/api/admin/tools");
+  // const tools = await allTools.json();
+  const tools = await response.json();
+ 
+  
+  
+
   return (
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between my-10">
@@ -11,7 +20,7 @@ const AllToolsPage = () => {
       </div>
       <DataTable
         columns={columns}
-        data={payments}
+        data={tools}
         filterInputPlaceholder={"Search Pages by Title"}
         filterInputColumn={"title"}
       />

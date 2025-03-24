@@ -1,5 +1,6 @@
 // models/Tool.js
 import mongoose from "mongoose";
+import { boolean } from "zod";
 
 const fieldSchema = new mongoose.Schema({
   name: {
@@ -55,6 +56,11 @@ const fieldSchema = new mongoose.Schema({
 });
 
 const toolSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true,
+    default: "",
+  },
   slug: {
     type: String,
     required: true,
@@ -72,10 +78,53 @@ const toolSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
-  description: {
+  excerpt: {
     type: String,
     required: true,
     minlength: 10,
+  },
+  content: {
+    type: String,
+    default: "",
+  },
+  iconType: {
+    type: String,
+    enum: ["file", "class"],
+    default: "class", // assuming "file" is a sensible default
+  },
+  order: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  iconClass: {
+    type: String,
+    default: "",
+  },
+  homepage: {
+    type: Boolean,
+    default: false,
+  },
+  metaTitle: {
+    type: String,
+    default: "",
+  },
+  metaDescription: {
+    type: String,
+    default: "",
+  },
+  ogTitle: {
+    type: String,
+    default: "",
+  },
+  ogDescription: {
+    type: String,
+    default: "",
+  },
+  // Depending on how you want to store the image, this could be a URL or a Buffer.
+  image: {
+    type: String,
+    default: "",
   },
   fields: {
     type: [fieldSchema],
@@ -88,7 +137,9 @@ const toolSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
+    message: "Created",
   },
+  
 });
 
 // Add index for slug uniqueness

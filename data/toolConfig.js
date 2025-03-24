@@ -1,5 +1,21 @@
 export const TOOLS_CONFIG = [
   {
+    slug: "test-tool",
+    name: "Test Tool",
+    category: "testing",
+    description: "This is a test tool",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+    createdAt: "2021-09-29T00:00:00.000Z",
+  },
+  {
     slug: "md5-generator",
     name: "MD5 Generator",
     category: "hashing",

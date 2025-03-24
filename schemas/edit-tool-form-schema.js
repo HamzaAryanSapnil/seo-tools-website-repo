@@ -1,15 +1,25 @@
 import { z } from "zod";
 
-export const toolFormSchema = z.object({
-  slug: z
-    .string()
-    .min(3)
-    .regex(/^[a-z0-9-]+$/),
-  name: z.string().min(3),
-  category: z.string().min(3),
-  excerpt: z.string().min(10),
-  
-  
+const isValidImageUrl = (val) =>
+  val.startsWith("http") && /\.(jpeg|jpg|png|gif|webp)$/.test(val);
+
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
+export const editToolFormSchema = z.object({
+  _id: z.string().optional(),
+  name: z.string().min(1, "Name is required"),
+  slug: z.string().min(1, "Slug is required"),
+  excerpt: z.string().min(1, "Excerpt is required"),
+  content: z.string().min(1, "Content is required"),
+  order: z.number().min(0, "Order must be positive"),
+  category: z.string().min(1, "Category is required"),
+  iconType: z.enum(["file", "class"]),
+  iconClass: z.string().optional(),
   fields: z.array(
     z.object({
       name: z.string().min(2),
@@ -49,4 +59,26 @@ export const toolFormSchema = z.object({
         }),
     })
   ),
+  homepage: z.boolean().default(false),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
+  ogTitle: z.string().optional(),
+  ogDescription: z.string().optional(),
+  image: z
+    .union([
+      z.instanceof(File).refine(
+        (file) => {
+          return ACCEPTED_IMAGE_TYPES.includes(file.type);
+        },
+        {
+          message:
+            "Invalid image type. Only .jpg, .jpeg, .png, .webp formats are supported",
+        }
+      ),
+      z.string().url().refine(isValidImageUrl, {
+        message: "Invalid image URL",
+      }),
+    ])
+    .nullable()
+    .optional(),
 });

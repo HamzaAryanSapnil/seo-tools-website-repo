@@ -35,18 +35,19 @@ const generateSlug = (str) => {
     .replace(/^-+|-+$/g, ""); // Trim hyphens from both ends
 };
 
-export default function CreateToolsForm({ initialData }) {
+export default function CreateToolsForm({  }) {
+  
   const [isCheckingSlug, setIsCheckingSlug] = useState(false);
   const [isSlugUnique, setIsSlugUnique] = useState(true);
   const [slugMessage, setSlugMessage] = useState("");
   const [isSlugManuallyModified, setIsSlugManuallyModified] = useState(false);
   const form = useForm({
     resolver: zodResolver(toolFormSchema),
-    defaultValues: initialData || {
+    defaultValues: {
       slug: "",
       name: "",
       category: "",
-      description: "",
+      excerpt: "",
       fields: [
         {
           name: "",
@@ -240,12 +241,12 @@ export default function CreateToolsForm({ initialData }) {
           />
           <FormField
             control={form.control}
-            name="description"
+            name="excerpt"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel>Excerpt</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Tool description" {...field} />
+                  <Textarea placeholder="Tool excerpt" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -518,7 +519,7 @@ export default function CreateToolsForm({ initialData }) {
         </div>
 
         <Button type="submit" className="w-full">
-          {initialData ? "Update Tool" : "Create Tool"}
+          Create Tool
         </Button>
       </form>
     </Form>
