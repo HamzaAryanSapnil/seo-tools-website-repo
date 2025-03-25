@@ -1,6 +1,6 @@
 // models/Tool.js
 import mongoose from "mongoose";
-import { boolean, optional } from "zod";
+import { boolean, optional, string } from "zod";
 
 const fieldSchema = new mongoose.Schema({
   name: {
@@ -57,9 +57,10 @@ const fieldSchema = new mongoose.Schema({
 
 const toolSchema = new mongoose.Schema({
   _id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     auto: true,
     default: "",
+    optional: true,
     
   },
   slug: {
@@ -139,6 +140,12 @@ const toolSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     message: "Created",
+  },
+  views: {
+    type: Number,
+    default: 0,
+    message: "Views",
+    optional: true,
   },
   
 });

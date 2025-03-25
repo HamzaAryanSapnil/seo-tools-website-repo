@@ -83,4 +83,5 @@ export const editToolFormSchema = z.object({
     ])
     .nullable()
     .optional(),
+    views: z.number().optional(),
 });

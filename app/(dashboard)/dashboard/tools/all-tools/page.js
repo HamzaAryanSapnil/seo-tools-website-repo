@@ -1,14 +1,20 @@
 import { columns } from "@/components/ReusableTable/column";
 import { DataTable } from "@/components/ReusableTable/data-table";
 import { payments } from "@/data/payments";
+import axios from "axios";
 import React from "react";
 
 const AllToolsPage = async () => {
+  const res = await axios("http://localhost:3000/api/admin/tools");
+  const tools = res?.data || [];
+    
 
-  const response = await fetch("http://localhost:3000/api/admin/tools");
+  
   // const response = await fetch("/api/admin/tools");
   // const tools = await allTools.json();
-  const tools = await response.json();
+ 
+
+  
  
   
   
@@ -21,8 +27,8 @@ const AllToolsPage = async () => {
       <DataTable
         columns={columns}
         data={tools}
-        filterInputPlaceholder={"Search Pages by Title"}
-        filterInputColumn={"title"}
+        filterInputPlaceholder={"Search Pages by name"}
+        filterInputColumn={"name"}
       />
     </div>
   );

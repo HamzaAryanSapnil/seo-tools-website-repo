@@ -7,8 +7,12 @@ import { AppSidebar } from "@/components/app-sidebar";
 
 import { Separator } from "@/components/ui/separator";
 import { DynamicBreadCrumb } from "@/components/dynamicBreadcrumb";
+import axios from "axios";
+import React, { Children, cloneElement } from "react";
 
-const layout = ({ children }) => {
+const layout = async ({ children }) => {
+
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -21,7 +25,9 @@ const layout = ({ children }) => {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <main>{children}</main>
+          <main>
+            {children}
+          </main>
         </div>
       </SidebarInset>
     </SidebarProvider>

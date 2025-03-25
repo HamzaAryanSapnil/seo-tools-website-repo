@@ -29,7 +29,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "./tableColumnHeader";
+import { DataTableColumnHeader } from "../tableColumnHeader"; 
 import Link from "next/link";
 import { iconMapping } from "@/lib/iconMapping";
 
@@ -57,7 +57,7 @@ const dropdownItems = [
 
 const managePagesDropdownItems = dropdownItems[0].managePagesDropdownItems;
 
-export const columns = [
+export const homepageToolsColumn = [
   {
     id: "select",
     header: ({ table }) => (

@@ -43,10 +43,12 @@ import Image from "next/image";
 import { editToolFormSchema } from "@/schemas/edit-tool-form-schema";
 import { updateToolServerAction } from "@/lib/actions/updateTool";
 import { useState } from "react";
+import { IconRenderer } from "./IconRenderer";
 
 const EditToolForm = ({ tool }) => {
-  const [image, setImage] = useState(null);
+  const [fileImage, setFileImage] = useState(null);
   const [updateLoading, setUpdateLoading] = useState(false);
+  console.log(tool);
 
   const form = useForm({
     resolver: zodResolver(editToolFormSchema),
@@ -76,6 +78,7 @@ const EditToolForm = ({ tool }) => {
       metaDescription: tool?.metaDescription ? tool?.metaDescription : "",
       ogTitle: tool?.ogTitle ? tool?.ogTitle : "",
       ogDescription: tool?.ogDescription ? tool?.ogDescription : "",
+      views: tool?.views ? tool?.views : 0,
       image: null,
     },
   });
@@ -333,13 +336,15 @@ const EditToolForm = ({ tool }) => {
                 <div
                   key={icon.name}
                   onClick={() => form.setValue("iconClass", icon.name)}
-                  className={`p-4 border rounded-lg cursor-pointer ${
+                  className={`p-4 border rounded-lg cursor-pointer  ${
                     form.watch("iconClass") === icon.name
                       ? "bg-blue-50 border-blue-500"
                       : "hover:bg-gray-50"
                   }`}
                 >
-                  {icon.component}
+                
+                    <IconRenderer iconClass={icon?.name} />
+                
                   <p className="mt-2 text-sm text-center capitalize">
                     {icon.name.replace("-", " ")}
                   </p>
@@ -708,12 +713,33 @@ const EditToolForm = ({ tool }) => {
             />
           </div>
 
+          {/* views field */}
+          <FormField
+            control={form.control}
+            name="views"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Views</FormLabel>
+                <FormControl>
+                  <Input type="number" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Image Section */}
           <div className="space-y-6">
             <h3 className="text-xl font-semibold">Image</h3>
             <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
               <Image
-                src={tool?.image ? tool.image : image || ""}
+                src={
+                  fileImage
+                    ? fileImage
+                    : tool?.image
+                    ? tool.image
+                    : "https://i.ibb.co/JFQ02mkQ/futuristic-half-robot-tiger.jpg"
+                }
                 alt="Tool Image"
                 width={2048}
                 height={1080}
@@ -732,7 +758,7 @@ const EditToolForm = ({ tool }) => {
                       onChange={(e) => {
                         const file = e.target.files?.[0] || null;
                         field.onChange(file);
-                        setImage(URL.createObjectURL(file));
+                        setFileImage(URL.createObjectURL(file));
                       }}
                     />
                   </FormControl>
