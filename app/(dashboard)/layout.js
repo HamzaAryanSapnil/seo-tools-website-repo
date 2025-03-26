@@ -7,8 +7,6 @@ import { AppSidebar } from "@/components/app-sidebar";
 
 import { Separator } from "@/components/ui/separator";
 import { DynamicBreadCrumb } from "@/components/dynamicBreadcrumb";
-import axios from "axios";
-import React, { Children, cloneElement } from "react";
 
 const layout = async ({ children }) => {
 

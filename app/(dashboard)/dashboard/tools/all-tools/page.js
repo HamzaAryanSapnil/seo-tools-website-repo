@@ -7,11 +7,11 @@ import React from "react";
 const AllToolsPage = async () => {
   const res = await axios("http://localhost:3000/api/admin/tools");
   const tools = res?.data || [];
-    
+
+
 
   
-  // const response = await fetch("/api/admin/tools");
-  // const tools = await allTools.json();
+
  
 
   
@@ -26,9 +26,10 @@ const AllToolsPage = async () => {
       </div>
       <DataTable
         columns={columns}
-        data={tools}
+        initialData={tools}
         filterInputPlaceholder={"Search Pages by name"}
         filterInputColumn={"name"}
+        fetchUrl={"http://localhost:3000/api/admin/tools"}
       />
     </div>
   );

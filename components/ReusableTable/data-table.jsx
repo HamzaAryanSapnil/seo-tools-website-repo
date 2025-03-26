@@ -26,23 +26,88 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DataTablePagination } from "./tablePagination";
 import { DataTableViewOptions } from "./toggleColumnVisibility";
+import axios from "axios";
+import {
+  deleteMultipleToolsServerAction,
+  deleteToolServerAction,
+} from "@/lib/actions/updateTool";
+import { toast } from "sonner";
 
 export function DataTable({
   columns,
-  data,
+  initialData,
   filterInputPlaceholder,
   filterInputColumn,
+  fetchUrl,
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const [data, setData] = useState(initialData);
+  const [loading, setLoading] = useState(false);
+
+  const refreshData = async () => {
+    try {
+      setLoading(true);
+      const res = await axios(fetchUrl);
+      setData(res?.data || []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Error fetching data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //  const handleSingleDelete = async (id) => {
+  //    try {
+  //      const result = await deleteToolServerAction(id);
+  //      if (result.status === "SUCCESS") {
+  //        // Optimistic update
+  //        setData((prev) => prev.filter((item) => item._id !== id));
+  //        toast.success(result.message);
+  //      } else {
+  //        toast.error(result.error);
+  //      }
+  //      refreshData();
+  //    } catch (error) {
+  //      toast.error("Failed to delete tool");
+  //      console.error("Delete error:", error);
+  //    }
+  //  };
+
+  const enhancedColumns = useMemo(
+    () =>
+      columns.map((col) => ({
+        ...col,
+        meta: {
+          ...col.meta,
+          handleSingleDelete: async (id) => {
+            const prevData = [...data];
+            try {
+              // Optimistic update
+              setData((prev) => prev.filter((item) => item._id !== id));
+              const result = await deleteToolServerAction(id);
+              if (result.status !== "SUCCESS") throw new Error(result.error);
+              toast.success(result.message);
+            } catch (error) {
+              setData(prevData);
+              toast.error(error.message);
+            }
+          },
+          refreshData,
+        },
+      })),
+    [columns, data, refreshData]
+  );
+
   const table = useReactTable({
     data,
-    columns,
+    columns: enhancedColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -60,29 +125,33 @@ export function DataTable({
     },
   });
 
-  const seletedRows = table.getSelectedRowModel().rows.map((row) => {
+  const selectedRows = table.getSelectedRowModel().rows.map((row) => {
     console.log(row);
     return row.original;
   });
 
-  const handleDeleteRows = () => {
-    const selectedData = table.getSelectedRowModel().rows.map((row) => {
-      console.log(row); // Check the full row structure
-      return row.id; // Extract the original data
-    });
+const handleDeleteRows = async () => {
+  try {
+    const selectedIds = table
+      .getSelectedRowModel()
+      .rows.map((row) => row.original._id);
 
-    if (selectedData.length === 0) {
-      alert("No rows selected");
+    if (!selectedIds.length) {
+      toast.error("No tools selected");
       return;
     }
 
-    console.log("Deleting rows:", selectedData);
+    const result = await deleteMultipleToolsServerAction(selectedIds);
 
-    // Example: Call API or update state
-    // deleteRows(selectedRows);
-
-    table.resetRowSelection(); // Reset selection after action
-  };
+    if (result.status === "SUCCESS") {
+      toast.success(result.message);
+      await refreshData();
+      table.resetRowSelection();
+    }
+  } catch (error) {
+    toast.error("Failed to delete tools");
+  }
+};
 
   return (
     <div>
@@ -127,7 +196,7 @@ export function DataTable({
           </DropdownMenuContent>
         </DropdownMenu> */}
         <DataTableViewOptions table={table} />
-        {seletedRows.length > 0 && (
+        {selectedRows.length > 0 && (
           <Button
             variant={"destructive"}
             className={"ml-2"}
@@ -177,7 +246,7 @@ export function DataTable({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={enhancedColumns.length} // Use enhancedColumns instead of columns
                   className="h-24 text-center"
                 >
                   No results.
@@ -212,7 +281,7 @@ export function DataTable({
       </div> */}
       {/* <DataTablePagination/> */}
 
-      <DataTablePagination  table={table} />
+      <DataTablePagination table={table} />
     </div>
   );
 }

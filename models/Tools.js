@@ -39,7 +39,6 @@ const fieldSchema = new mongoose.Schema({
           required: true,
           minlength: 1,
         },
-        
       },
     ],
     validate: {
@@ -56,13 +55,6 @@ const fieldSchema = new mongoose.Schema({
 });
 
 const toolSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-    auto: true,
-    default: "",
-    optional: true,
-    
-  },
   slug: {
     type: String,
     required: true,
@@ -147,7 +139,6 @@ const toolSchema = new mongoose.Schema({
     message: "Views",
     optional: true,
   },
-  
 });
 
 // Add index for slug uniqueness

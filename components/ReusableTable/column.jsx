@@ -32,30 +32,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./tableColumnHeader";
 import Link from "next/link";
 import { iconMapping } from "@/lib/iconMapping";
+import { deleteToolServerAction } from "@/lib/actions/updateTool";
+import { toast } from "sonner";
 
-const dropdownItems = [
-  {
-    managePagesDropdownItems: [
-      {
-        icon: <Edit className="h-5 w-5" />,
-        label: "Edit",
-        details: "Edit this item",
-      },
-      {
-        icon: <ViewIcon className="h-5 w-5" />,
-        label: "View",
-        details: "View this item",
-      },
-      {
-        icon: <DeleteIcon className="text-red-900" />,
-        label: "Delete",
-        details: "Delete this item",
-      },
-    ],
-  },
-];
 
-const managePagesDropdownItems = dropdownItems[0].managePagesDropdownItems;
+
+
+
+
 
 export const columns = [
   {
@@ -142,8 +126,22 @@ export const columns = [
     accessorKey: "action",
     header: "Action",
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({ row, column }) => {
       const data = row.original;
+      const handleDelete = async (id, column) => {
+  try {
+    console.log("Delete ID:", id);
+      const { handleSingleDelete, refreshData } = column.columnDef.meta || {};
+     if (handleSingleDelete) {
+       await handleSingleDelete(id);
+       if (refreshData) refreshData();
+     } else {
+       console.error("Delete handler not found");
+     }
+  } catch (error) {
+    console.error("Delete Error:", error);
+  }
+};
 
       return (
         <DropdownMenu>
@@ -165,26 +163,55 @@ export const columns = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <div className="flex gap-2 justify-center items-center">
-              {managePagesDropdownItems.map((item, index) => (
-                <DropdownMenuItem key={index}>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
+              <DropdownMenuItem>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      {" "}
+                      <Link
+                        href={`http://localhost:3000/dashboard/tools/${data?.slug}`}
+                      >
                         {" "}
-                        <Link
-                          href={`http://localhost:3000/dashboard/tools/${data?.slug}`}
-                        >
-                          {" "}
-                          {item.icon}{" "}
-                        </Link>{" "}
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p> {item.details} </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </DropdownMenuItem>
-              ))}
+                        <Edit className="h-5 w-5" />
+                      </Link>{" "}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p> Edit this item </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      {" "}
+                      <Link href={`http://localhost:3000`}>
+                        {" "}
+                        <ViewIcon className="h-5 w-5" />
+                      </Link>{" "}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p> View this item </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <p onClick={()=> handleDelete(data._id, column)} >
+                        {" "}
+                        <DeleteIcon className="text-red-900" />{" "}
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p> Delete this item </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </DropdownMenuItem>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>

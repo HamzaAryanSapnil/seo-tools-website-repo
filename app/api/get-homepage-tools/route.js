@@ -7,7 +7,6 @@ export async function GET() {
   try {
     const query = { homepage: true };
     const tool = await ToolModel.findOne(query).lean().exec();
-    console.log("Homepage tools from server: ", tool);
     
     return Response.json({
         success: true,
