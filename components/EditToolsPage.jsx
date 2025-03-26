@@ -102,6 +102,12 @@ const EditToolForm = ({ tool }) => {
       { value: "", label: "" },
     ]);
   };
+   const handleRemoveOption = (fieldIndex, optionIndex) => {
+     const currentFields = form.getValues("fields");
+     const currentOptions = currentFields[fieldIndex].options || [];
+     currentOptions.splice(optionIndex, 1);
+     form.setValue(`fields.${fieldIndex}.options`, currentOptions);
+   };
 
   const iconOptions = [
     { name: "age-calculator", component: <Calculator className="h-6 w-6" /> },
@@ -155,6 +161,8 @@ const EditToolForm = ({ tool }) => {
 
       setUpdateLoading(false);
     } catch (error) {
+      console.log("Update error: ",error);
+      
       toast.error(error?.message || "Something went wrong");
       setUpdateLoading(false);
     }
