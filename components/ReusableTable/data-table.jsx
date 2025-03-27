@@ -25,7 +25,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useMemo, useState } from "react";
 import { DataTablePagination } from "./tablePagination";
 import { DataTableViewOptions } from "./toggleColumnVisibility";
@@ -35,13 +41,25 @@ import {
   deleteToolServerAction,
 } from "@/lib/actions/updateTool";
 import { toast } from "sonner";
+import { deleteMultipleCategories } from "@/lib/actions/categoryAction";
+import { RefreshCcwDot } from "lucide-react";
 
 export function DataTable({
   columns,
   initialData,
   filterInputPlaceholder,
   filterInputColumn,
+  firstSearchInputPlaceholder,
+  secondSearchInputPlaceholder,
+  thirdSearchInputPlaceholder,
+  fourthSearchInputPlaceholder,
   fetchUrl,
+
+  // New props for dynamic filtering
+  filterSelectColumn, // Column ID to filter
+  filterSelectLabel = "Filter by", // Label for select
+  filterSelectPlaceholder = "All items", // Default placeholder
+  refreshDataInComponent,
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -53,8 +71,8 @@ export function DataTable({
   const refreshData = async () => {
     try {
       setLoading(true);
-      const res = await axios(fetchUrl);
-      setData(res?.data || []);
+      const refData = await refreshDataInComponent();
+      setData(refData || []);
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error("Error fetching data");
@@ -105,6 +123,25 @@ export function DataTable({
     [columns, data, refreshData]
   );
 
+  const filterFns = {
+    dateBetween: (row, columnId, value) => {
+      const date = new Date(row.getValue(columnId));
+      const [start, end] = value.split(",");
+      const startDate = start ? new Date(start) : null;
+      const endDate = end ? new Date(end) : null;
+
+      if (startDate && endDate) return date >= startDate && date <= endDate;
+      if (startDate) return date >= startDate;
+      if (endDate) return date <= endDate;
+      return true;
+    },
+    inNumberRange: (row, columnId, value) => {
+      const number = row.getValue(columnId);
+      const [min, max] = value.split("-");
+      return (!min || number >= +min) && (!max || number <= +max);
+    },
+  };
+
   const table = useReactTable({
     data,
     columns: enhancedColumns,
@@ -117,6 +154,7 @@ export function DataTable({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    filterFns,
     state: {
       sorting,
       columnFilters,
@@ -125,76 +163,172 @@ export function DataTable({
     },
   });
 
-  const selectedRows = table.getSelectedRowModel().rows.map((row) => {
+  const selectedRows = table?.getSelectedRowModel().rows.map((row) => {
     console.log(row);
     return row.original;
   });
 
-const handleDeleteRows = async () => {
-  try {
-    const selectedIds = table
-      .getSelectedRowModel()
-      .rows.map((row) => row.original._id);
+  // Dynamic select filter component
+  const SelectFilter = () => {
+    if (!filterSelectColumn) return null;
+    const column = table.getColumn(filterSelectColumn);
+    if (!column) return null;
 
-    if (!selectedIds.length) {
-      toast.error("No tools selected");
-      return;
+    return (
+      <Select
+        value={column.getFilterValue() || "all"}
+        onValueChange={(value) => {
+          column?.setFilterValue(value === "all" ? undefined : value);
+        }}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder={filterSelectPlaceholder} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">{filterSelectPlaceholder}</SelectItem>
+          {Array.from(
+            new Set(initialData.map((item) => item[filterSelectColumn]))
+          )
+            .filter((value) => value?.trim())
+            .map((value) => (
+              <SelectItem key={value} value={value}>
+                {value}
+              </SelectItem>
+            ))}
+        </SelectContent>
+      </Select>
+    );
+  };
+
+  // const handleDeleteRows = async () => {
+  //   try {
+  //     const selectedIds = table
+  //       .getSelectedRowModel()
+  //       .rows.map((row) => row.original._id);
+
+  //     if (!selectedIds.length) {
+  //       toast.error("No tools selected");
+  //       return;
+  //     }
+
+  //     const result = await deleteMultipleToolsServerAction(selectedIds);
+
+  //     if (result.status === "SUCCESS") {
+  //       toast.success(result.message);
+  //       await refreshData();
+  //       table.resetRowSelection();
+  //     }
+  //   } catch (error) {
+  //     toast.error("Failed to delete tools");
+  //   }
+  // };
+
+  // Modify handleDeleteRows function
+  const handleDeleteRows = async () => {
+    try {
+      const selectedIds = table
+        .getSelectedRowModel()
+        .rows.map((row) => row.original._id);
+
+      if (!selectedIds.length) {
+        toast.error("No items selected");
+        return;
+      }
+
+      // Check if we're handling categories
+      if (table.options.meta?.entityType === "category") {
+        const result = await deleteMultipleCategories(selectedIds);
+        if (result.status === "SUCCESS") {
+          toast.success(result.message);
+          await refreshData();
+          table.resetRowSelection();
+        }
+      } else {
+        // Default to tools deletion
+        const result = await deleteMultipleToolsServerAction(selectedIds);
+        if (result.status === "SUCCESS") {
+          toast.success(result.message);
+          await refreshData();
+          table.resetRowSelection();
+        }
+      }
+    } catch (error) {
+      toast.error(error.message || "Deletion failed");
     }
-
-    const result = await deleteMultipleToolsServerAction(selectedIds);
-
-    if (result.status === "SUCCESS") {
-      toast.success(result.message);
-      await refreshData();
-      table.resetRowSelection();
-    }
-  } catch (error) {
-    toast.error("Failed to delete tools");
-  }
-};
+  };
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      {/* <div className="flex items-center py-4">
         <Input
-          placeholder={filterInputPlaceholder}
-          value={
-            table.getColumn(filterInputColumn)?.getFilterValue()
-              ? table.getColumn(filterInputColumn)?.getFilterValue()
-              : ""
-          }
-          onChange={(e) => {
-            table.getColumn(filterInputColumn)?.setFilterValue(e.target.value);
-          }}
+          placeholder={`filter by ${
+            firstSearchInputPlaceholder ? firstSearchInputPlaceholder : ""
+          } ${
+            secondSearchInputPlaceholder ? secondSearchInputPlaceholder : ""
+          } ${thirdSearchInputPlaceholder ? thirdSearchInputPlaceholder : ""} ${
+            fourthSearchInputPlaceholder ? fourthSearchInputPlaceholder : ""
+          } `}
+          value={table.getState().globalFilter || ""}
+          onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
 
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"outline"} className={"ml-auto"}>
-              Columns
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align={"end"}>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className={"capitalize"}
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu> */}
+       
+        <DataTableViewOptions table={table} />
+        {selectedRows.length > 0 && (
+          <Button
+            variant={"destructive"}
+            className={"ml-2"}
+            onClick={handleDeleteRows}
+          >
+            Delete
+          </Button>
+        )}
+      </div> */}
+      <div className="flex items-center py-4 gap-2 flex-wrap">
+        {/* Existing name filter */}
+        <Input
+          placeholder={`filter by ${
+            firstSearchInputPlaceholder ? firstSearchInputPlaceholder : ""
+          } ${
+            secondSearchInputPlaceholder ? secondSearchInputPlaceholder : ""
+          } ${thirdSearchInputPlaceholder ? thirdSearchInputPlaceholder : ""} ${
+            fourthSearchInputPlaceholder ? fourthSearchInputPlaceholder : ""
+          } `}
+          value={table.getState().globalFilter || ""}
+          onChange={(event) => table.setGlobalFilter(event.target.value)}
+          className="max-w-sm"
+        />
+
+        {/* refresh */}
+        <Button
+          variant="outline"
+          onClick={refreshData}
+          disabled={loading}
+          className="ml-2"
+        >
+          Refresh <RefreshCcwDot className="w-4 h-4" />
+        </Button>
+
+        {/* Category filter */}
+
+        <div className="flex items-center py-4 gap-2 flex-wrap">
+          {/* Existing search input */}
+          {filterInputColumn && (
+            <Input
+              placeholder={filterInputPlaceholder}
+              value={table.getState().globalFilter || ""}
+              onChange={(e) => table.setGlobalFilter(e.target.value)}
+              className="max-w-sm"
+            />
+          )}
+
+          {/* Dynamic select filter */}
+          {filterSelectColumn && <SelectFilter />}
+
+          {/* Rest of your existing code (view options, delete button) */}
+        </div>
+
         <DataTableViewOptions table={table} />
         {selectedRows.length > 0 && (
           <Button

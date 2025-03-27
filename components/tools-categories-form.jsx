@@ -21,29 +21,104 @@ import {
 } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import MDEditor from "@uiw/react-md-editor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Separator } from "./ui/separator";
 import { categoryFormSchema } from "@/schemas/category-form-schema";
 import { toolsCategoryFormSchema } from "@/schemas/tools-category-form-schema";
+import { Loader2 } from "lucide-react";
+import { checkCategorySlug, createCategory } from "@/lib/actions/categoryAction";
+import { toast } from "sonner";
 
+const generateSlug = (str) => {
+  return str
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "") // Remove special characters
+    .replace(/[\s_-]+/g, "-") // Replace spaces and underscores with hyphens
+    .replace(/^-+|-+$/g, ""); // Trim hyphens from both ends
+};
 
 const ToolsCategoryForm = () => {
-    const form = useForm({
-      resolver: zodResolver(toolsCategoryFormSchema),
-      defaultValues: {
-        name: "",
-        slug: "",
-        title: "",
-        description: "",
-        metaTitle: "",
-        metaDescription: "",
-        parentCategory: "",
-      },
-    });
+  const [slugMessage, setSlugMessage] = useState("");
+  const [isSlugUnique, setIsSlugUnique] = useState(true);
+  const [isCheckingSlug, setIsCheckingSlug] = useState(false);
+  const [isSlugManuallyModified, setIsSlugManuallyModified] = useState(false);
+  const form = useForm({
+    resolver: zodResolver(toolsCategoryFormSchema),
+    defaultValues: {
+      name: "",
+      slug: "",
+      title: "",
+      description: "",
+      metaTitle: "",
+      metaDescription: "",
+      parentCategory: "",
+    },
+  });
 
-      function onSubmit(values) {
-        console.log(values);
+  // Watch name and slug fields
+  const nameValue = form.watch("name");
+  const slugValue = form.watch("slug");
+
+  useEffect(() => {
+    if (!isSlugManuallyModified && nameValue) {
+      const generatedSlug = generateSlug(nameValue);
+      form.setValue("slug", generatedSlug, { shouldValidate: true });
+    }
+  }, [nameValue, form, isSlugManuallyModified]);
+
+  useEffect(() => {
+    if (slugValue) {
+      setIsCheckingSlug(true);
+
+      const checkSlugUniqueness = async () => {
+        if (!slugValue) {
+          setIsSlugUnique(true);
+          setIsCheckingSlug(false);
+          setSlugMessage("");
+          return;
+        }
+        try {
+          setIsCheckingSlug(true);
+          setSlugMessage("");
+          // const response = await axios.get(
+          //   `/api/tools/check-slug?slug=${slugValue}`
+          // );
+
+          const slugUniqueResponse = await checkCategorySlug(slugValue);
+
+          setIsSlugUnique(slugUniqueResponse?.isUnique);
+          setSlugMessage(slugUniqueResponse?.message);
+
+          if (slugUniqueResponse?.isUnique === false) {
+            setIsSlugUnique(false);
+
+            form.setError("slug", { message: "Slug must be unique" });
+          }
+
+          setIsCheckingSlug(false);
+        } catch (error) {
+          console.error("Slug check error:", error);
+          setIsCheckingSlug(false);
+          setSlugMessage(error?.message);
+          setIsSlugUnique(false);
+        }
+      };
+      checkSlugUniqueness();
+    }
+  }, [slugValue]);
+
+  async function onSubmit(values) {
+    try {
+      const res = await createCategory(values);
+      if (res?.status === "SUCCESS") {
+        toast.success(res?.message);
+        console.log("Category created successfully:", res?.data);  
       }
+    } catch (error) {
+      console.error("Category form submission error:", error);
+      toast.error(error?.message || "Failed to create category");
+    }
+  }
 
   return (
     <Form {...form}>
@@ -68,14 +143,40 @@ const ToolsCategoryForm = () => {
           name="slug"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Slug</FormLabel>
+              <FormLabel>
+                Slug
+                {isCheckingSlug && (
+                  <span className="text-sm text-seo-secondary flex justify-center items-center">
+                    Checking... <Loader2 className="animate-spin w-4 h-4" />
+                  </span>
+                )}
+              </FormLabel>
               <FormControl>
-                <Input placeholder="page-slug" {...field} />
+                <Input
+                  placeholder="category-slug"
+                  onChange={(e) => {
+                    field.onChange(e);
+                    setIsSlugManuallyModified(true);
+                  }}
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 The "slug" is the URL-friendly version of the name. It is
                 usually all lowercase and contains only letters, numbers, and
                 hyphens.
+                {isCheckingSlug && <Loader2 className="animate-spin" />}
+                {!isCheckingSlug && slugMessage && (
+                  <span
+                    className={`text-sm ${
+                      slugMessage === "Slug is available"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {slugMessage}
+                  </span>
+                )}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -154,11 +255,11 @@ const ToolsCategoryForm = () => {
             </FormItem>
           )}
         />
-        
+
         <Button type="submit">Save</Button>
       </form>
     </Form>
   );
-}
+};
 
-export default ToolsCategoryForm
+export default ToolsCategoryForm;

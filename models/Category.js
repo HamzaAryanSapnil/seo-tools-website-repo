@@ -1,0 +1,58 @@
+// models/Category.js
+import mongoose from "mongoose";
+
+const categorySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      minlength: [3, "Name must be at least 3 characters"],
+      unique: true,
+    },
+    slug: {
+      type: String,
+      required: [true, "Slug is required"],
+      unique: true,
+      match: [
+        /^[a-z0-9-]+$/,
+        "Slug must be lowercase letters, numbers and hyphens",
+      ],
+    },
+    title: {
+      type: String,
+      required: [true, "Title is required"],
+    },
+    description: {
+      type: String,
+      required: [true, "Description is required"],
+    },
+    icon: {
+      type: String,
+      default: "",
+    },
+    toolsCount: {
+      type: Number,
+      default: 0,
+    },
+    metaTitle: {
+      type: String,
+      required: [true, "Meta title is required"],
+    },
+    metaDescription: {
+      type: String,
+      required: [true, "Meta description is required"],
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// Indexes for common queries
+categorySchema.index({ slug: 1 });
+categorySchema.index({ name: 1 });
+
+const Category =
+  mongoose.models.Category ?? mongoose.model("Category", categorySchema);
+
+export default Category;

@@ -82,6 +82,12 @@ export const columns = [
       <DataTableColumnHeader column={column} title="Name" />
     ),
   },
+  {
+    accessorKey: "category",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Category" />
+    ),
+  },
 
   {
     accessorKey: "views",

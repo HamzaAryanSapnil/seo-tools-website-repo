@@ -1,8 +1,6 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
 import EditToolForm from "@/components/EditToolsPage";
-import CreateToolsForm from "@/components/CreateToolPage";
 
 export async function generateStaticParams() {
   return TOOLS_CONFIG.map((tool) => ({
