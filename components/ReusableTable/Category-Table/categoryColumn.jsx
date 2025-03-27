@@ -69,7 +69,7 @@ export const categoryColumns = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href={`/dashboard/categories/edit/${category.slug}`}>
+              <Link href={`/dashboard/tools/tools-categories/${category.slug}`}>
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
               </Link>

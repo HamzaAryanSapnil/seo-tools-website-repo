@@ -6,8 +6,11 @@ import { notFound } from "next/navigation";
 
 
 const EditCategoryPage = async ({ params }) => {
+  const slug = await params?.slug;
   await dbConnect();
-  const category = await Category.findOne({ slug: params.slug }).sort({ createdAt: -1 }).lean();
+  const category = await Category.findOne({ slug }).lean();
+  console.log("Category found", category);
+  
 
   if (!category) return notFound();
 

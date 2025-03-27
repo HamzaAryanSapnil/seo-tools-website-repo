@@ -17,8 +17,8 @@ import { toolsCategoryFormSchema } from "@/schemas/tools-category-form-schema";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { updateCategory } from "@/lib/actions/categoryActions";
 import { useRouter } from "next/navigation";
+import { updateCategory } from "@/lib/actions/categoryAction";
 
 const generateSlug = (str) => {
   return str
@@ -30,7 +30,6 @@ const generateSlug = (str) => {
 
 const EditCategoryForm = ({ initialData }) => {
   const router = useRouter();
-  const [isSlugManuallyModified, setIsSlugManuallyModified] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm({
@@ -45,17 +44,6 @@ const EditCategoryForm = ({ initialData }) => {
     },
   });
 
-  const nameValue = form.watch("name");
-  const slugValue = form.watch("slug");
-
-  // Auto-generate slug when name changes
-  useEffect(() => {
-    if (!isSlugManuallyModified && nameValue) {
-      const generatedSlug = generateSlug(nameValue);
-      form.setValue("slug", generatedSlug, { shouldValidate: true });
-    }
-  }, [nameValue, form, isSlugManuallyModified]);
-
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
     try {
@@ -63,7 +51,7 @@ const EditCategoryForm = ({ initialData }) => {
 
       if (result.status === "SUCCESS") {
         toast.success("Category updated successfully");
-        router.push("/dashboard/categories");
+        router.push("/dashboard/tools/tools-categories");
       } else {
         toast.error(result.error);
       }
@@ -107,21 +95,9 @@ const EditCategoryForm = ({ initialData }) => {
                     {...field}
                     onChange={(e) => {
                       field.onChange(e);
-                      setIsSlugManuallyModified(true);
                     }}
                   />
                 </FormControl>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    const generatedSlug = generateSlug(form.getValues("name"));
-                    form.setValue("slug", generatedSlug);
-                    setIsSlugManuallyModified(false);
-                  }}
-                >
-                  Generate Slug
-                </Button>
               </div>
               <FormMessage />
             </FormItem>
