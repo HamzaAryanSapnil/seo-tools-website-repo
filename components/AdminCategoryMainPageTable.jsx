@@ -5,6 +5,8 @@ import { categoryColumns } from "./ReusableTable/Category-Table/categoryColumn";
 import { DataTable } from "./ReusableTable/data-table";
 
 import React, { useState } from "react";
+import { deleteCategory } from "@/lib/actions/categoryAction";
+import { toast } from "sonner";
 
 const AdminCategoryMainPageTable = ({ categories }) => {
   const [categoriesData, setCategoriesData] = useState(categories || []);
@@ -34,6 +36,8 @@ const AdminCategoryMainPageTable = ({ categories }) => {
             const result = await deleteCategory(id);
             if (result.status === "SUCCESS") {
               setCategoriesData((prev) => prev.filter((cat) => cat._id !== id));
+              refreshData();
+              toast.success(result.message);
             }
           },
         }}

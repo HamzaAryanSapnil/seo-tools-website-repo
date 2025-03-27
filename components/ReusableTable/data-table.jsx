@@ -60,6 +60,7 @@ export function DataTable({
   filterSelectLabel = "Filter by", // Label for select
   filterSelectPlaceholder = "All items", // Default placeholder
   refreshDataInComponent,
+  meta,
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -161,6 +162,8 @@ export function DataTable({
       columnVisibility,
       rowSelection,
     },
+    meta,
+
   });
 
   const selectedRows = table?.getSelectedRowModel().rows.map((row) => {
@@ -229,6 +232,12 @@ export function DataTable({
       const selectedIds = table
         .getSelectedRowModel()
         .rows.map((row) => row.original._id);
+        console.log("selectedIds", selectedIds);
+
+        const metaEntity = table.options?.meta
+        console.log("metaEntity", metaEntity?.entityType);
+                
+        
 
       if (!selectedIds.length) {
         toast.error("No items selected");
@@ -239,10 +248,12 @@ export function DataTable({
       if (table.options.meta?.entityType === "category") {
         const result = await deleteMultipleCategories(selectedIds);
         if (result.status === "SUCCESS") {
-          toast.success(result.message);
+          toast.success("Categories deleted successfully");
           await refreshData();
           table.resetRowSelection();
+          
         }
+        
       } else {
         // Default to tools deletion
         const result = await deleteMultipleToolsServerAction(selectedIds);

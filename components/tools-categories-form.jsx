@@ -75,14 +75,13 @@ const ToolsCategoryForm = () => {
           setIsSlugUnique(true);
           setIsCheckingSlug(false);
           setSlugMessage("");
+          form.setError("slug", { message: "" });
           return;
         }
         try {
           setIsCheckingSlug(true);
           setSlugMessage("");
-          // const response = await axios.get(
-          //   `/api/tools/check-slug?slug=${slugValue}`
-          // );
+          
 
           const slugUniqueResponse = await checkCategorySlug(slugValue);
 
@@ -93,6 +92,11 @@ const ToolsCategoryForm = () => {
             setIsSlugUnique(false);
 
             form.setError("slug", { message: "Slug must be unique" });
+          }
+          if (slugUniqueResponse?.isUnique === true) {
+            setIsSlugUnique(true);
+            form.clearErrors("slug");
+            
           }
 
           setIsCheckingSlug(false);
