@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
 import EditToolForm from "@/components/EditToolsPage";
+import axios from "axios";
 
 export async function generateStaticParams() {
   return TOOLS_CONFIG.map((tool) => ({
@@ -13,6 +14,11 @@ const DashboardToolsEditPage = async ({ params }) => {
   const response = await fetch(`http://localhost:3000/api/admin/tools/${slug}`);
   const tool = await response.json();
 
+  // use axios to fetch categories
+  const res = await axios("http://localhost:3000/api/admin/getCategory");
+  const categories = res?.data?.data;
+  
+
   
 
   if (!tool) {
@@ -23,7 +29,7 @@ const DashboardToolsEditPage = async ({ params }) => {
       <h2 className="text-2xl font-semibold">
         Edit Tool {tool.name} ({tool.slug})
       </h2>
-      <EditToolForm tool={tool} />
+      <EditToolForm tool={tool} categories={categories} />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { refreshDataTools } from "@/components/Refresh-Functions/toolsRefreshFunction";
 import { columns } from "@/components/ReusableTable/column";
 import { DataTable } from "@/components/ReusableTable/data-table";
 import { payments } from "@/data/payments";
@@ -27,8 +28,19 @@ const AllToolsPage = async () => {
       <DataTable
         columns={columns}
         initialData={tools}
-        filterInputPlaceholder={"Search Pages by name"}
+        filterInputPlaceholder={"name, category, views"}
         filterInputColumn={"name"}
+        firstSearchInputPlaceholder={"name"}
+        secondSearchInputPlaceholder={"category"}
+        thirdSearchInputPlaceholder={"and views"}
+        filterSelectColumn={"category"}
+        filterSelectLabel="Filter by Category"
+        filterSelectPlaceholder="All categories"
+        refreshDataInComponent={refreshDataTools}
+        
+        meta={{
+          entityType: "tools",
+        }}
         fetchUrl={"http://localhost:3000/api/admin/tools"}
       />
     </div>

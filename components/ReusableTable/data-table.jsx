@@ -324,15 +324,7 @@ export function DataTable({
         {/* Category filter */}
 
         <div className="flex items-center py-4 gap-2 flex-wrap">
-          {/* Existing search input */}
-          {filterInputColumn && (
-            <Input
-              placeholder={filterInputPlaceholder}
-              value={table.getState().globalFilter || ""}
-              onChange={(e) => table.setGlobalFilter(e.target.value)}
-              className="max-w-sm"
-            />
-          )}
+        
 
           {/* Dynamic select filter */}
           {filterSelectColumn && <SelectFilter />}

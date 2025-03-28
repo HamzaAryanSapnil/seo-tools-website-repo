@@ -10,7 +10,7 @@ import React from 'react'
 
 const ToolsCategoriesPage = async () => {
   const res = await axios.get("http://localhost:3000/api/admin/getCategory");
-  const categories = res.data.data;
+  const categories = res?.data?.data;
 
   // refresh data function. will be used to refresh data after adding new category. but function cannot be passed to client component from server component.
   

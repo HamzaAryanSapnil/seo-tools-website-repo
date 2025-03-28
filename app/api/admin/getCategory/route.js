@@ -10,6 +10,7 @@ export async function GET() {
 
     const categories = await Category.find({})
       .select("name slug title toolsCount createdAt")
+      .sort({ createdAt: -1 })
       .lean();
 
     return NextResponse.json(

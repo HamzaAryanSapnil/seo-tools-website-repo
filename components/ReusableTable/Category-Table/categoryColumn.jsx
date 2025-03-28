@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Trash, Edit, Eye } from "lucide-react";
 import Link from "next/link";
+import { DataTableColumnHeader } from "../tableColumnHeader";
 
 export const categoryColumns = [
   {
@@ -40,12 +41,18 @@ export const categoryColumns = [
   },
   {
     accessorKey: "toolsCount",
-    header: "Tools Count",
-    cell: ({ row }) => (
-      <div className="text-center font-medium">
-        {row.getValue("toolsCount")}
-      </div>
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Tools" className="text-center justify-center items-center" />,
+    cell: ({ row }) => {
+      const count = row.getValue("toolsCount");
+      return (
+        <div className="text-center font-medium">
+          {count}
+          <span className="text-sm text-gray-500 ml-1">
+            {count === 1 ? "tool" : "tools"}
+          </span>
+        </div>
+      );
+    },
   },
   {
     id: "actions",

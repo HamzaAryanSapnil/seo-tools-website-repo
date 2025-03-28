@@ -45,7 +45,7 @@ import { updateToolServerAction } from "@/lib/actions/updateTool";
 import { useState } from "react";
 import { IconRenderer } from "./IconRenderer";
 
-const EditToolForm = ({ tool }) => {
+const EditToolForm = ({ tool, categories }) => {
   const [fileImage, setFileImage] = useState(null);
   const [updateLoading, setUpdateLoading] = useState(false);
   console.log(tool);
@@ -281,16 +281,25 @@ const EditToolForm = ({ tool }) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem
-                          value={`${tool?.category ? tool.category : ""}`}
-                        >
-                          {" "}
-                          {`${tool?.category ? tool.category : ""}`}{" "}
-                        </SelectItem>
-                        <SelectItem value="conversion">Conversion</SelectItem>
-                        <SelectItem value="seo">SEO</SelectItem>
-                        <SelectItem value="development">Development</SelectItem>
-                        <SelectItem value="Environment">Environment</SelectItem>
+                       
+                        {categories ? (
+                          categories?.map((category) => (
+                            <SelectItem
+                              key={category._id}
+                              value={category.name}
+                            >
+                              {category.name} ({category.toolsCount})
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem
+                            value={"no categories to show"}
+                            disabled
+                          >
+                            {" "}
+                            {"no categories to show"}{" "}
+                          </SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -350,9 +359,8 @@ const EditToolForm = ({ tool }) => {
                       : "hover:bg-gray-50"
                   }`}
                 >
-                
-                    <IconRenderer iconClass={icon?.name} />
-                
+                  <IconRenderer iconClass={icon?.name} />
+
                   <p className="mt-2 text-sm text-center capitalize">
                     {icon.name.replace("-", " ")}
                   </p>

@@ -33,6 +33,11 @@ const categorySchema = new mongoose.Schema(
     toolsCount: {
       type: Number,
       default: 0,
+      min: 0,
+      validate: {
+        validator: Number.isInteger,
+        message: "Tools count must be an integer",
+      },
     },
     metaTitle: {
       type: String,
@@ -47,10 +52,6 @@ const categorySchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-// Indexes for common queries
-categorySchema.index({ slug: 1 });
-categorySchema.index({ name: 1 });
 
 const Category =
   mongoose.models.Category ?? mongoose.model("Category", categorySchema);

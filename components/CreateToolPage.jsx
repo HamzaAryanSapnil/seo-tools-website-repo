@@ -22,7 +22,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { AlertCircle, CheckCircle2, Loader, Loader2, Plus, Trash } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Loader,
+  Loader2,
+  Plus,
+  Trash,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
@@ -41,7 +48,7 @@ const generateSlug = (str) => {
     .replace(/^-+|-+$/g, ""); // Trim hyphens from both ends
 };
 
-export default function CreateToolsForm({}) {
+export default function CreateToolsForm({ categories }) {
   const [toolCreating, setToolCreating] = useState(false);
 
   const [isCheckingSlug, setIsCheckingSlug] = useState(false);
@@ -163,7 +170,7 @@ export default function CreateToolsForm({}) {
 
       const response = await createToolServerAction(data);
       console.log(response);
-      
+
       if (response.status === "SUCCESS") {
         // Redirect to the tool page
         router.push(`/dashboard/tools/all-tools`);
@@ -175,7 +182,6 @@ export default function CreateToolsForm({}) {
       setToolCreating(false);
       toast.error(error?.message || "Something went wrong");
     }
-    
   };
 
   return (
@@ -247,9 +253,26 @@ export default function CreateToolsForm({}) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Input placeholder="Tool Category" {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categories ? (
+                      categories?.map((category) => (
+                        <SelectItem key={category._id} value={category.name}>
+                          {category.name} ({category.toolsCount})
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value={"no categories to show"} disabled>
+                        no categories to show
+                      </SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -534,7 +557,11 @@ export default function CreateToolsForm({}) {
         </div>
 
         <Button type="submit" className="w-full">
-          { toolCreating ? <Loader2 className="animate-spin w-4 h-4" /> : "Create Tool" }
+          {toolCreating ? (
+            <Loader2 className="animate-spin w-4 h-4" />
+          ) : (
+            "Create Tool"
+          )}
         </Button>
       </form>
     </Form>

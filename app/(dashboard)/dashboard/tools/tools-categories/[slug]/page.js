@@ -4,13 +4,10 @@ import dbConnect from "@/lib/db";
 import Category from "@/models/Category";
 import { notFound } from "next/navigation";
 
-
 const EditCategoryPage = async ({ params }) => {
-  const slug = await params?.slug;
+  const { slug } = await params;
   await dbConnect();
   const category = await Category.findOne({ slug }).lean();
-  console.log("Category found", category);
-  
 
   if (!category) return notFound();
 
