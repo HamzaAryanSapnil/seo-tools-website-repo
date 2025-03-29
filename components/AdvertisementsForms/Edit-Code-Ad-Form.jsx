@@ -1,73 +1,82 @@
+// EditCodeAdvertisementForm.jsx
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+
+import { codeAdvertisementFormSchema } from "@/schemas/code-advertisement-form-schema";
+import { updateAdvertisement } from "@/lib/actions/advertisements/update";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import MDEditor from "@uiw/react-md-editor";
-import { toast } from "sonner";
-import { codeAdvertisementFormSchema } from "@/schemas/code-advertisement-form-schema";
-import { useState } from "react";
-import { createAdvertisement } from "@/lib/actions/advertisements/adCreate";
-import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const CodeAdvertisementForm = () => {
-  const [loading, setLoading] = useState(false);
+const EditCodeAdvertisementForm = ({ adId }) => {
   const form = useForm({
     resolver: zodResolver(codeAdvertisementFormSchema),
     defaultValues: {
       name: "",
       title: "",
       content: "",
-      type: "code",
     },
   });
 
- async function onSubmit(values) {
+  // Fetch existing ad data on mount
+  useEffect(() => {
+    const loadAdvertisement = async () => {
+      try {
+        const res = await fetch(`/api/advertisements/${adId}`);
+        const data = await res.json();
+        form.reset({
+          name: data.name,
+          title: data.title,
+          content: data.content || "",
+        });
+      } catch (err) {
+        toast.error("Failed to load advertisement data");
+      }
+    };
+    loadAdvertisement();
+  }, [adId, form]);
+
+  // Submit handler
+  const onSubmit = async (values) => {
     try {
-      setLoading(true);
-    
-      const codeAd = { ...values, type: "code" };
-      const result = await createAdvertisement({
-              ...codeAd,
-            });
-            console.log(result);
-      toast.success("Code Advertisement created successfully!");
-      setLoading(false);
+      const result = await updateAdvertisement(adId, { ...values });
+      if (result.success) {
+        toast.success("Code Advertisement updated successfully!");
+      } else {
+        toast.error(result.error || "Error updating code advertisement");
+      }
     } catch (error) {
-      console.log("Error creating code advertisement:", error);
-      
-      toast.error("Error creating code advertisement");
-      setLoading(false);
+      toast.error(error?.message || "Error updating code advertisement");
     }
-  }
+  };
+
   return (
-    <div className="container mx-auto my-10  flex flex-col justify-center items-center">
+    <div className="container mx-auto my-10 flex flex-col items-center justify-center">
       <h2 className="text-2xl font-semibold text-center mb-10">
-        {" "}
-        Code Advertisement
+        Edit Code Advertisement
       </h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, (errors) => {
-            // Handle validation errors
             Object.values(errors).forEach((error) => {
-              if (error.message) {
-                toast.error(error.message);
-              }
+              if (error.message) toast.error(error.message);
             });
           })}
           className="space-y-6 w-full"
         >
-          {/* name field and title field */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+          {/* Name and Title fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
               name="name"
@@ -104,7 +113,7 @@ const CodeAdvertisementForm = () => {
             />
           </div>
 
-          {/* Content Editor */}
+          {/* Code content editor */}
           <FormField
             control={form.control}
             name="content"
@@ -126,32 +135,8 @@ const CodeAdvertisementForm = () => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Type</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Type"
-                    {...field}
-                    className="text-lg font-medium"
-                    value="code"
-                    readOnly
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <Button type="submit" className="w-full">
-            {loading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-               "Create a new Code Advertisement"
-            )}
+            Update Code Advertisement
           </Button>
         </form>
       </Form>
@@ -159,4 +144,4 @@ const CodeAdvertisementForm = () => {
   );
 };
 
-export default CodeAdvertisementForm;
+export default EditCodeAdvertisementForm;

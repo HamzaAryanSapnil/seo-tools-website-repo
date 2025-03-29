@@ -1,11 +1,17 @@
-import { columns } from '@/components/ReusableTable/column';
+import { adColumns } from '@/components/ReusableTable/AdvertisementColumn/AdColumn';
+
 import { DataTable } from '@/components/ReusableTable/data-table';
 import { Button } from '@/components/ui/button';
 import { payments } from '@/data/payments';
+import axios from 'axios';
 import Link from 'next/link';
 import React from 'react'
 
-const ManageAdvertisements = () => {
+const ManageAdvertisements = async () => {
+  const res = await axios.get("http://localhost:3000/api/admin/advertisements");
+  const allAd = res.data;
+
+  
   return (
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between my-10">
@@ -17,8 +23,8 @@ const ManageAdvertisements = () => {
         </Link>
       </div>
       <DataTable
-        columns={columns}
-        initialData={payments}
+        columns={adColumns}
+        initialData={allAd}
         filterInputPlaceholder={"Search Pages by Title"}
         filterInputColumn={"title"}
       />

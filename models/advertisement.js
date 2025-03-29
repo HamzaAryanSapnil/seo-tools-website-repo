@@ -15,7 +15,7 @@ const advertisementSchema = new mongoose.Schema(
       type: String,
       optional: true,
     },
-    imageUrl: {
+    image: {
       type: String,
       validate: {
         validator: function (v) {
