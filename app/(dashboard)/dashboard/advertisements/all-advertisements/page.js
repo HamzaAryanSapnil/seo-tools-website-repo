@@ -18,7 +18,7 @@ const ManageAdvertisements = () => {
       </div>
       <DataTable
         columns={columns}
-        data={payments}
+        initialData={payments}
         filterInputPlaceholder={"Search Pages by Title"}
         filterInputColumn={"title"}
       />

@@ -10,7 +10,7 @@ const HomePageToolsManagement = async () => {
     const res = await axios("http://localhost:3000/api/admin/tools");
     const tools = res?.data || [];
     const homepageTools = tools?.filter((tool) => tool?.homepage);
-    console.log("home page tools: ", homepageTools);
+   
     
     
 

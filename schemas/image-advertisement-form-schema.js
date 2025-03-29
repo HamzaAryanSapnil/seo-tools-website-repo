@@ -1,23 +1,35 @@
 import { z } from "zod";
+const isValidImageUrl = (val) =>
+  val.startsWith("http") && /\.(jpeg|jpg|png|gif|webp)$/.test(val);
 
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+  "image/svg+xml",
+  "image/gif",
+];
 export const imageAdvertisementFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
   title: z.string().min(1, "Title is required"),
   targetUrl: z.string().optional(),
   image: z
-    .any()
-    .refine(
-      (file) => file instanceof File && file.type.startsWith("image/"), // Check if it's a File object and starts with "image/"
-      { message: "You must upload a valid image file." }
-    )
-    .refine(
-      (file) =>
-        file &&
-        ["image/jpeg", "image/png", "image/webp", "image/jpg"].includes(
-          file.type
-        ), // Check specific image types
-      { message: "Only JPEG, JPG, PNG, or WebP images are allowed." }
-    )
-    .nullable()
-    .optional(),
+      .union([
+        z.instanceof(File).refine(
+          (file) => {
+            return ACCEPTED_IMAGE_TYPES.includes(file.type);
+          },
+          {
+            message:
+              "Invalid image type. Only .jpg, .jpeg, .png, .webp formats are supported",
+          }
+        ),
+        z.string().url().refine(isValidImageUrl, {
+          message: "Invalid image URL",
+        }),
+      ])
+      .nullable()
+      .optional(),
+      type: z.string(),
 });

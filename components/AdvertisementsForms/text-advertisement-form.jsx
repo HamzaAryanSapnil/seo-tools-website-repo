@@ -14,8 +14,13 @@ import { Input } from "@/components/ui/input";
 import MDEditor from "@uiw/react-md-editor";
 import { toast } from "sonner";
 import { textAdvertisementFormSchema } from "@/schemas/text-advertisement-schema";
+import { useState } from "react";
+import axios from "axios";
+import { createAdvertisement } from "@/lib/actions/advertisements/adCreate";
+import { Loader, Loader2 } from "lucide-react";
 
 const TextAdvertisementForm = () => {
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(textAdvertisementFormSchema),
     defaultValues: {
@@ -24,15 +29,67 @@ const TextAdvertisementForm = () => {
       targetUrl: "",
       content: "",
       image: null,
+      type: "text",
     },
   });
 
-  function onSubmit(values) {
+  const uploadImageToImgbb = async (file) => {
     try {
-      console.log(values);
-      toast.success("Text Advertisement created successfully!");
+      const imgBBApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; // use NEXT_PUBLIC_ so it's exposed to client
+      const imgBBApiUrl = process.env.NEXT_PUBLIC_IMGBB_URL;
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await axios.post(imgBBApiUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        params: {
+          key: imgBBApiKey,
+        },
+      });
+
+      if (!response?.data?.data?.url) {
+        throw new Error("Image upload failed");
+      }
+
+      return response?.data?.data?.url || null;
     } catch (error) {
-      toast.error("Error creating text advertisement");
+      toast.error(error?.message || "Image upload failed");
+    }
+  };
+
+ async function onSubmit(values) {
+  
+    try {
+      setLoading(true);
+      const imgUrl = await uploadImageToImgbb(values.image);
+   
+      
+
+      values.image = imgUrl;
+      const textAd = { ...values, type: "text" };
+
+      
+
+      const result = await createAdvertisement({
+        ...textAd,
+      });
+      console.log(result);
+      
+      if (result.status === "SUCCESS") {
+        
+        toast.success( result?.message || "Text Advertisement created successfully!");
+      }
+      else if (result.status === "ERROR") {
+        toast.error( result?.error || "Error creating text advertisement");
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log("Error creating text advertisement:", error);
+      
+      toast.error( error || "Error creating text advertisement");
+      setLoading(false);
     }
   }
 
@@ -155,8 +212,32 @@ const TextAdvertisementForm = () => {
             )}
           />
 
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Type</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Type"
+                    {...field}
+                    className="text-lg font-medium"
+                    value="text"
+                    readOnly
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <Button type="submit" className="w-full">
-            Create a new Text Advertisement
+            {loading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Create Advertisement"
+            )}
           </Button>
         </form>
       </Form>

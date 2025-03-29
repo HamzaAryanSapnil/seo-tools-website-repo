@@ -5,7 +5,7 @@ export async function GET(request, {params}) {
   await dbConnect();
 
   const { slug } = await params;
-  console.log("Slug:", slug);
+
   
    // Extract slug from the request parameters
 

@@ -16,7 +16,7 @@ const CategoriesPage = () => {
       <div className="md:col-span-2 space-y-6">
         <DataTable
           columns={columns}
-          data={payments}
+          initialData={payments}
           filterInputPlaceholder={"Search Pages by Title"}
           filterInputColumn={"title"}
         />

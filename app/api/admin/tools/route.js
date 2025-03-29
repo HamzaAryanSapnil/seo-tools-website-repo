@@ -11,7 +11,7 @@ import FormData from "form-data";
 export async function GET() {
   await dbConnect();
   const tools = await ToolModel.find();
-  console.log(tools);
+
   
   return Response.json(tools, { status: 200 });
 }

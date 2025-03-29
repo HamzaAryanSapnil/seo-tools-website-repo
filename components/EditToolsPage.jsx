@@ -48,7 +48,7 @@ import { IconRenderer } from "./IconRenderer";
 const EditToolForm = ({ tool, categories }) => {
   const [fileImage, setFileImage] = useState(null);
   const [updateLoading, setUpdateLoading] = useState(false);
-  console.log(tool);
+  
 
   const form = useForm({
     resolver: zodResolver(editToolFormSchema),
