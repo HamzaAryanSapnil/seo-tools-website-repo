@@ -257,8 +257,8 @@ export function DataTable({
        } else if (table.options.meta?.entityType === "advertisement") {
         // Handle advertisement deletion
         const result = await deleteMultipleAdvertisements(selectedIds);
-        if (result.status === "SUCCESS") {
-          toast.success(result.message);
+        if (result?.status === "SUCCESS") {
+          toast.success(result?.message);
           await refreshData();
           table.resetRowSelection();
         }
