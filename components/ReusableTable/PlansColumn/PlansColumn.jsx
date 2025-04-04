@@ -117,7 +117,7 @@ export const planColumns = [
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Link href={`/dashboard/plans/${plan._id}`}>
+                      <Link href={`/dashboard/plans/all-plans/${plan._id}`}>
                         <Edit className="h-5 w-5" />
                       </Link>
                     </TooltipTrigger>

@@ -1,24 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
-
+import { zodResolver } from "@hookform/resolvers/zod";
 import { planFormSchema } from "@/schemas/planFormSchema";
-import { createPlanServerAction } from "@/lib/actions/plans/createPlan";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import {
   Form,
-  FormItem,
   FormField,
+  FormItem,
   FormLabel,
   FormControl,
   FormMessage,
@@ -33,12 +28,33 @@ import {
 } from "@/components/ui/select";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { updatePlanServerAction } from "@/lib/actions/plans/updatePlan";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-const CreatePlanForm = ({ tools }) => {
-  const [loading, setLoading] = useState(false);
+function normalizePlanWithTools(plan, toolsConfig) {
+  const normalizedTools = toolsConfig.reduce((acc, tool) => {
+    const existingToolData = plan.tools?.[tool.slug] || {};
+    acc[tool.slug] = tool.fields.reduce((fieldAcc, field) => {
+      const value =
+        typeof existingToolData[field.name] !== "undefined"
+          ? existingToolData[field.name]
+          : field.defaultValue;
+      fieldAcc[field.name] = value;
+      return fieldAcc;
+    }, {});
+    return acc;
+  }, {});
+
+  return { ...plan, tools: normalizedTools };
+}
+
+const EditPlanForm = ({ plan, tools }) => {
   const router = useRouter();
 
-  const [selectedTools, setSelectedTools] = useState([]);
+  const [selectedTools, setSelectedTools] = useState(
+    Object.keys(plan.tools || {})
+  );
 
   const toggleTool = (slug) => {
     setSelectedTools((prev) =>
@@ -46,59 +62,36 @@ const CreatePlanForm = ({ tools }) => {
     );
   };
 
-  // Build defaultValues for only selected tools
-  const buildDefaultToolValues = (toolSlugs) => {
-    return toolSlugs.reduce((acc, slug) => {
-      const tool = tools.find((t) => t.slug === slug);
-      if (!tool) return acc;
-      acc[slug] = tool.fields.reduce((fieldAcc, field) => {
-        fieldAcc[field.name] = field.defaultValue;
-        return fieldAcc;
-      }, {});
-      return acc;
-    }, {});
-  };
+  const normalized = normalizePlanWithTools(plan, tools);
 
   const form = useForm({
     resolver: zodResolver(planFormSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      yearlyPrice: 0,
-      monthlyPrice: 0,
-      allow_api: false,
-      no_ads: false,
-      dailyUsage: 10,
-      wordCount: 100,
-      fileSize: 10,
-      numberOfImage: 10,
-      numberOfDomain: 10,
-      tools: {},
-    },
+    defaultValues: normalized,
   });
 
   useEffect(() => {
-    const updated = {
-      ...form.getValues(),
-      tools: buildDefaultToolValues(selectedTools),
-    };
-    form.reset(updated);
-  }, [selectedTools]);
+    form.reset(normalizePlanWithTools(plan, tools));
+  }, [plan, tools]);
 
   const onSubmit = async (values) => {
-    try {
-      setLoading(true);
-      const response = await createPlanServerAction(values);
-      if (response?.status === "SUCCESS") {
-        toast.success("Plan created successfully!");
-        router.push("/dashboard/plans/all-plans");
-      } else {
-        toast.error(response?.message || "Failed to create plan");
-      }
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+     const fullValues = form.getValues();
+     console.log("fullValues", fullValues);
+     
+    const updated = {
+      ...values,
+      tools: selectedTools.reduce((acc, slug) => {
+        acc[slug] = fullValues?.tools?.[slug] || {};
+        return acc;
+      }, {}),
+    };
+
+    const res = await updatePlanServerAction(plan._id, updated);
+
+    if (res?.status === "SUCCESS") {
+      toast.success("Plan updated successfully");
+      router.push("/dashboard/plans/all-plans");
+    } else {
+      toast.error(res?.message || "Something went wrong");
     }
   };
 
@@ -106,18 +99,17 @@ const CreatePlanForm = ({ tools }) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          {/* LEFT SECTION */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Create New Plan</h2>
+            <h2 className="text-2xl font-semibold">Edit Plan</h2>
 
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Plan Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Plan Name" {...field} />
+                    <Input placeholder="Enter Plan Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -131,7 +123,7 @@ const CreatePlanForm = ({ tools }) => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Description" {...field} />
+                    <Textarea placeholder="Enter Description" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -199,8 +191,7 @@ const CreatePlanForm = ({ tools }) => {
             </div>
           </div>
 
-          {/* RIGHT SECTION */}
-          <Separator className="xl:hidden my-4" />
+          <Separator className="xl:hidden block my-4" />
 
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold">Limits</h2>
@@ -217,7 +208,7 @@ const CreatePlanForm = ({ tools }) => {
                   control={form.control}
                   name={fieldName}
                   render={({ field }) => (
-                    <FormItem className="max-w-sm">
+                    <FormItem>
                       <FormLabel>{fieldName}</FormLabel>
                       <FormControl>
                         <Input type="number" {...field} />
@@ -231,7 +222,7 @@ const CreatePlanForm = ({ tools }) => {
           </div>
         </div>
 
-        {/* TOOLS SELECTION + CONFIG */}
+        {/* TOOLS */}
         <div className="space-y-6 mt-10">
           <h2 className="text-2xl font-semibold">
             Tool Access & Configuration
@@ -239,7 +230,7 @@ const CreatePlanForm = ({ tools }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {tools.map((tool) => (
               <Card key={tool.slug}>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex justify-between items-center">
                   <CardTitle>{tool.name}</CardTitle>
                   <Checkbox
                     checked={selectedTools.includes(tool.slug)}
@@ -315,16 +306,10 @@ const CreatePlanForm = ({ tools }) => {
           </div>
         </div>
 
-        <Button type="submit">
-          {loading ? (
-            <Loader2 className="animate-spin h-5 w-5" />
-          ) : (
-            "Submit Plan"
-          )}
-        </Button>
+        <Button type="submit">Update Plan</Button>
       </form>
     </Form>
   );
 };
 
-export default CreatePlanForm;
+export default EditPlanForm;

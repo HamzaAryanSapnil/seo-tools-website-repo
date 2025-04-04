@@ -37,14 +37,7 @@ const planSchema = new mongoose.Schema(
     numberOfDomain: { type: Number, default: 10 },
 
     tools: {
-      type: Map,
-      of: new mongoose.Schema(
-        {
-          type: Map,
-          of: mongoose.Schema.Types.Mixed, // handles number, string, boolean
-        },
-        { _id: false }
-      ),
+      type: Object, // This allows saving dynamic tool keys and values
       default: {},
     },
   },

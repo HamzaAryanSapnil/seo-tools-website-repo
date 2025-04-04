@@ -8,7 +8,7 @@ import React from "react";
 const AllPlansTable = async () => {
     const res = await axios("http://localhost:3000/api/plans");
   const plans = res?.data || [];
-  console.log(plans);
+  console.log("All - Plans: ", plans);
   
   return (
     <div className="container mx-auto py-10">
