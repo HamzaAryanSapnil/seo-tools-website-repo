@@ -44,6 +44,7 @@ import { toast } from "sonner";
 import { deleteMultipleCategories } from "@/lib/actions/categoryAction";
 import { RefreshCcwDot } from "lucide-react";
 import { deleteMultipleAdvertisements } from "@/lib/actions/advertisements/adMultipleDelete";
+import { deleteMultiplePlansServerAction } from "@/lib/actions/plans/deleteMultiplePlans";
 
 export function DataTable({
   columns,
@@ -259,6 +260,13 @@ export function DataTable({
         const result = await deleteMultipleAdvertisements(selectedIds);
         if (result?.status === "SUCCESS") {
           toast.success(result?.message);
+          await refreshData();
+          table.resetRowSelection();
+        }
+      } else if (table.options.meta?.entityType === "plans") {
+        const result = await deleteMultiplePlansServerAction(selectedIds);
+        if (result.status === "SUCCESS") {
+          toast.success(result.message);
           await refreshData();
           table.resetRowSelection();
         }

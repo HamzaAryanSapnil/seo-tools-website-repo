@@ -6,27 +6,29 @@ import { DataTable } from "@/components/ReusableTable/data-table";
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { columns } from "../ReusableTable/column";
+import { refreshPlans } from "../Refresh-Functions/plansRefreshFunction";
+import { planColumns } from "../ReusableTable/PlansColumn/PlansColumn";
+import { deletePlanServerAction } from "@/lib/actions/plans/deletePlan";
 
 const PlansDataTable = ({plans}) => {
   const [plansData, setPlansData] = useState(plans || []);
   return (
     <DataTable
-      columns={columns}
+      columns={planColumns}
       initialData={plansData}
       filterInputPlaceholder={"Search Plans by Title"}
       filterInputColumn={"title"}
-      firstSearchInputPlaceholder={"name"}
-      secondSearchInputPlaceholder={"title"}
-      thirdSearchInputPlaceholder={"and types"}
-      filterSelectColumn={"type"}
-      refreshDataInComponent={refreshAds}
+      firstSearchInputPlaceholder={"plan names"}
+      filterSelectColumn={""}
+      refreshDataInComponent={refreshPlans}
       meta={{
-        entityType: "advertisement",
+        entityType: "plans",
         handleSingleDelete: async (id) => {
-          const result = await (id);
+          const result = await deletePlanServerAction(id);
           if (result.status === "SUCCESS") {
-            setAdData((prev) => prev.filter((ad) => ad._id !== id));
-            refreshAds();
+            setPlansData((prev) => prev.filter((ad) => ad._id !== id));
+            refreshPlans();
             toast.success(result.message);
           }
         },
