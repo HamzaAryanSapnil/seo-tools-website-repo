@@ -7,8 +7,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-import { imageAdvertisementFormSchema } from "@/schemas/image-advertisement-form-schema";
-import { updateAdvertisement } from "@/lib/actions/advertisements/update";
+
 import {
   Form,
   FormField,
@@ -19,6 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { imageAdvertisementFormSchema } from "@/schemas/image-advertisement-form-schema";
+import { updateAdvertisement } from "@/lib/actions/advertisements/adUpdate";
 
 const EditImageAdvertisementForm = ({ adId }) => {
   const [loading, setLoading] = useState(false);

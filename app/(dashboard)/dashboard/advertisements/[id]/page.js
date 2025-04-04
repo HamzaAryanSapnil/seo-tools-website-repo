@@ -1,7 +1,8 @@
 // app/advertisement/[id]/page.js
-import EditTextAdvertisementForm from "@/components/ads/EditTextAdvertisementForm";
-import EditImageAdvertisementForm from "@/components/ads/EditImageAdvertisementForm";
-import EditCodeAdvertisementForm from "@/components/ads/EditCodeAdvertisementForm";
+
+import EditCodeAdvertisementForm from "@/components/AdvertisementsForms/Edit-Code-Ad-Form";
+import EditImageAdvertisementForm from "@/components/AdvertisementsForms/Edit-Img-Ad-Form";
+import EditTextAdvertisementForm from "@/components/AdvertisementsForms/Edit-Text-Ad-Form";
 import axios from "axios";
 
 export const dynamic = "force-dynamic"; // Always fetch fresh data
