@@ -32,8 +32,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useState } from "react";
+import { createPlanServerAction } from "@/lib/actions/plans/createPlan";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
-const CreatePlanForm = () => {
+const CreatePlanForm = ({tools}) => {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(planFormSchema),
     defaultValues: {
@@ -48,7 +55,7 @@ const CreatePlanForm = () => {
       fileSize: 10,
       numberOfImage: 10,
       numberOfDomain: 10,
-      tools: TOOLS_CONFIG.reduce(
+      tools: tools?.reduce(
         (acc, tool) => ({
           ...acc,
           [tool.slug]: tool.fields.reduce(
@@ -85,13 +92,25 @@ const CreatePlanForm = () => {
     // },
   });
 
-  function onSubmit(values) {
+  async function onSubmit(values) {
     console.log(values);
     try {
-      planFormSchema.parse(values);
-      console.log("Validation success!", values);
+       setLoading(true);
+       console.log("Submitting plans:", values);
+
+       const response = await createPlanServerAction(values);
+       console.log(response);
+
+       if (response.status === "SUCCESS") {
+         // Redirect to the tool page
+         router.push(`/dashboard/plans/all-plans`);
+         toast.success(response?.message || "Tool created successfully");
+       }
+       setLoading(false);
     } catch (error) {
-      console.error("Validation errors:", error.errors);
+       console.error("Submission error:", error);
+       setLoading(false);
+       toast.error(error?.message || "Something went wrong");
     }
   }
 
@@ -344,7 +363,7 @@ const CreatePlanForm = () => {
         <div className="space-y-6 mt-8  ">
           <h2 className="text-2xl font-semibold">Tools Configuration</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {TOOLS_CONFIG.map((tool) => (
+            {tools?.map((tool) => (
               <Card key={tool.slug} className="space-y-4 p-4 border rounded-lg">
                 <CardHeader>
                   <h3 className="text-lg font-medium">{tool.name}</h3>
@@ -419,7 +438,7 @@ const CreatePlanForm = () => {
           </div>
         </div>
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit"> {loading ? <Loader2 className="animate-spin h-5 w-5" /> : "Submit"} </Button>
       </form>
     </Form>
   );
