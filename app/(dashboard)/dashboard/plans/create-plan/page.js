@@ -3,7 +3,8 @@ import React from 'react'
 
 const CreatePlan = () => {
   return (
-    <div>
+    <div className="container mx-auto py-10 space-y-10">
+     
       <CreatePlanForm/>
     </div>
   )
