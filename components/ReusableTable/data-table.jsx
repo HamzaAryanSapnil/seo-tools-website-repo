@@ -43,6 +43,7 @@ import {
 import { toast } from "sonner";
 import { deleteMultipleCategories } from "@/lib/actions/categoryAction";
 import { RefreshCcwDot } from "lucide-react";
+import { deleteMultipleAdvertisements } from "@/lib/actions/advertisements/adMultipleDelete";
 
 export function DataTable({
   columns,
@@ -253,8 +254,16 @@ export function DataTable({
           table.resetRowSelection();
           
         }
-        
-      } else {
+       } else if (table.options.meta?.entityType === "advertisement") {
+        // Handle advertisement deletion
+        const result = await deleteMultipleAdvertisements(selectedIds);
+        if (result.status === "SUCCESS") {
+          toast.success(result.message);
+          await refreshData();
+          table.resetRowSelection();
+        }
+      }
+       else {
         // Default to tools deletion
         const result = await deleteMultipleToolsServerAction(selectedIds);
         if (result.status === "SUCCESS") {

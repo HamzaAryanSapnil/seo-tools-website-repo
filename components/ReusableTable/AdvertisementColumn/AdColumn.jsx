@@ -80,21 +80,7 @@ export const adColumns = [
     ),
   },
 
-  // 5. Views count column (centered text)
-  {
-    accessorKey: "views",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Views"
-        className="justify-center font-bold"
-      />
-    ),
-    cell: ({ row }) => {
-      const views = row.getValue("views");
-      return <div className="text-center font-bold">{views}</div>;
-    },
-  },
+
 
   // 6. CreatedAt date column (formatted date string)
   {
@@ -119,23 +105,10 @@ export const adColumns = [
     id: "actions",
     accessorKey: "action",
     header: "Action",
-    cell: ({ row, column }) => {
+    cell: ({ row, table }) => {
       const ad = row.original;
       // Handler to delete a single advertisement (calls the meta actions provided by DataTable)
-      const handleDelete = async (id) => {
-        try {
-          const { handleSingleDelete, refreshData } =
-            column.columnDef.meta || {};
-          if (handleSingleDelete) {
-            await handleSingleDelete(id);
-            if (refreshData) refreshData();
-          } else {
-            console.error("Delete handler not found for advertisement");
-          }
-        } catch (error) {
-          console.error("Error deleting advertisement:", error);
-        }
-      };
+     
 
       return (
         <DropdownMenu>
@@ -170,7 +143,12 @@ export const adColumns = [
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
-                        onClick={() => handleDelete(ad._id)}
+                        // onClick={() => handleDelete(ad._id)} 
+                        onClick={() => {
+                          if (table?.options.meta?.handleSingleDelete) {
+                            table.options.meta.handleSingleDelete(ad._id);
+                          }
+                        }}
                         className="text-red-600"
                       >
                         <Trash className="h-5 w-5" />

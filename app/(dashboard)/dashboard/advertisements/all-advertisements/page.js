@@ -1,15 +1,19 @@
+import AdDataTable from '@/components/AdvertisementsForms/adDataTable/adDataTable';
+import { refreshAds } from '@/components/Refresh-Functions/advertisementsRefreshFunction';
 import { adColumns } from '@/components/ReusableTable/AdvertisementColumn/AdColumn';
 
 import { DataTable } from '@/components/ReusableTable/data-table';
 import { Button } from '@/components/ui/button';
 import { payments } from '@/data/payments';
+import { deleteAdvertisement } from '@/lib/actions/advertisements/adDelete';
 import axios from 'axios';
 import Link from 'next/link';
 import React from 'react'
+import { toast } from 'sonner';
 
 const ManageAdvertisements = async () => {
   const res = await axios.get("http://localhost:3000/api/admin/advertisements");
-  const allAd = res.data;
+  const allAd = res?.data;
 
   
   return (
@@ -22,12 +26,7 @@ const ManageAdvertisements = async () => {
           </Button>
         </Link>
       </div>
-      <DataTable
-        columns={adColumns}
-        initialData={allAd}
-        filterInputPlaceholder={"Search Pages by Title"}
-        filterInputColumn={"title"}
-      />
+      <AdDataTable allAd={allAd} />
     </div>
   );
 }
