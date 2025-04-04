@@ -99,28 +99,24 @@ export function AppSidebar() {
         ],
       },
       {
-        title: "Posts",
-        url: "#",
+        title: "Blogs",
+        url: "/dashboard/blog",
         icon: <Text />,
         items: [
+         
           {
-            title: "All Posts",
-            url: "/dashboard/posts/all-posts",
-            icon: <ChevronRight />,
-          },
-          {
-            title: "Create Post",
-            url: "/dashboard/posts/create-post",
+            title: "Create New Blog",
+            url: "/dashboard/blogs/create-blog",
             icon: <ChevronRight />,
           },
           {
             title: "Categories",
-            url: "/dashboard/posts/categories",
+            url: "/dashboard/blogs/categories",
             icon: <ChevronRight />,
           },
           {
             title: "Tags",
-            url: "/dashboard/posts/tags",
+            url: "/dashboard/blogs/tags",
             icon: <ChevronRight />,
           },
         ],
