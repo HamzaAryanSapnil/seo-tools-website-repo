@@ -29,7 +29,7 @@ import { Loader2 } from "lucide-react";
 import { checkCategorySlug, createCategory } from "@/lib/actions/categoryAction";
 import { toast } from "sonner";
 
-const generateSlug = (str) => {
+export const generateSlug = (str) => {
   return str
     .toLowerCase()
     .replace(/[^\w\s-]/g, "") // Remove special characters

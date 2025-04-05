@@ -26,11 +26,15 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { toast } from "sonner";
+import axios from "axios";
+import Image from "next/image";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 const CreateBlogForm = ({ categories }) => {
   const [loading, setLoading] = useState(false);
+  const [fileImage, setFileImage] = useState(null);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -49,18 +53,51 @@ const CreateBlogForm = ({ categories }) => {
     },
   });
 
-  const onSubmit = async (values) => {
-    setLoading(true);
-    const result = await createBlogServerAction(values);
+  const uploadImageToImgbb = async (file) => {
+    try {
+      const imgBBApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; // use NEXT_PUBLIC_ so it's exposed to client
+      const imgBBApiUrl = process.env.NEXT_PUBLIC_IMGBB_URL;
+      const formData = new FormData();
+      formData.append("image", file);
 
-    if (result?.status === "SUCCESS") {
-      alert("Blog created successfully");
-      form.reset();
-    } else {
-      alert(result?.message || "Failed to create blog");
+      const response = await axios.post(imgBBApiUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        params: {
+          key: imgBBApiKey,
+        },
+      });
+
+      if (!response?.data?.data?.url) {
+        toast.error("Image upload failed");
+      }
+
+      return response?.data?.data?.url || null;
+    } catch (error) {
+      toast.error(error?.message || "Image upload failed");
     }
+  };
+  const onSubmit = async (values) => {
+    try {
+      setLoading(true);
+      const imgUrl = await uploadImageToImgbb(values?.coverImage);
+      values.coverImage = imgUrl;
+      console.log("Form values before submission:", values);
 
-    setLoading(false);
+      const result = await createBlogServerAction(values);
+
+      if (result?.status === "SUCCESS") {
+        toast.success("Blog created successfully");
+        form.reset();
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error creating blog:", error);
+      toast.error(error.message, "Error creating blog. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,19 +146,39 @@ const CreateBlogForm = ({ categories }) => {
           )}
         />
 
-        <FormField
-          name="coverImage"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Cover Image URL</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Image Section */}
+        <div className="space-y-6">
+          <h3 className="text-xl font-semibold">Image</h3>
+          <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
+            <Image
+              src={fileImage}
+              alt="Tool Image"
+              width={2048}
+              height={1080}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      field.onChange(file);
+                      setFileImage(URL.createObjectURL(file));
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           name="category"
