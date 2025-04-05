@@ -8,12 +8,14 @@ import axios from "axios";
 export const dynamic = "force-dynamic"; // Always fetch fresh data
 
 async function getAdData(id) {
+  console.log("Fetching advertisement data for ID:", id);
+
   const res = await axios.get(
     `http://localhost:3000/api/admin/advertisements/${id}`
   );
   const advertise = res.data;
-  console.log("Single ad from {id} page.js: ",advertise);
-  
+  console.log("Single ad from {id} page.js: ", advertise);
+
   if (advertise === null) {
     throw new Error("Failed to fetch advertisement.");
   }
@@ -27,9 +29,30 @@ const AdvertisementEditPage = async ({ params }) => {
 
   return (
     <div className="p-6">
-      {ad.type === "text" && <EditTextAdvertisementForm adId={id} />}
-      {ad.type === "image" && <EditImageAdvertisementForm adId={id} />}
-      {ad.type === "code" && <EditCodeAdvertisementForm adId={id} />}
+      {ad.type === "text" && (
+        <div>
+          <h1 className="text-2xl font-semibold mb-4">
+            Edit Text Advertisement
+          </h1>
+          <EditTextAdvertisementForm ad={ad} />{" "}
+        </div>
+      )}
+      {ad.type === "image" && (
+        <div>
+          <h1 className="text-2xl font-semibold mb-4">
+            Edit Image Advertisement
+          </h1>
+          <EditImageAdvertisementForm ad={ad} />
+        </div>
+      )}
+      {ad.type === "code" && (
+        <div>
+          <h1 className="text-2xl font-semibold mb-4">
+            Edit Code Advertisement
+          </h1>
+          <EditCodeAdvertisementForm ad={ad} />
+        </div>
+      )}
     </div>
   );
 };
