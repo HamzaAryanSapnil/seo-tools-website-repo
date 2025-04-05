@@ -77,7 +77,7 @@ export const BlogsTableColumn = [
   {
     id: "actions",
     cell: ({ row, table }) => {
-      const category = row.original;
+      const blog = row.original;
 
       return (
         <DropdownMenu>
@@ -90,13 +90,13 @@ export const BlogsTableColumn = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(category._id)}
+              onClick={() => navigator.clipboard.writeText(blog._id)}
             >
-              Copy Category ID
+              Copy blog ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href={`/dashboard/tools/tools-categories/${category.slug}`}>
+              <Link href={`/dashboard/blogs/${blog._id}`}>
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
               </Link>

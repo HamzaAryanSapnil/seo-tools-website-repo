@@ -176,7 +176,7 @@ const CreateBlogForm = ({ categories }) => {
           <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
             <Image
               src={fileImage ?? null}
-              alt="Tool Image"
+              alt="Blog Image"
               width={2048}
               height={1080}
               className="w-full h-full object-cover"

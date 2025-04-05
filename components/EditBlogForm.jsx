@@ -26,34 +26,85 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import Image from "next/image";
+import { toast } from "sonner";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 const EditBlogForm = ({ initialData, categories }) => {
+ 
+
+ 
   const [loading, setLoading] = useState(false);
+  const [fileImage, setFileImage] = useState(null);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      ...initialData,
+      category: initialData?.category?._id || "", // Use category._id as the default value
+    },
   });
 
-  useEffect(() => {
-    if (initialData) {
-      form.reset(initialData);
-    }
-  }, [initialData]);
+   useEffect(() => {
+     if (initialData) {
+       form.reset({
+         ...initialData,
+         category: initialData?.category?._id || "", // Reset with category._id
+       });
+     }
+   }, [initialData, form]);
 
+  const uploadImageToImgbb = async (file) => {
+    try {
+      const imgBBApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; // use NEXT_PUBLIC_ so it's exposed to client
+      const imgBBApiUrl = process.env.NEXT_PUBLIC_IMGBB_URL;
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await axios.post(imgBBApiUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        params: {
+          key: imgBBApiKey,
+        },
+      });
+
+      if (!response?.data?.data?.url) {
+        toast.error("Image upload failed");
+      }
+
+      return response?.data?.data?.url || null;
+    } catch (error) {
+      toast.error(error?.message || "Image upload failed");
+    }
+  };
   const onSubmit = async (values) => {
-    setLoading(true);
-    const res = await updateBlogServerAction(initialData._id, values);
+    try {
+      if (values.coverImage instanceof File) {
+        const imgUrl = await uploadImageToImgbb(values.coverImage);
+        if (!imgUrl) {
+          toast.error("Image upload failed");
+          return;
+        }
+        values.coverImage = imgUrl;
+      }
+      setLoading(true);
+      const res = await updateBlogServerAction(initialData._id, values);
 
-    if (res?.status === "SUCCESS") {
-      alert("Blog updated successfully");
-    } else {
-      alert(res?.message || "Failed to update blog");
+      if (res?.status === "SUCCESS") {
+        toast.success(res.message ?? "Blog updated successfully");
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error uploading image", error);
+      toast.error(error.message ?? "Blog update failed");
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -102,19 +153,44 @@ const EditBlogForm = ({ initialData, categories }) => {
           )}
         />
 
-        <FormField
-          name="coverImage"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Cover Image URL</FormLabel>
-              <FormControl>
-                <Input {...field} value={field.value ?? ""} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-6">
+          <h3 className="text-xl font-semibold">Image</h3>
+          <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
+            <Image
+              src={
+                fileImage
+                  ? fileImage
+                  : initialData?.coverImage
+                  ? initialData?.coverImage
+                  : null
+              }
+              alt="Blog Image"
+              width={2048}
+              height={1080}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="coverImage"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      field.onChange(file);
+                      setFileImage(URL.createObjectURL(file));
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           name="category"
@@ -122,7 +198,7 @@ const EditBlogForm = ({ initialData, categories }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category</FormLabel>
-              <Select value={field.value ?? ""} onValueChange={field.onChange}>
+              <Select value={field.value ?? ""} onValueChange={(value) => field.onChange(value)}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
@@ -231,7 +307,7 @@ const EditBlogForm = ({ initialData, categories }) => {
         />
 
         <Button type="submit" disabled={loading}>
-          {loading ? "Updating..." : "Update Blog"}
+          {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Update Blog"}
         </Button>
       </form>
     </Form>
