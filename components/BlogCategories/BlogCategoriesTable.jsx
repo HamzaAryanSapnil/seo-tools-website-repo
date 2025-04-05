@@ -7,13 +7,16 @@ import { deleteCategory } from "@/lib/actions/categoryAction";
 import { toast } from "sonner";
 import { DataTable } from "../ReusableTable/data-table";
 import { categoryColumns } from "../ReusableTable/Category-Table/categoryColumn";
+import { deleteBlogCategoryAction } from "@/lib/actions/blogs/blog-categories/deleteBlogCategory";
 
 const BlogCategoriesTable = ({ categories }) => {
   const [categoriesData, setCategoriesData] = useState(categories || []);
 
   const refreshData = async () => {
-    const res = await axios.get("http://localhost:3000/api/admin/getCategory");
-    const categories = res.data.data;
+    const res = await axios.get(
+      "http://localhost:3000/api/blogs/blog-categories"
+    );
+    const categories = res?.data?.categories;
     return categories;
   };
   return (
@@ -30,11 +33,11 @@ const BlogCategoriesTable = ({ categories }) => {
         secondSearchInputPlaceholder={"title"}
         refreshDataInComponent={refreshData}
         meta={{
-          entityType: "category",
+          entityType: "blogCategory",
           handleSingleDelete: async (id) => {
             // Implement single category delete
-            const result = await deleteCategory(id);
-            if (result.status === "SUCCESS") {
+            const result = await deleteBlogCategoryAction(id);
+            if (result?.status === "SUCCESS") {
               setCategoriesData((prev) => prev.filter((cat) => cat._id !== id));
               refreshData();
               toast.success(result.message);

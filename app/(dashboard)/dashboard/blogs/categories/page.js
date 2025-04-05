@@ -7,6 +7,14 @@ const page = async () => {
   const parentCategoryResponse = await axios(
     "http://localhost:3000/api/admin/getCategory"
   );
+
+  const blogCategoryResponse = await axios(
+    "http://localhost:3000/api/blogs/blog-categories"
+  );
+  const blogCategories = blogCategoryResponse?.data?.categories;
+  console.log("Blog Categories", blogCategories);
+
+
   const parentCategories = parentCategoryResponse.data.data;
   console.log("Parent Categories", parentCategories);
   return (
@@ -17,7 +25,7 @@ const page = async () => {
         <CreateBlogCategoryForm parentCategories={parentCategories} />
       </div>
       {/* categories table */}
-      <BlogCategoriesTable />
+      <BlogCategoriesTable categories={blogCategories} />
     </div>
   );
 };

@@ -45,6 +45,7 @@ import { deleteMultipleCategories } from "@/lib/actions/categoryAction";
 import { RefreshCcwDot } from "lucide-react";
 import { deleteMultipleAdvertisements } from "@/lib/actions/advertisements/adMultipleDelete";
 import { deleteMultiplePlansServerAction } from "@/lib/actions/plans/deleteMultiplePlans";
+import { deleteManyBlogCategoriesAction } from "@/lib/actions/blogs/blog-categories/deleteManyBlogCategories";
 
 export function DataTable({
   columns,
@@ -169,7 +170,7 @@ export function DataTable({
   });
 
   const selectedRows = table?.getSelectedRowModel().rows.map((row) => {
-    console.log(row);
+   
     return row.original;
   });
 
@@ -265,6 +266,13 @@ export function DataTable({
         }
       } else if (table.options.meta?.entityType === "plans") {
         const result = await deleteMultiplePlansServerAction(selectedIds);
+        if (result.status === "SUCCESS") {
+          toast.success(result.message);
+          await refreshData();
+          table.resetRowSelection();
+        }
+      } else if (table.options.meta?.entityType === "blogCategory") {
+        const result = await deleteManyBlogCategoriesAction(selectedIds);
         if (result.status === "SUCCESS") {
           toast.success(result.message);
           await refreshData();
