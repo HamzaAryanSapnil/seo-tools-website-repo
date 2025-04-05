@@ -100,10 +100,14 @@ export function AppSidebar() {
       },
       {
         title: "Blogs",
-        url: "/dashboard/blog",
+        url: "/dashboard/blogs",
         icon: <Text />,
         items: [
-         
+          {
+            title: "Manage All Blogs",
+            url: "/dashboard/blogs",
+            icon: <ChevronRight />,
+          },
           {
             title: "Create New Blog",
             url: "/dashboard/blogs/create-blog",

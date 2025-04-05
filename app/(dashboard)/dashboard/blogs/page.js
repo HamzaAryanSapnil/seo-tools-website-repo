@@ -1,0 +1,29 @@
+import BlogsTable from '@/components/BlogCategories/BlogsTable'
+import { refreshBlogs } from '@/components/Refresh-Functions/blogRefreshFunction'
+import { BlogsTableColumn } from '@/components/ReusableTable/BlogsTableColumn/BlogsTableColumn'
+import { DataTable } from '@/components/ReusableTable/data-table'
+import axios from 'axios'
+import React from 'react'
+
+const page = async () => {
+    const blogsRes = await axios.get("http://localhost:3000/api/blogs");
+
+    const blogs = blogsRes?.data?.simplifiedBlogs || [];
+  
+   
+    
+    
+    
+
+    
+  return (
+  <div className="container mx-auto py-10">
+       <div className="flex items-center justify-between my-10">
+         <h2 className="text-2xl font-semibold">Manage All Tools</h2>
+       </div>
+       <BlogsTable blogs={blogs} />
+     </div>
+  )
+}
+
+export default page

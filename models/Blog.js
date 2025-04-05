@@ -10,7 +10,7 @@ const blogSchema = new mongoose.Schema(
     coverImage: { type: String, required: true }, // Imgbb or URL
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      ref: "BlogCategory",
       required: true,
     },
 

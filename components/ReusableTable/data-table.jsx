@@ -46,6 +46,7 @@ import { RefreshCcwDot } from "lucide-react";
 import { deleteMultipleAdvertisements } from "@/lib/actions/advertisements/adMultipleDelete";
 import { deleteMultiplePlansServerAction } from "@/lib/actions/plans/deleteMultiplePlans";
 import { deleteManyBlogCategoriesAction } from "@/lib/actions/blogs/blog-categories/deleteManyBlogCategories";
+import { deleteManyBlogsAction } from "@/lib/actions/blogs/deleteManyBlogs";
 
 export function DataTable({
   columns,
@@ -256,6 +257,13 @@ export function DataTable({
         }
       } else if (table.options.meta?.entityType === "blogCategory") {
         const result = await deleteManyBlogCategoriesAction(selectedIds);
+        if (result.status === "SUCCESS") {
+          toast.success(result.message);
+          await refreshData();
+          table.resetRowSelection();
+        }
+      }else if (table.options.meta?.entityType === "blogs") {
+        const result = await deleteManyBlogsAction(selectedIds);
         if (result.status === "SUCCESS") {
           toast.success(result.message);
           await refreshData();

@@ -13,7 +13,7 @@ const blogCategorySchema = new mongoose.Schema(
 
     parentCategory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "BlogCategory",
+      ref: "Category",
       optional: true,
     },
   },
