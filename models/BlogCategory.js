@@ -12,7 +12,8 @@ const blogCategorySchema = new mongoose.Schema(
     metaDescription: { type: String },
 
     parentCategory: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "BlogCategory",
       optional: true,
     },
   },

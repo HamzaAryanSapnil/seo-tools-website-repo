@@ -51,21 +51,17 @@ const CreateBlogCategoryForm = ({ parentCategories }) => {
   // Watch name and slug fields
   const nameValue = form.watch("name");
 
-
-    useEffect(() => {
-      if (!isSlugManuallyModified && nameValue) {
-        const generatedSlug = generateSlug(nameValue);
-        form.setValue("slug", generatedSlug, { shouldValidate: true });
-      }
-    }, [nameValue, form, isSlugManuallyModified]);
-
-   
+  useEffect(() => {
+    if (!isSlugManuallyModified && nameValue) {
+      const generatedSlug = generateSlug(nameValue);
+      form.setValue("slug", generatedSlug, { shouldValidate: true });
+    }
+  }, [nameValue, form, isSlugManuallyModified]);
 
   const onSubmit = async (values) => {
     try {
       setLoading(true);
       const res = await createBlogCategoryAction(values);
-      console.log(res);
 
       if (res?.status === "SUCCESS") {
         toast.success(res?.message ?? "Category created!");
