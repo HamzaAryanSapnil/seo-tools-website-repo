@@ -43,6 +43,6 @@ export const blogFormSchema = z.object({
   ogDescription: z.string().optional(),
 
   // Optional system fields
-  featured: z.boolean().optional(),
+  
   views: z.number().optional(),
 });

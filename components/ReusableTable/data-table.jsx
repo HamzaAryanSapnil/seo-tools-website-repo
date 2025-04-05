@@ -85,22 +85,6 @@ export function DataTable({
     }
   };
 
-  //  const handleSingleDelete = async (id) => {
-  //    try {
-  //      const result = await deleteToolServerAction(id);
-  //      if (result.status === "SUCCESS") {
-  //        // Optimistic update
-  //        setData((prev) => prev.filter((item) => item._id !== id));
-  //        toast.success(result.message);
-  //      } else {
-  //        toast.error(result.error);
-  //      }
-  //      refreshData();
-  //    } catch (error) {
-  //      toast.error("Failed to delete tool");
-  //      console.error("Delete error:", error);
-  //    }
-  //  };
 
   const enhancedColumns = useMemo(
     () =>
@@ -169,8 +153,7 @@ export function DataTable({
 
   });
 
-  const selectedRows = table?.getSelectedRowModel().rows.map((row) => {
-   
+  const selectedRows = table?.getSelectedRowModel()?.rows.map((row) => {
     return row.original;
   });
 

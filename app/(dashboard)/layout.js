@@ -23,7 +23,7 @@ const layout = async ({ children }) => {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <main>
+          <main className="font-roboto" >
             {children}
           </main>
         </div>

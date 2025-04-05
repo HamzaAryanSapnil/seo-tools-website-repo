@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dynamic from "next/dynamic";
@@ -29,12 +29,15 @@ import {
 import { toast } from "sonner";
 import axios from "axios";
 import Image from "next/image";
+import { generateSlug } from "./tools-categories-form";
+import { Loader2 } from "lucide-react";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 const CreateBlogForm = ({ categories }) => {
   const [loading, setLoading] = useState(false);
   const [fileImage, setFileImage] = useState(null);
+  const [slugManuallyModified, setSlugManuallyModified] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -49,9 +52,18 @@ const CreateBlogForm = ({ categories }) => {
       metaDescription: "",
       ogTitle: "",
       ogDescription: "",
-      featured: false,
+      views: 0,
     },
   });
+
+  const titleValue = form.watch("title");
+
+  useEffect(() => {
+    if (!slugManuallyModified && titleValue) {
+      const generatedSlug = generateSlug(titleValue);
+      form.setValue("slug", generatedSlug, { shouldValidate: true });
+    }
+  }, [titleValue, slugManuallyModified, form]);
 
   const uploadImageToImgbb = async (file) => {
     try {
@@ -81,6 +93,8 @@ const CreateBlogForm = ({ categories }) => {
   const onSubmit = async (values) => {
     try {
       setLoading(true);
+      console.log("Form values before submission:", values);
+
       const imgUrl = await uploadImageToImgbb(values?.coverImage);
       values.coverImage = imgUrl;
       console.log("Form values before submission:", values);
@@ -111,7 +125,11 @@ const CreateBlogForm = ({ categories }) => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ""} />
+                  <Input
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                    value={field.value ?? ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -124,7 +142,13 @@ const CreateBlogForm = ({ categories }) => {
               <FormItem>
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ""} />
+                  <Input
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setSlugManuallyModified(true);
+                    }}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -151,7 +175,7 @@ const CreateBlogForm = ({ categories }) => {
           <h3 className="text-xl font-semibold">Image</h3>
           <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
             <Image
-              src={fileImage}
+              src={fileImage ?? null}
               alt="Tool Image"
               width={2048}
               height={1080}
@@ -160,7 +184,7 @@ const CreateBlogForm = ({ categories }) => {
           </div>
           <FormField
             control={form.control}
-            name="image"
+            name="coverImage"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -189,13 +213,17 @@ const CreateBlogForm = ({ categories }) => {
               <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
+                    <SelectValue
+                      placeholder={
+                        categories ? "Select a category" : "No categories"
+                      }
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {categories?.map((cat) => (
                     <SelectItem key={cat._id} value={cat._id}>
-                      {cat.name}
+                      {cat.name ? cat.name : "No category"}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -278,16 +306,17 @@ const CreateBlogForm = ({ categories }) => {
         </div>
 
         <FormField
-          name="featured"
+          name="views"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Featured</FormLabel>
+              <FormLabel>Views</FormLabel>
               <FormControl>
-                <input
-                  type="checkbox"
-                  checked={field.value}
-                  onChange={(e) => field.onChange(e.target.checked)}
+                <Input
+                  type="number"
+                  readOnly
+                  className={"max-w-sm"}
+                  {...field}
                 />
               </FormControl>
             </FormItem>
@@ -295,7 +324,11 @@ const CreateBlogForm = ({ categories }) => {
         />
 
         <Button type="submit" disabled={loading}>
-          {loading ? "Creating..." : "Create Blog"}
+          {loading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Create Blog"
+          )}
         </Button>
       </form>
     </Form>
