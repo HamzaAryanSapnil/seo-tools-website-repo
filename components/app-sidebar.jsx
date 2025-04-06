@@ -80,24 +80,7 @@ export function AppSidebar() {
 
   const data = {
     navMain: [
-      {
-        title: "Pages",
-        url: "#",
-        icon: <Book />,
-        isActive: true,
-        items: [
-          {
-            title: "Create Pages",
-            url: "/dashboard/pages/create-pages",
-            icon: <ChevronRight />,
-          },
-          {
-            title: "Manage Pages",
-            url: "/dashboard/pages/manage-pages",
-            icon: <ChevronRight />,
-          },
-        ],
-      },
+   
       {
         title: "Blogs",
         url: "/dashboard/blogs",
@@ -127,12 +110,12 @@ export function AppSidebar() {
       },
       {
         title: "Users",
-        url: "#",
+        url: "dashboard/users",
         icon: <User />,
         items: [
           {
             title: "Manage All Users",
-            url: "/dashboard/users/manage-all-users",
+            url: "/dashboard/users",
           },
         ],
       },

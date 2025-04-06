@@ -8,7 +8,7 @@ const ManageAllUsersPage = () => {
     <div className="container mx-auto py-10">
           <DataTable
             columns={manageUsersColumns}
-            data={payments}
+            initialData={payments}
             filterInputPlaceholder={"Search Pages by Title"}
             filterInputColumn={"title"}
           />
