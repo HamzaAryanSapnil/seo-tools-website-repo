@@ -6,8 +6,9 @@ import React, { useState } from "react";
 import { deleteCategory } from "@/lib/actions/categoryAction";
 import { toast } from "sonner";
 import { DataTable } from "../ReusableTable/data-table";
-import { categoryColumns } from "../ReusableTable/Category-Table/categoryColumn";
+
 import { deleteBlogCategoryAction } from "@/lib/actions/blogs/blog-categories/deleteBlogCategory";
+import { blogCategoryColumns } from "../ReusableTable/BlogsTableColumn/BlogsCategoryTableColumn";
 
 const BlogCategoriesTable = ({ categories }) => {
   const [categoriesData, setCategoriesData] = useState(categories || []);
@@ -19,18 +20,21 @@ const BlogCategoriesTable = ({ categories }) => {
     const categories = res?.data?.categories;
     return categories;
   };
+  console.log("blog categories Data: ", categoriesData);
+  
   return (
     <div className="md:col-span-2 space-y-6">
       <DataTable
-        columns={categoryColumns}
+        columns={blogCategoryColumns}
         initialData={categoriesData}
         filterInputPlaceholder={"Search Pages by Name"}
         filterInputColumn={"name"}
-        filterSelectColumn="title"
+        filterSelectColumn={"parentCategory"}
         filterSelectLabel="Filter by Title"
-        filterSelectPlaceholder="All Titles"
+        filterSelectPlaceholder="Parent Category"
         firstSearchInputPlaceholder={"name"}
         secondSearchInputPlaceholder={"title"}
+        
         refreshDataInComponent={refreshData}
         meta={{
           entityType: "blogCategory",

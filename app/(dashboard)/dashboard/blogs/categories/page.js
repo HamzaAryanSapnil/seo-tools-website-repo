@@ -11,12 +11,12 @@ const page = async () => {
   const blogCategoryResponse = await axios(
     "http://localhost:3000/api/blogs/blog-categories"
   );
-  const blogCategories = blogCategoryResponse?.data?.categories;
-  console.log("Blog Categories", blogCategories);
+  const blogCategories = blogCategoryResponse?.data?.simplifiedBlogsCategories;
+
 
 
   const parentCategories = parentCategoryResponse.data.data;
-  console.log("Parent Categories", parentCategories);
+ 
   return (
     <div className="min-h-screen w-full container mx-auto py-10 max-w-7xl  p-6 bg-white shadow-lg rounded-2xl border border-gray-200 grid grid-cols-1 xl:grid-cols-3 gap-8">
       {/* categories form */}
