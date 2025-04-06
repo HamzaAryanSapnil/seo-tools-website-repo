@@ -111,6 +111,7 @@ export function AppSidebar() {
       {
         title: "Users",
         url: "dashboard/users",
+        
         icon: <User />,
         items: [
           {
