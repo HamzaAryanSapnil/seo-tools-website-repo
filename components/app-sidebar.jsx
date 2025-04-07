@@ -80,7 +80,6 @@ export function AppSidebar() {
 
   const data = {
     navMain: [
-   
       {
         title: "Blogs",
         url: "/dashboard/blogs",
@@ -111,7 +110,6 @@ export function AppSidebar() {
       {
         title: "Users",
         url: "dashboard/users",
-        
         icon: <User />,
         items: [
           {

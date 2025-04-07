@@ -15,7 +15,7 @@ const page = async ({ params }) => {
   if (status === "ERROR") {
     return notFound();
   }
-  console.log(blogCategory);
+
 
   return (
     <div className="min-h-screen container mx-auto py-10">

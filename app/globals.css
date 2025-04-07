@@ -8,6 +8,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-seo-first-color: var(--seo-first-color);
+  --color-seo-second-color: var(--seo-second-color);
+  --color-seo-third-color: var(--seo-third-color);
+  --color-seo-forth-color: var(--seo-forth-color);
   --color-seo-primary: var(--seo-primary);
   --color-seo-light-green: var(--seo-light-green);
   --color-seo-secondary: var(--seo-secondary);
@@ -66,6 +70,10 @@
   --seo-primary: #35456d;
   --seo-light-green: #54ff00;
   --seo-secondary: #0100fe;
+  --seo-first-color: #205781;
+  --seo-second-color: #4F959D;
+  --seo-third-color: #98D2C0;
+  --seo-forth-color: #F6F8D5;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

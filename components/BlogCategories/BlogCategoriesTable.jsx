@@ -20,7 +20,7 @@ const BlogCategoriesTable = ({ categories }) => {
     const categories = res?.data?.categories;
     return categories;
   };
-  console.log("blog categories Data: ", categoriesData);
+
   
   return (
     <div className="md:col-span-2 space-y-6">
