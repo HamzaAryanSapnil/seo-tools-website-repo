@@ -66,7 +66,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${libreFranklin.variable} ${roboto.variable} ${playfairDisplay.variable} ${playfairDisplaySC.variable} ${montserrat.variable} ${inter.variable} antialiased`}
+        className={`font-roboto ${geistSans.variable} ${geistMono.variable} ${libreFranklin.variable} ${roboto.variable} ${playfairDisplay.variable} ${playfairDisplaySC.variable} ${montserrat.variable} ${inter.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"

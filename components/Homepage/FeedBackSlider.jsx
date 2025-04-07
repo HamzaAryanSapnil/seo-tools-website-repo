@@ -19,7 +19,7 @@ const FeedBackSlider = () => {
 
   const feedbacks = [
     {
-      rating: 5,
+      rating: 3.5,
       date: "Feb 7, 2024",
       text: "Great for beginner to intermediate social media managers, an example when Hootsuite is perfect is when you are still learning campaign management targets, the analytics are really great.",
       name: "Joanne Valley Hignett",
@@ -28,7 +28,7 @@ const FeedBackSlider = () => {
       employees: "501-1000 employees",
     },
     {
-      rating: 5,
+      rating: 1.5,
       date: "Feb 13, 2024",
       text: "Hootsuite has helped my company reach our target audience on multiple trending social media platforms. Even for an individual with a beginner to intermediate experience with business aspects of social media, this bundled tool allows you to reach your target audience with ease with consideration for time efficiency and practicality.",
       name: "Zaina Kroschinski",
@@ -37,7 +37,7 @@ const FeedBackSlider = () => {
       employees: "Real Estate | 11-50 employees",
     },
     {
-      rating: 5,
+      rating: 2.5,
       date: "Jan 12, 2024",
       text: "As a busy financial security advisor, I couldn’t have time to handle my social media. On the other hand, I needed to be active on social media. Hootsuite helped me to manage my platforms easily and saved a lot of my time. than you Hootsuite!",
       name: "Abdollah Safavi",
@@ -46,7 +46,7 @@ const FeedBackSlider = () => {
       employees: "1001-5000 employees",
     },
     {
-      rating: 5,
+      rating: 4.5,
       date: "Jan 12, 2024",
       text: "As a busy financial security advisor, I couldn’t have time to handle my social media. On the other hand, I needed to be active on social media. Hootsuite helped me to manage my platforms easily and saved a lot of my time. than you Hootsuite!",
       name: "Abdollah Safavi",
@@ -55,7 +55,7 @@ const FeedBackSlider = () => {
       employees: "1001-5000 employees",
     },
     {
-      rating: 5,
+      rating: 3.5,
       date: "Jan 12, 2024",
       text: "As a busy financial security advisor, I couldn’t have time to handle my social media. On the other hand, I needed to be active on social media. Hootsuite helped me to manage my platforms easily and saved a lot of my time. than you Hootsuite!",
       name: "Abdollah Safavi",
@@ -64,7 +64,7 @@ const FeedBackSlider = () => {
       employees: "1001-5000 employees",
     },
     {
-      rating: 5,
+      rating: 0,
       date: "Jan 12, 2024",
       text: "As a busy financial security advisor, I couldn’t have time to handle my social media. On the other hand, I needed to be active on social media. Hootsuite helped me to manage my platforms easily and saved a lot of my time. than you Hootsuite!",
       name: "Abdollah Safavi",
@@ -121,26 +121,47 @@ const FeedBackSlider = () => {
           modules={[Navigation, Autoplay]}
           className="mySwiper"
         >
-          {feedbacks.map((item, index) => (
-            <SwiperSlide key={index}>
-              <Card className="p-1 md:p-6 shadow-lg rounded-lg text-center flex flex-col justify-center items-center h-96">
-                <CardContent>
-                  <div className="text-red-500 text-lg flex justify-center gap-1">
-                    {Array(item.rating).fill("⭐")}
-                  </div>
-                  <p className="italic text-gray-600 mt-2">{item.text.length > 100 ? item.text.slice(0, 100) + "..." : item.text}</p>
-                  <h4 className="font-bold mt-4">{item.name}</h4>
-                  <p className="text-sm text-gray-500">
-                    {item.role} <br /> {item.company} | {item.employees}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">{item.date}</p>
-                  <a href="#" className="text-blue-500 mt-2 hover:underline">
-                    Read full review →
-                  </a>
-                </CardContent>
-              </Card>
-            </SwiperSlide>
-          ))}
+          {feedbacks.map((item, index) => {
+            console.log(item);
+
+            return (
+              <SwiperSlide key={index}>
+                <Card className="p-1 md:p-6 shadow-lg rounded-lg text-center flex flex-col justify-center items-center h-96">
+                  <CardContent>
+                    <div className="text-seo-first-color text-lg flex justify-center gap-1">
+                      {Array.from({ length: 5 }).map((_, i) => {
+                        const ratingValue = item.rating - i;
+                        if (ratingValue >= 1) {
+                          return <span key={i}>⭐</span>; // Full star
+                        } else if (ratingValue > 0) {
+                          return <span key={i}>✨</span>; // Half star
+                        } else {
+                          return <span key={i}>☆</span>; // Empty star
+                        }
+                      })}
+                    </div>
+                    <p className="italic text-seo-forth-color mt-2">
+                      {item.text.length > 100
+                        ? item.text.slice(0, 100) + "..."
+                        : item.text}
+                    </p>
+                    <h4 className="font-bold mt-4 text-seo-second-color">
+                      {item.name}
+                    </h4>
+                    <p className="text-sm text-seo-forth-color">
+                      <span className="font-semibold " > {item.role} </span>
+                      <br /> <span>{item.company}</span> |{" "}
+                      <span>{item.employees}</span>
+                    </p>
+                    <p className="text-xs text-seo-third-color font-black mt-1 ">{item.date}</p>
+                    <a href="#" className="text-seo-second-color mt-2 hover:underline">
+                      Read full review →
+                    </a>
+                  </CardContent>
+                </Card>
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
 
         {/* Custom Navigation Buttons */}

@@ -16,18 +16,18 @@ const WhyShouldYouSec = () => {
   return (
     <section className="my-10 p-4 font-roboto">
       <div className="container mx-auto flex flex-col justify-center items-center">
-        <h1 className="md:text-5xl text-4xl font-bold font-playfair text-black text-center leading-14 md:leading-20 my-5 mb-10">
+        <h1 className="md:text-5xl text-4xl font-bold font-playfair text-seo-forth-color text-center leading-14 md:leading-20 my-5 mb-10">
           Why Should You <br />
           Choose <br />
-          <span className="text-seo-light-green">FreeDigitalTool?</span>
+          <span className="text-seo-first-color">FreeDigitalTool?</span>
         </h1>
         <div className="flex justify-center items-center gap-5 flex-wrap flex-col md:flex-row">
           {whyChooseCards.map((card, index) => (
-            <Card key={index} className="md:w-96">
+            <Card key={index} className="md:w-96 bg-seo-third-color text-seo-second-color shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
               <CardHeader>
-                <CardTitle>{card.title}</CardTitle>
+                <CardTitle className={"text-seo-second-color font-bold text-xl"} >{card.title}</CardTitle>
               </CardHeader>
-              <CardContent>{card.description}</CardContent>
+              <CardContent className={"text-seo-des-color-second"} >{card.description}</CardContent>
             </Card>
           ))}
         </div>

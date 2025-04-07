@@ -8,13 +8,13 @@ export default function CategoriesGrid({ categories }) {
       {categories.slice(0, 10).map((category) => (
         <div key={category.slug} className="mb-12">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-4xl font-bold font-inter text-center text-seo-secondary">
+            <h2 className="text-4xl font-bold font-inter text-center text-seo-first-color">
               {category.name}
             </h2>
             {category.tools.length > 10 && (
               <Link
                 href={`/categories/${category.slug}`}
-                className="text-blue-600 hover:underline"
+                className="text-seo-forth-color hover:underline"
               >
                 See All ({category.tools.length})
               </Link>
@@ -30,8 +30,8 @@ export default function CategoriesGrid({ categories }) {
                     href={`/tools/${tool.slug}`}
                     className="flex justify-between items-center hover:bg-gray-50 p-2 rounded"
                   >
-                    <span className="font-medium ">{tool.name}</span>
-                    <span className="text-gray-500 text-sm">
+                    <span className="font-medium text-seo-forth-color">{tool?.name}</span>
+                    <span className="text-seo-second-color text-sm">
                       {tool.description}
                     </span>
                   </Link>
@@ -47,8 +47,8 @@ export default function CategoriesGrid({ categories }) {
                   href={`/tools/${tool.slug}`}
                   className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <div className="font-medium">{tool.name}</div>
-                  <div className="text-gray-600 text-sm mt-1">
+                  <div className="font-medium text-seo-forth-color">{tool.name}</div>
+                  <div className="text-seo-second-color text-sm mt-1">
                     {tool.description}
                   </div>
                 </Link>
@@ -60,7 +60,13 @@ export default function CategoriesGrid({ categories }) {
       {categories.length > 10 && (
         <div className="text-center">
           <Link href="/our-services">
-            <Button className={"text-seo-secondary text-lg bg-white shadow-lg py-5 hover:bg-seo-light-green hover:text-white"} >See All Our Services</Button>
+            <Button
+              className={
+                "text-seo-secondary text-lg bg-white shadow-lg py-5 hover:bg-seo-light-green hover:text-white"
+              }
+            >
+              See All Our Services
+            </Button>
           </Link>
         </div>
       )}

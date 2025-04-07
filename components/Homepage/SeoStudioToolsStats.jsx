@@ -14,10 +14,10 @@ const SeoStudioToolsStats = () => {
     <section className="my-14 font-roboto p-4">
       <div className="container mx-auto flex flex-col justify-center items-center gap-y-10">
         <div className="flex flex-col justify-center items-center gap-y-6">
-          <h1 className="text-4xl font-bold font-playfair text-seo-secondary ">
+          <h1 className="text-4xl font-bold font-playfair text-seo-first-color ">
             SEOStudio Tools
           </h1>
-          <p className="text-gray-600 text-center md:w-3xl text-base/6">
+          <p className="text-seo-forth-color text-center md:w-3xl text-base/6  max-w-xl">
             Free online Seo, Text, Image, Youtube, Web Management, Web
             Development, Converter, Calculator tools and more for developers,
             designers, and marketers
@@ -25,7 +25,7 @@ const SeoStudioToolsStats = () => {
         </div>
         <div className="flex flex-col justify-center items-center gap-y-6">
           <div className="flex  flex-col  justify-center items-center gap-y-10 gap-6">
-            <h1 className="text-4xl font-bold font-montserrat text-seo-secondary uppercase">
+            <h1 className="text-4xl font-bold font-playfair-display text-seo-first-color uppercase">
               {" "}
               As Seen In:{" "}
             </h1>
@@ -34,29 +34,21 @@ const SeoStudioToolsStats = () => {
                 <img
                   src="./producthunt-logo.jpg"
                   alt="product hunt logo"
-             
                   className="w-20  "
                 />
                 <img
                   src="./producthunt-text.jpg"
                   alt="product hunt logo"
-                  
                   className="w-36  "
                 />
               </div>
               <div className="w-72 border shadow-md flex justify-center items-center hover:shadow-xl transition-all duration-300 ease-in-out">
-                <img
-                  src="./reddit.jpg"
-                  alt="reddit logo"
-                  
-                  className="w-36 "
-                />
+                <img src="./reddit.jpg" alt="reddit logo" className="w-36 " />
               </div>
               <div className="w-72 border shadow-md flex justify-center items-center hover:shadow-xl transition-all duration-300 ease-in-out">
                 <img
                   src="./brave.png"
                   alt="brave browser logo"
-                  
                   className="w-36 "
                 />
               </div>
@@ -64,7 +56,7 @@ const SeoStudioToolsStats = () => {
           </div>
         </div>
         <div className="flex justify-center items-center flex-col gap-y-6 my-5">
-          <h1 className="text-2xl text-center font-bold font-playfair-display text-seo-secondary uppercase">
+          <h1 className="text-2xl text-center font-bold font-playfair-display text-seo-first-color uppercase">
             {" "}
             We are growing together
           </h1>
@@ -73,12 +65,12 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
                   170+
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm  text-seo-primary">
+                <p className="text-sm  text-seo-forth-color">
                   Free Online Tools
                 </p>
               </CardContent>
@@ -86,38 +78,34 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
                   6.2M+
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm  text-seo-primary">
-                  Time Tools Used
-                </p>
+                <p className="text-sm  text-seo-forth-color">Time Tools Used</p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
                   9K+
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm  text-seo-primary">
-                  Daily Users
-                </p>
+                <p className="text-sm  text-seo-forth-color">Daily Users</p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
                   800K+
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm  text-seo-primary">
+                <p className="text-sm  text-seo-forth-color">
                   Page Views/Month
                 </p>
               </CardContent>
@@ -125,14 +113,12 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-light-green">
+                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
                   320K+
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm  text-seo-primary">
-                  Search Clicks/Month
-                </p>
+                <p className="text-sm  text-seo-forth-color">Search Clicks/Month</p>
               </CardContent>
             </Card>
           </div>

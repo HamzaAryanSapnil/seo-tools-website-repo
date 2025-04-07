@@ -62,7 +62,7 @@ const Navbar = () => {
         <ul className=" flex justify-center items-center   gap-x-10 px-1 ">
           {navlinks.map((link) => (
             <li
-              className="text-xl hover:text-white hover:bg-seo-primary active:bg-seo-primary active:text-white rounded-md p-2 transition-all duration-200 ease-in-out "
+              className="text-xl hover:text-white hover:bg-seo-first-color active:bg-seo-second-color active:text-white rounded-md p-2 transition-all duration-200 ease-in-out "
               key={link.url}
             >
               <Link href={link.url}>{link.title}</Link>
@@ -73,7 +73,7 @@ const Navbar = () => {
       <div className=" navbar-end ">
         <Link
           href={"/login"}
-          className="btn px-5 py-6 border-white bg-white text-xl hover:bg-seo-primary active:bg-seo-primary active:text-white rounded-md  transition-all duration-200 ease-in-out hover:text-white  "
+          className="btn px-5 py-6 border-white bg-white text-xl hover:bg-seo-first-color active:bg-seo-second-color active:text-white rounded-md  transition-all duration-200 ease-in-out hover:text-white  "
         >
           Login
         </Link>

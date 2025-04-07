@@ -12,6 +12,8 @@
   --color-seo-second-color: var(--seo-second-color);
   --color-seo-third-color: var(--seo-third-color);
   --color-seo-forth-color: var(--seo-forth-color);
+  --color-seo-des-color-first: var(--seo-des-color-first);
+  --color-seo-des-color-second: var(--seo-des-color-second);
   --color-seo-primary: var(--seo-primary);
   --color-seo-light-green: var(--seo-light-green);
   --color-seo-secondary: var(--seo-secondary);
@@ -70,10 +72,12 @@
   --seo-primary: #35456d;
   --seo-light-green: #54ff00;
   --seo-secondary: #0100fe;
-  --seo-first-color: #205781;
-  --seo-second-color: #4F959D;
-  --seo-third-color: #98D2C0;
-  --seo-forth-color: #F6F8D5;
+  --seo-first-color: #5B913B;
+  --seo-second-color: #77B254;
+  --seo-third-color: #FFE8B6;
+  --seo-forth-color: #D99D81;
+  --seo-des-color-first: #4A4A4A;
+  --seo-des-color-second: #4A4A4A;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

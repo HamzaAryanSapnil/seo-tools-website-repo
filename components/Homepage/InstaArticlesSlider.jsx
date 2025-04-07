@@ -69,7 +69,7 @@ const InstaArticlesSlider = () => {
         {feedbacks.map((item, index) => (
           <SwiperSlide key={index}>
             <div className=" flex justify-center items-center">
-              <div className="card bg-base-100 xl:w-96 shadow-sm">
+              <div className="card bg-seo-third-color xl:w-96 shadow-sm">
                 <figure>
                   <img
                     src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
@@ -77,8 +77,8 @@ const InstaArticlesSlider = () => {
                   />
                 </figure>
                 <div className="card-body justify-start ">
-                  <h2 className="card-title text-start"> {item.title} </h2>
-                  <p className="text-start">
+                  <h2 className="card-title text-seo-second-color"> {item.title} </h2>
+                  <p className="text-start text-seo-des-color-second font-medium">
                     {item.description.length > 40
                       ? item.description.slice(0, 40) + "..."
                       : item.description}
@@ -86,7 +86,7 @@ const InstaArticlesSlider = () => {
                   <div className="card-actions justify-end">
                     <Link href={`/blog/${item.slug}`} >
                       {" "}
-                      <button className="btn bg-seo-secondary text-white hover:bg-seo-light-green">
+                      <button className="btn bg-seo-forth-color text-white hover:bg-seo-first-color border-none">
                         Read More
                       </button>{" "}
                     </Link>
@@ -97,7 +97,7 @@ const InstaArticlesSlider = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className="swiper-pagination"></div>
+      <div className="swiper-pagination text-seo-first-color"></div>
     </div>
   );
 };
