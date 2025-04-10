@@ -1,6 +1,7 @@
 
 import { TOOLS_CONFIG } from "@/data/toolConfig";
 import Link from "next/link";
+import { FaTemperatureHigh } from "react-icons/fa";
 
 export default function CategoryPage({ params }) {
   const categoryTools = TOOLS_CONFIG.filter(
@@ -8,9 +9,9 @@ export default function CategoryPage({ params }) {
   );
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12 ">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold capitalize">
+        <h1 className="text-3xl font-bold capitalize text-seo-light-green">
           {params.slug.replace("-", " ")} Tools
         </h1>
         <p className="text-gray-600 mt-2">
@@ -22,20 +23,16 @@ export default function CategoryPage({ params }) {
         {categoryTools.map((tool) => (
           <Link
             key={tool.slug}
-            href={`/tool/${tool.slug}`}
-            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+            href={`/tools/${tool.slug}`}
+            className="bg-white p-4 rounded-lg  shadow-[0_2px_10px_rgba(0,0,0,0.3)] border hover:shadow-[0_1px_10px_rgba(0,0,0,0.6)] transition-all duration-300 ease-in-out"
           >
-            <div className="flex items-center gap-4">
-              <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                {/* Tool icon */}
-                <span className="text-blue-600">⚙️</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">{tool.name}</h3>
-                <p className="text-gray-600 text-sm line-clamp-2">
-                  {tool.description}
-                </p>
-              </div>
+            <div className="font-medium text-seo-forth-color flex justify-center items-center gap-10 py-4">
+              {" "}
+              <span className="">
+                {" "}
+                <FaTemperatureHigh />{" "}
+              </span>{" "}
+              {tool.name}
             </div>
           </Link>
         ))}

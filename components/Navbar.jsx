@@ -50,11 +50,11 @@ const Navbar = () => {
         >
           {" "}
           <Image
-            src={"/logo.png"}
+            src={"/fdt-logo.png"}
             alt="logo"
-            width={1200}
-            height={630}
-            className="w-24 md:w-36 h-16 "
+            width={1920}
+            height={1080}
+            className="h-24 w-24"
           />{" "}
         </Link>
       </div>

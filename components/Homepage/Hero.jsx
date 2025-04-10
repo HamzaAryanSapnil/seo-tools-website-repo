@@ -41,10 +41,10 @@ export default function HeroSection() {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
       }}
-      className="relative   bg-gradient-to-r from-[#5B913B] to-[#77B254] text-seo-third-color py-16 px-6 min-h-screen flex flex-col justify-center items-center xl:items-start  font-roboto"
+      className="relative   bg-gradient-to-r from-[#5B913B] to-[#77B254] text-seo-third-color py-16 px-6 min-h-[550px] flex flex-col justify-center items-center xl:items-start  font-roboto"
     >
       <div className="text-center flex flex-col justify-center items-center xl:justify-start xl:items-start  gap-6 xl:ml-32">
-        <h1 className="text-5xl font-extrabold mb-6">
+        <h1 className="text-5xl text-seo-first-color font-extrabold mb-6">
           Unlock Powerful SEO Tools
         </h1>
         <p className="text-xl mb-8 text-[#D99D81]">

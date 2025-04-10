@@ -72,12 +72,12 @@
   --seo-primary: #35456d;
   --seo-light-green: #54ff00;
   --seo-secondary: #0100fe;
-  --seo-first-color: #5B913B;
-  --seo-second-color: #77B254;
-  --seo-third-color: #FFE8B6;
-  --seo-forth-color: #D99D81;
-  --seo-des-color-first: #4A4A4A;
-  --seo-des-color-second: #4A4A4A;
+  --seo-first-color: #54ff00;
+  --seo-second-color: #000000;
+  --seo-third-color: #000000;
+  --seo-forth-color: #344767;
+  --seo-des-color-first:#344767;
+  --seo-des-color-second: #000000;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

@@ -23,9 +23,9 @@ const WhyShouldYouSec = () => {
         </h1>
         <div className="flex justify-center items-center gap-5 flex-wrap flex-col md:flex-row">
           {whyChooseCards.map((card, index) => (
-            <Card key={index} className="md:w-96 bg-seo-third-color text-seo-second-color shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
+            <Card key={index} className="md:w-96  text-seo-second-color shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
               <CardHeader>
-                <CardTitle className={"text-seo-second-color font-bold text-xl"} >{card.title}</CardTitle>
+                <CardTitle className={"text-seo-forth-color font-bold text-xl "} >{card.title}</CardTitle>
               </CardHeader>
               <CardContent className={"text-seo-des-color-second"} >{card.description}</CardContent>
             </Card>

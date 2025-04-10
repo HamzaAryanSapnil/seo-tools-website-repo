@@ -2,16 +2,16 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="mt-14 bg-white">
+    <div className="mt-14 ">
       <div className="container mx-auto p-10">
         {/* Grid Container */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10">
           {/* Branding Section - Full width on mobile, 1 column on md/lg */}
           <div className="lg:col-span-1">
             <img
-              src="./logo.png"
+              src="./fdt-logo.png"
               alt="Free tools website's logo"
-              className="w-36 h-16"
+              className="w-36 h-36 my-5"
             />
             <p className="text-base">
               SeoStudio provides over 170 free tools for SEO experts, YouTubers,

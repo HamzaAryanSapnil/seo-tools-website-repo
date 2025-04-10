@@ -22,10 +22,10 @@ const SiteOverviewCard = () => {
       <div className="container mx-auto">
         <div className="shadow-sm rounded-xl overflow-hidden">
           {/* Header Section */}
-          <div className="bg-gradient-to-r from-seo-first-color to-seo-second-color p-8">
+          <div className="bg-white p-8">
             <h1 className="text-seo-third-color text-3xl font-playfair leading-snug">
-              Free <span className="text-seo-forth-color">SEO</span> &{" "}
-              <span className="text-seo-forth-color">Web Management</span> Tools
+              Free <span className="text-seo-light-green">SEO</span> &{" "}
+              <span className="text-seo-light-green">Web Management</span> Tools
               to Boost Your Online Success!
             </h1>
             <p className="text-seo-third-color mt-2 ">
@@ -35,7 +35,7 @@ const SiteOverviewCard = () => {
           </div>
 
           {/* Body Section */}
-          <div className="p-6 bg-seo-third-color space-y-10">
+          <div className="p-6 bg-white space-y-10">
             <p className="text-seo-des-color-first">
               smallseo-tools.com offers a wide range of free online tools
               designed to help you improve your website’s SEO and performance.
