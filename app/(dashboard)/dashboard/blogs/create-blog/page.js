@@ -4,7 +4,9 @@ import React from 'react'
 
 const page = async () => {
   const blogCatRes = await axios("http://localhost:3000/api/blogs/blog-categories")
-  const categories = await blogCatRes?.data?.categories;
+  const categories = await blogCatRes?.data?.simplifiedBlogsCategories;
+
+  
   
   
   return (

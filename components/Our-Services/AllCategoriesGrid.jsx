@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { FaTemperatureHigh } from "react-icons/fa";
+import { Button } from "../ui/button";
 
 const AllCategoriesGrid = ({ categories }) => {
   return (

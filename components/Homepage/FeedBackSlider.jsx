@@ -122,8 +122,6 @@ const FeedBackSlider = () => {
           className="mySwiper"
         >
           {feedbacks.map((item, index) => {
-            console.log(item);
-
             return (
               <SwiperSlide key={index}>
                 <Card className="p-1 md:p-6 shadow-lg rounded-lg text-center flex flex-col justify-center items-center h-96">
@@ -149,12 +147,17 @@ const FeedBackSlider = () => {
                       {item.name}
                     </h4>
                     <p className="text-sm text-seo-forth-color">
-                      <span className="font-semibold " > {item.role} </span>
+                      <span className="font-semibold "> {item.role} </span>
                       <br /> <span>{item.company}</span> |{" "}
                       <span>{item.employees}</span>
                     </p>
-                    <p className="text-xs text-seo-third-color font-black mt-1 ">{item.date}</p>
-                    <a href="#" className="text-seo-second-color mt-2 hover:underline">
+                    <p className="text-xs text-seo-third-color font-black mt-1 ">
+                      {item.date}
+                    </p>
+                    <a
+                      href="#"
+                      className="text-seo-second-color mt-2 hover:underline"
+                    >
                       Read full review →
                     </a>
                   </CardContent>

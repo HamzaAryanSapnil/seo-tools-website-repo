@@ -30,26 +30,29 @@ const SeoStudioToolsStats = () => {
               As Seen In:{" "}
             </h1>
             <div className="flex flex-col md:flex-row flex-wrap justify-center items-center gap-x-4 gap-y-4 ">
-              <div className="flex justify-center items-center m-0 p-0 border shadow-md w-72 hover:shadow-xl transition-all duration-300 ease-in-out">
+              <div className=" flex justify-center items-center m-0 p-1 border shadow-md w-72 hover:shadow-xl transition-all duration-300 ease-in-out">
                 <img
                   src="./producthunt-logo.jpg"
                   alt="product hunt logo"
-                  className="w-20  "
+                  className="w-20 "
                 />
-                <img
-                  src="./producthunt-text.jpg"
-                  alt="product hunt logo"
-                  className="w-36  "
-                />
+                <p className="font-bold  text-seo-fifth-color text-xl" >Product Hunt</p>
               </div>
-              <div className="w-72 border shadow-md flex justify-center items-center hover:shadow-xl transition-all duration-300 ease-in-out">
-                <img src="./reddit.jpg" alt="reddit logo" className="w-36 " />
+              <div className="w-72 p-1 border shadow-md flex justify-center items-center gap-x-4 hover:shadow-xl transition-all duration-300 ease-in-out ">
+                <img src="./reddit-icon.jpg" alt="reddit logo" className="w-14 " />
+                <img src="./reddit-text.jpg" alt="reddit logo" className="w-20 " />
+
               </div>
-              <div className="w-72 border shadow-md flex justify-center items-center hover:shadow-xl transition-all duration-300 ease-in-out">
+              <div className="w-72 p-1 border shadow-md flex justify-center items-center gap-x-4 hover:shadow-xl transition-all duration-300 ease-in-out">
                 <img
-                  src="./brave.png"
+                  src="./brave-icon.jpg"
                   alt="brave browser logo"
-                  className="w-36 "
+                  className="w-14 "
+                />
+                <img
+                  src="./brave-text.jpg"
+                  alt="brave browser logo"
+                  className="w-20 "
                 />
               </div>
             </div>
@@ -65,7 +68,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
+                <CardTitle className="flex justify-center items-center text-2xl font-montserrat text-seo-second-color">
                   170+
                 </CardTitle>
               </CardHeader>
@@ -78,7 +81,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
+                <CardTitle className="flex justify-center items-center text-2xl font-montserrat text-seo-second-color">
                   6.2M+
                 </CardTitle>
               </CardHeader>
@@ -89,7 +92,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
+                <CardTitle className="flex justify-center items-center text-2xl font-montserrat text-seo-second-color">
                   9K+
                 </CardTitle>
               </CardHeader>
@@ -100,7 +103,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
+                <CardTitle className="flex justify-center items-center text-2xl font-montserrat text-seo-second-color">
                   800K+
                 </CardTitle>
               </CardHeader>
@@ -113,7 +116,7 @@ const SeoStudioToolsStats = () => {
             <Card>
               <CardHeader className="">
                 {/* <CardDescription>Total Revenue</CardDescription> */}
-                <CardTitle className="flex justify-center items-center text-4xl font-montserrat text-seo-second-color">
+                <CardTitle className="flex justify-center items-center text-2xl font-montserrat text-seo-second-color">
                   320K+
                 </CardTitle>
               </CardHeader>

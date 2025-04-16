@@ -31,6 +31,246 @@ export const TOOLS_CONFIG = [
     ],
   },
   {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
+    slug: "md5-generator",
+    name: "MD5 Generator",
+    category: "hashing",
+    description: "Generate MD5 hashes for files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        description: "Daily usage restrictions...",
+        type: "number",
+        defaultValue: 10,
+      },
+    ],
+  },
+  {
     slug: "temperature-converter",
     name: "Temperature Converter",
     category: "converters",
@@ -114,6 +354,21 @@ export const TOOLS_CONFIG = [
     name: "Image to PDF Converter",
     category: "Converters",
     description: "Convert images to PDF files",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        type: "number",
+        description:
+          "Daily usage restrictions refer to the limitations placed on the number of requests that a user can perform within a 24-hour period.",
+      },
+    ],
+  },
+  {
+    slug: "youtube-tag-generator",
+    name: "Youtube Tag Generator",
+    category: "Youtube Tools",
+    description: "Generate tags for youtube videos",
     fields: [
       {
         name: "dailyUsage",

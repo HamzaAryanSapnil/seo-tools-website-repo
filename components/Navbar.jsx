@@ -4,13 +4,13 @@ import Link from "next/link";
 const Navbar = () => {
   const navlinks = [
     { title: "Home", url: "/" },
-    { title: "Blog", url: "/blog" },
+    { title: "Blog", url: "/blogs" },
     { title: "Plans", url: "/plans" },
     { title: "Our Services", url: "/our-services" },
   ];
   return (
-    <div className="navbar bg-base-100 py-5  font-roboto  ">
-      <div className="navbar-start">
+    <div className="navbar bg-base-100 py-5  font-roboto container mx-auto ">
+      <div className="navbar-start container mx-auto">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg

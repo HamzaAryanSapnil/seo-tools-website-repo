@@ -4,11 +4,13 @@ import axios from "axios";
 const BlogEditPage = async ({ params }) => {
   const { id } = await params;
   const blogsRes = await axios.get(`http://localhost:3000/api/blogs/${id}`);
-  const blog = await blogsRes?.data?.blog;
+  const blog = await blogsRes?.data?.simplifiedBlogs;
   const blogCatRes = await axios(
     "http://localhost:3000/api/blogs/blog-categories"
   );
-  const categories = await blogCatRes?.data?.categories;
+  const categories = await blogCatRes?.data?.simplifiedBlogsCategories;
+  console.log("Single Blog: ", blog);
+  
 
   return (
     <div className="p-6 flex  flex-col space-y-10 ">

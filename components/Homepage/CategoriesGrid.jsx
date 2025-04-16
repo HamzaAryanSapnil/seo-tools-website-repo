@@ -8,7 +8,7 @@ export default function CategoriesGrid({ categories }) {
 
   return (
     <section className="container mx-auto px-4 py-12 space-y-16 font-roboto my-10">
-      {categories.slice(0, 10).map((category) => (
+      {categories.slice(0, 4).map((category) => (
         <div
           key={category.slug}
           className="mb-12 border shadow-md rounded-lg p-6 bg-white "
@@ -50,12 +50,12 @@ export default function CategoriesGrid({ categories }) {
           )}
         </div>
       ))}
-      {categories.length > 10 && (
+      {categories.length > 4 && (
         <div className="text-center">
           <Link href="/our-services">
             <Button
               className={
-                "text-seo-secondary text-lg bg-white shadow-lg py-5 hover:bg-seo-light-green hover:text-white"
+                "text-seo-forth-color text-lg bg-white shadow-lg py-5 hover:bg-seo-light-green hover:text-white"
               }
             >
               See All Our Services
