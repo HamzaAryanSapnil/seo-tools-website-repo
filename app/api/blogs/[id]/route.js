@@ -6,6 +6,8 @@ export async function GET(req, { params }) {
   try {
     await dbConnect();
     const { id } = await params;
+    console.log("blog id: ", id);
+    
     const blog = await Blog.findById(id).populate({
       path: "category",
       select: "name", // 👈 only get category name

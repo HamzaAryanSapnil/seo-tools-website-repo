@@ -35,6 +35,31 @@ export const blogFormSchema = z.object({
     .nullable()
     .optional(),
   category: z.string().min(1, "Category is required"),
+  authorName: z.string().min(1, "Author name is required"),
+  authorProfession: z.string().optional(),
+  authorBio: z.string().min(1, "Author's Bio is required"),
+  authorFacebook: z.string().optional(),
+  authorLinkedin: z.string().optional(),
+  authorYoutube: z.string().optional(),
+  authorTwitterX: z.string().optional(),
+  authorInstagram: z.string().optional(),
+  authorImage: z
+    .union([
+      z.instanceof(File).refine(
+        (file) => {
+          return ACCEPTED_IMAGE_TYPES.includes(file.type);
+        },
+        {
+          message:
+            "Invalid image type. Only .jpg, .jpeg, .png, .webp formats are supported",
+        }
+      ),
+      z.string().url().refine(isValidImageUrl, {
+        message: "Invalid image URL",
+      }),
+    ])
+    .nullable()
+    .optional(),
 
   // Optional metadata
   metaTitle: z.string().optional(),
@@ -43,6 +68,6 @@ export const blogFormSchema = z.object({
   ogDescription: z.string().optional(),
 
   // Optional system fields
-  
+
   views: z.number().optional(),
 });

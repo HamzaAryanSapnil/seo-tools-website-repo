@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/db";
 import BlogCategory from "@/models/BlogCategory";
+import Category from "@/models/Category";
 
 export async function GET() {
   try {

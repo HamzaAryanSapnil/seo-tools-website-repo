@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { optional } from "zod";
 
 const blogSchema = new mongoose.Schema(
   {
@@ -13,6 +14,15 @@ const blogSchema = new mongoose.Schema(
       ref: "BlogCategory",
       required: true,
     },
+    authorName: { type: String, required: true },
+    authorProfession: { type: String, optional: true },
+    authorBio: { type: String, required: true },
+    authorFacebook: { type: String, optional: true },
+    authorLinkedin: { type: String, optional: true },
+    authorYoutube: { type: String, optional: true },
+    authorTwitterX: { type: String, optional: true },
+    authorInstagram: { type: String, optional: true },
+    authorImage: { type: String, optional: true },
 
     metaTitle: { type: String },
     metaDescription: { type: String },
@@ -22,10 +32,16 @@ const blogSchema = new mongoose.Schema(
     featured: { type: Boolean, default: false },
     views: { type: Number, default: 0 },
   },
+
   {
     timestamps: true, // adds createdAt and updatedAt
+ 
   }
 );
+
+if (mongoose.models.Blog) {
+  delete mongoose.models.Blog;
+}
 
 const Blog = mongoose.models.Blog ?? mongoose.model("Blog", blogSchema);
 export default Blog;

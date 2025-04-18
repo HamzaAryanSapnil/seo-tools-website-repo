@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Branding Section - Full width on mobile, 1 column on md/lg */}
           <div className="lg:col-span-1">
             <img
-              src="./fdt-logo.png"
+              src="/fdt-logo.png"
               alt="Free tools website's logo"
               className="w-36 h-36 my-5"
             />

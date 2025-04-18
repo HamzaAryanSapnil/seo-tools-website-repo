@@ -379,4 +379,19 @@ export const TOOLS_CONFIG = [
       },
     ],
   },
+  {
+    slug: "youtube-tag-extractor",
+    name: "Youtube Tag Extractor",
+    category: "Youtube Tools",
+    description: "Generate tags for youtube videos",
+    fields: [
+      {
+        name: "dailyUsage",
+        label: "Daily Usage",
+        type: "number",
+        description:
+          "Daily usage restrictions refer to the limitations placed on the number of requests that a user can perform within a 24-hour period.",
+      },
+    ],
+  },
 ];

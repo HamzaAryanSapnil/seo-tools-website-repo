@@ -4,10 +4,25 @@ import BlogCategory from "@/models/BlogCategory";
 
 
 
-export async function GET() {
+export async function GET(request) {
   try {
     await dbConnect();
-    const blogs = await Blog.find().populate({
+
+    const { searchParams } = new URL(request?.url);
+    const recent = searchParams?.get("recent");
+    const limitParam = searchParams?.get("limit");
+
+
+     let query = Blog.find();
+
+     if (recent === "true" || limitParam) {
+       query = query.sort({ createdAt: -1 });
+       if (limitParam) query = query.limit(parseInt(limitParam));
+       else query = query.limit(10); // default 10
+     }
+
+
+    const blogs = await query.populate({
       path: "category",
       select: "name", // 👈 only get category name
     });

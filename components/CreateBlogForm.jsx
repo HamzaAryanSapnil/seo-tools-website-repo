@@ -38,6 +38,7 @@ const CreateBlogForm = ({ categories }) => {
   const [loading, setLoading] = useState(false);
   const [fileImage, setFileImage] = useState(null);
   const [slugManuallyModified, setSlugManuallyModified] = useState(false);
+  const [authorImage, setAuthorImage] = useState(null);
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
@@ -53,6 +54,15 @@ const CreateBlogForm = ({ categories }) => {
       ogTitle: "",
       ogDescription: "",
       views: 0,
+      authorName: "",
+      authorProfession: "",
+      authorBio: "",
+      authorFacebook: "",
+      authorLinkedin: "",
+      authorYoutube: "",
+      authorTwitterX: "",
+      authorInstagram: "",
+      authorImage: "",
     },
   });
 
@@ -65,31 +75,37 @@ const CreateBlogForm = ({ categories }) => {
     }
   }, [titleValue, slugManuallyModified, form]);
 
+  // Update uploadImageToImgbb function in CreateBlogForm.jsx using axios
   const uploadImageToImgbb = async (file) => {
     try {
-      const imgBBApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; // use NEXT_PUBLIC_ so it's exposed to client
-      const imgBBApiUrl = process.env.NEXT_PUBLIC_IMGBB_URL;
       const formData = new FormData();
       formData.append("image", file);
 
-      const response = await axios.post(imgBBApiUrl, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        params: {
-          key: imgBBApiKey,
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/uploadImage",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      if (!response?.data?.data?.url) {
+      if (response.data.url) {
+        return response.data.url;
+      } else {
         toast.error("Image upload failed");
-      }
 
-      return response?.data?.data?.url || null;
+        return null;
+      }
     } catch (error) {
       toast.error(error?.message || "Image upload failed");
+      console.log(error);
+
+      return null;
     }
   };
+
   const onSubmit = async (values) => {
     try {
       setLoading(true);
@@ -97,6 +113,11 @@ const CreateBlogForm = ({ categories }) => {
 
       const imgUrl = await uploadImageToImgbb(values?.coverImage);
       values.coverImage = imgUrl;
+      if (authorImage) {
+        const authorImgUrl = await uploadImageToImgbb(authorImage);
+        values.authorImage = authorImgUrl; // Add the author's image URL
+      }
+
       console.log("Form values before submission:", values);
 
       const result = await createBlogServerAction(values);
@@ -322,6 +343,187 @@ const CreateBlogForm = ({ categories }) => {
             </FormItem>
           )}
         />
+
+        {/* Author Information */}
+        <h3 className="text-xl font-semibold">Author Information</h3>
+        <div className=" grid grid-cols-1 xl:grid-cols-2 gap-6  ">
+          <FormField
+            name="authorName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Author's Name</FormLabel>
+                <FormControl>
+                  <Input
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="authorProfession"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Author's Profession</FormLabel>
+                <FormControl>
+                  <Input
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="authorBio"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Author's Bio</FormLabel>
+                <FormControl>
+                  <Textarea
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Social Media Links */}
+
+          <FormField
+            name="authorFacebook"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Author's Facebook Page Or Profile Link</FormLabel>
+                <FormControl>
+                  <Input
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                    type={"url"}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="authorLinkedin"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Auhor's Linkedin Profile Link</FormLabel>
+                <FormControl>
+                  <Input
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                    type={"url"}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="authorYoutube"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Auhor's Youtube Channel Link</FormLabel>
+                <FormControl>
+                  <Input
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                    type={"url"}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="authorTwitterX"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Auhor's Twitter Link</FormLabel>
+                <FormControl>
+                  <Input
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                    type={"url"}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="authorInstagram"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Auhor's Instagram Link</FormLabel>
+                <FormControl>
+                  <Input
+                    onChange={(e) => field.onChange(e.target.value)}
+                    {...field}
+                    type={"url"}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Author Image */}
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold">Image</h3>
+            <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
+              <Image
+                src={authorImage ?? null}
+                alt="Author's Image"
+                width={2048}
+                height={1080}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <FormField
+              control={form.control}
+              name="authorImage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        field.onChange(file);
+                        setAuthorImage(URL.createObjectURL(file));
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
 
         <Button type="submit" disabled={loading}>
           {loading ? (
