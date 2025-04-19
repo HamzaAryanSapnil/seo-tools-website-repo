@@ -10,4 +10,5 @@ export const toolsCategoryFormSchema = z.object({
   description: z.string().min(1, "Description is required"),
   metaTitle: z.string().min(1, "Meta title is required"),
   metaDescription: z.string().min(1, "Meta description is required"),
+  homepage: z.boolean().default(false).optional(),
 });

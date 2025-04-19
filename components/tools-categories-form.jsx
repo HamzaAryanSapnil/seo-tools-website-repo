@@ -26,8 +26,12 @@ import { Separator } from "./ui/separator";
 import { categoryFormSchema } from "@/schemas/category-form-schema";
 import { toolsCategoryFormSchema } from "@/schemas/tools-category-form-schema";
 import { Loader2 } from "lucide-react";
-import { checkCategorySlug, createCategory } from "@/lib/actions/categoryAction";
+import {
+  checkCategorySlug,
+  createCategory,
+} from "@/lib/actions/categoryAction";
 import { toast } from "sonner";
+import { Checkbox } from "./ui/checkbox";
 
 export const generateSlug = (str) => {
   return str
@@ -52,6 +56,7 @@ const ToolsCategoryForm = () => {
       metaTitle: "",
       metaDescription: "",
       parentCategory: "",
+      homepage: false,
     },
   });
 
@@ -81,7 +86,6 @@ const ToolsCategoryForm = () => {
         try {
           setIsCheckingSlug(true);
           setSlugMessage("");
-          
 
           const slugUniqueResponse = await checkCategorySlug(slugValue);
 
@@ -96,7 +100,6 @@ const ToolsCategoryForm = () => {
           if (slugUniqueResponse?.isUnique === true) {
             setIsSlugUnique(true);
             form.clearErrors("slug");
-            
           }
 
           setIsCheckingSlug(false);
@@ -116,7 +119,7 @@ const ToolsCategoryForm = () => {
       const res = await createCategory(values);
       if (res?.status === "SUCCESS") {
         toast.success(res?.message);
-        console.log("Category created successfully:", res?.data);  
+        console.log("Category created successfully:", res?.data);
       }
     } catch (error) {
       console.error("Category form submission error:", error);
@@ -259,6 +262,25 @@ const ToolsCategoryForm = () => {
             </FormItem>
           )}
         />
+        {/* Homepage Section */}
+        <div className="space-y-6 border-b pb-6">
+          <h3 className="text-xl font-semibold">Homepage</h3>
+          <FormField
+            control={form.control}
+            name="homepage"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel>Mark as Homepage</FormLabel>
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button type="submit">Save</Button>
       </form>

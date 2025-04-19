@@ -1,5 +1,6 @@
 // models/Category.js
 import mongoose from "mongoose";
+import { optional } from "zod";
 
 const categorySchema = new mongoose.Schema(
   {
@@ -47,7 +48,13 @@ const categorySchema = new mongoose.Schema(
       type: String,
       required: [true, "Meta description is required"],
     },
+    homepage: {
+      type: Boolean,
+      default: false,
+      optional: true,
+    },
   },
+
   {
     timestamps: true,
   }

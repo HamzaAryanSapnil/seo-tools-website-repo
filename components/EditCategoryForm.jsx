@@ -41,6 +41,7 @@ const EditCategoryForm = ({ initialData }) => {
       description: initialData.description,
       metaTitle: initialData.metaTitle,
       metaDescription: initialData.metaDescription,
+      homepage: initialData.homepage,
     },
   });
 
@@ -167,6 +168,26 @@ const EditCategoryForm = ({ initialData }) => {
             </FormItem>
           )}
         />
+
+        {/* Homepage Section */}
+        <div className="space-y-6 border-b pb-6">
+          <h3 className="text-xl font-semibold">Homepage</h3>
+          <FormField
+            control={form.control}
+            name="homepage"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel>Mark as Homepage</FormLabel>
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? (

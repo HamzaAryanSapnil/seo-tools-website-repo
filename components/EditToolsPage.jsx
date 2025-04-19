@@ -73,7 +73,7 @@ const EditToolForm = ({ tool, categories }) => {
             },
           ],
 
-      homepage: tool?.homepage ? tool?.homepage : false,
+     
       metaTitle: tool?.metaTitle ? tool?.metaTitle : "",
       metaDescription: tool?.metaDescription ? tool?.metaDescription : "",
       ogTitle: tool?.ogTitle ? tool?.ogTitle : "",
@@ -647,25 +647,7 @@ const EditToolForm = ({ tool, categories }) => {
             </div>
           </div>
 
-          {/* Homepage Section */}
-          <div className="space-y-6 border-b pb-6">
-            <h3 className="text-xl font-semibold">Homepage</h3>
-            <FormField
-              control={form.control}
-              name="homepage"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel>Mark as Homepage</FormLabel>
-                </FormItem>
-              )}
-            />
-          </div>
+        
 
           {/* SEO Settings */}
           <div className="space-y-6 border-b pb-6">

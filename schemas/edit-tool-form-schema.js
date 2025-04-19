@@ -61,7 +61,7 @@ export const editToolFormSchema = z.object({
         }),
     })
   ),
-  homepage: z.boolean().default(false),
+ 
   metaTitle: z.string().optional(),
   metaDescription: z.string().optional(),
   ogTitle: z.string().optional(),

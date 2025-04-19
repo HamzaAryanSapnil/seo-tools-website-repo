@@ -95,10 +95,7 @@ const toolSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  homepage: {
-    type: Boolean,
-    default: false,
-  },
+
   metaTitle: {
     type: String,
     default: "",

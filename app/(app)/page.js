@@ -42,7 +42,9 @@ export default async function Home() {
   // const categories = getToolsByCategory();
   const res = await axios("http://localhost:3000/api/admin/tools");
   const tools = res?.data || [];
-    const toolsCatRes = await axios.get("http://localhost:3000/api/admin/getCategory");
+    const toolsCatRes = await axios.get(
+      "http://localhost:3000/api/admin/getCategory?homepage=true"
+    );
     const categories = toolsCatRes?.data?.data;
 
   console.log("Tools and Categories: ", {categories, tools});

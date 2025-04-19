@@ -1,6 +1,6 @@
 revalidate: 1;
 import AdminCategoryMainPageTable from '@/components/AdminCategoryMainPageTable';
-import CategoriesForm from '@/components/categories-form';
+
 import { columns } from '@/components/ReusableTable/column';
 import { DataTable } from '@/components/ReusableTable/data-table';
 import ToolsCategoryForm from '@/components/tools-categories-form';
