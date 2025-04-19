@@ -1,4 +1,3 @@
-
 import HeroSection from "@/components/Homepage/Hero";
 import CategoriesGrid from "@/components/Homepage/CategoriesGrid";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
@@ -7,7 +6,7 @@ import FeedBackSliderDetails from "@/components/Homepage/FeedBackSliderDetails";
 import LatestInstagramArticlesSliderDetails from "@/components/Homepage/LatestInstagramArticlesSliderDetails";
 import WhyShouldYouSec from "@/components/Homepage/WhyShouldYouSec";
 import SiteOverviewCard from "@/components/Homepage/SiteOverviewCard";
-
+import axios from "axios";
 
 const getToolsByCategory = () => {
   // Group tools by category from TOOLS_CONFIG with validation
@@ -39,19 +38,25 @@ const getToolsByCategory = () => {
   );
 };
 
-export default function Home() {
-  const categories = getToolsByCategory();
+export default async function Home() {
+  // const categories = getToolsByCategory();
+  const res = await axios("http://localhost:3000/api/admin/tools");
+  const tools = res?.data || [];
+    const toolsCatRes = await axios.get("http://localhost:3000/api/admin/getCategory");
+    const categories = toolsCatRes?.data?.data;
 
+  console.log("Tools and Categories: ", {categories, tools});
   
+
   return (
-    <main className="" >
+    <main className="">
       <HeroSection />
-      <SeoStudioToolsStats/>
-      <CategoriesGrid categories={categories} />
-      <FeedBackSliderDetails/>
-      <LatestInstagramArticlesSliderDetails/>
-      <WhyShouldYouSec/>
-      <SiteOverviewCard/>
+      <SeoStudioToolsStats />
+      <CategoriesGrid categories={categories} tools={tools}/>
+      <FeedBackSliderDetails />
+      <LatestInstagramArticlesSliderDetails />
+      <WhyShouldYouSec />
+      <SiteOverviewCard />
     </main>
   );
 }

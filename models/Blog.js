@@ -29,7 +29,7 @@ const blogSchema = new mongoose.Schema(
     ogTitle: { type: String },
     ogDescription: { type: String },
 
-    featured: { type: Boolean, default: false },
+    featured: { type: Boolean, default: false, optional: true },
     views: { type: Number, default: 0 },
   },
 

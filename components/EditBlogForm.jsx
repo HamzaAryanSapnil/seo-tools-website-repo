@@ -33,76 +33,101 @@ import { Loader2 } from "lucide-react";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
-const EditBlogForm = ({ initialData, categories }) => {
- 
-
- 
+export default function EditBlogForm({ initialData, categories }) {
   const [loading, setLoading] = useState(false);
-  const [fileImage, setFileImage] = useState(null);
+  const [coverPreview, setCoverPreview] = useState(
+    initialData.coverImage || null
+  );
+  const [authorPreview, setAuthorPreview] = useState(
+    initialData.authorImage || null
+  );
+
+  const defaultCategory =
+    initialData?.category?._id ?? initialData.category ?? "";
 
   const form = useForm({
     resolver: zodResolver(blogFormSchema),
     defaultValues: {
-      ...initialData,
-      category: initialData?.category?._id || "", // Use category._id as the default value
+      title: initialData.title,
+      slug: initialData.slug,
+      excerpt: initialData.excerpt,
+      content: initialData.content,
+      coverImage: initialData.coverImage,
+      category: defaultCategory,
+      authorName: initialData.authorName,
+      authorProfession: initialData.authorProfession || "",
+      authorBio: initialData.authorBio,
+      authorFacebook: initialData.authorFacebook || "",
+      authorLinkedin: initialData.authorLinkedin || "",
+      authorYoutube: initialData.authorYoutube || "",
+      authorTwitterX: initialData.authorTwitterX || "",
+      authorInstagram: initialData.authorInstagram || "",
+      authorImage: initialData.authorImage || null,
+      metaTitle: initialData.metaTitle || "",
+      metaDescription: initialData.metaDescription || "",
+      ogTitle: initialData.ogTitle || "",
+      ogDescription: initialData.ogDescription || "",
+      featured: initialData.featured || false,
+      views: initialData.views || 0,
     },
   });
 
-   useEffect(() => {
-     if (initialData) {
-       form.reset({
-         ...initialData,
-         category: initialData?.category?._id || "", // Reset with category._id
-       });
-     }
-   }, [initialData, form]);
+  useEffect(() => {
+    const resetCategory =
+      initialData?.category?._id ?? initialData.category ?? "";
+    form.reset({ ...initialData, category: resetCategory });
+    setCoverPreview(initialData.coverImage || null);
+    setAuthorPreview(initialData.authorImage || null);
+  }, [initialData, form]);
 
   const uploadImageToImgbb = async (file) => {
     try {
-      const imgBBApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; // use NEXT_PUBLIC_ so it's exposed to client
+      const imgBBApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
       const imgBBApiUrl = process.env.NEXT_PUBLIC_IMGBB_URL;
       const formData = new FormData();
       formData.append("image", file);
 
       const response = await axios.post(imgBBApiUrl, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        params: {
-          key: imgBBApiKey,
-        },
+        headers: { "Content-Type": "multipart/form-data" },
+        params: { key: imgBBApiKey },
       });
 
       if (!response?.data?.data?.url) {
         toast.error("Image upload failed");
+        return null;
       }
-
-      return response?.data?.data?.url || null;
-    } catch (error) {
-      toast.error(error?.message || "Image upload failed");
+      return response.data.data.url;
+    } catch (err) {
+      toast.error(err.message || "Image upload failed");
+      console.log(err);
+      
+      return null;
     }
   };
+
   const onSubmit = async (values) => {
     try {
-      if (values.coverImage instanceof File) {
-        const imgUrl = await uploadImageToImgbb(values.coverImage);
-        if (!imgUrl) {
-          toast.error("Image upload failed");
-          return;
-        }
-        values.coverImage = imgUrl;
-      }
       setLoading(true);
-      const res = await updateBlogServerAction(initialData._id, values);
-
-      if (res?.status === "SUCCESS") {
-        toast.success(res.message ?? "Blog updated successfully");
+      // Cover image
+      if (values.coverImage instanceof File) {
+        const url = await uploadImageToImgbb(values.coverImage);
+        if (!url) return setLoading(false);
+        values.coverImage = url;
+      }
+      // Author image
+      if (values.authorImage instanceof File) {
+        const url = await uploadImageToImgbb(values.authorImage);
+        if (!url) return setLoading(false);
+        values.authorImage = url;
       }
 
-      setLoading(false);
-    } catch (error) {
-      console.error("Error uploading image", error);
-      toast.error(error.message ?? "Blog update failed");
+      const res = await updateBlogServerAction(initialData._id, values);
+      if (res?.status === "SUCCESS")
+        toast.success(res.message || "Blog updated");
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Update failed");
+    } finally {
       setLoading(false);
     }
   };
@@ -110,6 +135,7 @@ const EditBlogForm = ({ initialData, categories }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Title & Slug */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FormField
             name="title"
@@ -118,7 +144,7 @@ const EditBlogForm = ({ initialData, categories }) => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ""} />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -131,7 +157,7 @@ const EditBlogForm = ({ initialData, categories }) => {
               <FormItem>
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ""} />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -139,6 +165,7 @@ const EditBlogForm = ({ initialData, categories }) => {
           />
         </div>
 
+        {/* Excerpt */}
         <FormField
           name="excerpt"
           control={form.control}
@@ -153,26 +180,23 @@ const EditBlogForm = ({ initialData, categories }) => {
           )}
         />
 
-        <div className="space-y-6">
-          <h3 className="text-xl font-semibold">Image</h3>
+        {/* Cover Image */}
+        <div className="space-y-2">
+          <FormLabel>Cover Image</FormLabel>
           <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
-            <Image
-              src={
-                fileImage
-                  ? fileImage
-                  : initialData?.coverImage
-                  ? initialData?.coverImage
-                  : null
-              }
-              alt="Blog Image"
-              width={2048}
-              height={1080}
-              className="w-full h-full object-cover"
-            />
+            {coverPreview && (
+              <Image
+                src={coverPreview ?? null}
+                alt="Blog Image"
+                width={2048}
+                height={1080}
+                className="w-full h-full object-cover"
+              />
+            )}
           </div>
           <FormField
-            control={form.control}
             name="coverImage"
+            control={form.control}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -182,7 +206,11 @@ const EditBlogForm = ({ initialData, categories }) => {
                     onChange={(e) => {
                       const file = e.target.files?.[0] || null;
                       field.onChange(file);
-                      setFileImage(URL.createObjectURL(file));
+                      setCoverPreview(
+                        file
+                          ? URL.createObjectURL(file)
+                          : initialData.coverImage
+                      );
                     }}
                   />
                 </FormControl>
@@ -192,31 +220,33 @@ const EditBlogForm = ({ initialData, categories }) => {
           />
         </div>
 
+        {/* Category */}
         <FormField
           name="category"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category</FormLabel>
-              <Select value={field.value ?? ""} onValueChange={(value) => field.onChange(value)}>
-                <FormControl>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {categories?.map((cat) => (
-                    <SelectItem key={cat._id} value={cat._id}>
-                      {cat.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  <SelectContent>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat._id} value={cat._id}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Content */}
         <FormField
           name="content"
           control={form.control}
@@ -224,17 +254,14 @@ const EditBlogForm = ({ initialData, categories }) => {
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <MDEditor
-                  value={field.value}
-                  onChange={field.onChange}
-                  height={400}
-                />
+                <MDEditor value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Meta & OG */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FormField
             name="metaTitle"
@@ -243,7 +270,7 @@ const EditBlogForm = ({ initialData, categories }) => {
               <FormItem>
                 <FormLabel>Meta Title</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ""} />
+                  <Input {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -261,7 +288,6 @@ const EditBlogForm = ({ initialData, categories }) => {
             )}
           />
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FormField
             name="ogTitle"
@@ -270,7 +296,7 @@ const EditBlogForm = ({ initialData, categories }) => {
               <FormItem>
                 <FormLabel>OG Title</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value ?? ""} />
+                  <Input {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -289,6 +315,110 @@ const EditBlogForm = ({ initialData, categories }) => {
           />
         </div>
 
+        {/* Author Info */}
+        <h3 className="text-xl font-semibold">Author Information</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <FormField
+            name="authorName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="authorProfession"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Profession</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="authorBio"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Bio</FormLabel>
+                <FormControl>
+                  <Textarea {...field} rows={3} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/** Social Links **/}
+          {["Facebook", "Linkedin", "Youtube", "TwitterX", "Instagram"].map(
+            (plat) => (
+              <FormField
+                key={plat}
+                name={`author${plat}`}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{plat} URL</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )
+          )}
+
+          {/* Author Image */}
+          <div className="space-y-2">
+            <FormLabel>Author Image</FormLabel>
+            <div className="border-dashed border-2 border-gray-500 h-56 flex items-center justify-center">
+              {authorPreview && (
+                <Image
+                  src={authorPreview ?? null}
+                  alt="Blog Image"
+                  width={2048}
+                  height={1080}
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </div>
+            <FormField
+              name="authorImage"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        field.onChange(file);
+                        setAuthorPreview(
+                          file
+                            ? URL.createObjectURL(file)
+                            : initialData.authorImage
+                        );
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        {/* Featured & Submit */}
         <FormField
           name="featured"
           control={form.control}
@@ -298,7 +428,7 @@ const EditBlogForm = ({ initialData, categories }) => {
               <FormControl>
                 <input
                   type="checkbox"
-                  checked={field.value ?? false}
+                  checked={field.value}
                   onChange={(e) => field.onChange(e.target.checked)}
                 />
               </FormControl>
@@ -306,12 +436,14 @@ const EditBlogForm = ({ initialData, categories }) => {
           )}
         />
 
-        <Button type="submit" disabled={loading}>
-          {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Update Blog"}
+        <Button type="submit" disabled={loading} className="mt-4">
+          {loading ? (
+            <Loader2 className="animate-spin mr-2 h-4 w-4" />
+          ) : (
+            "Update Blog"
+          )}
         </Button>
       </form>
     </Form>
   );
-};
-
-export default EditBlogForm;
+}

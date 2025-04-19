@@ -10,6 +10,9 @@ const BlogDetailsPage = async ({ params }) => {
   const blogResponse = await axios.get(`http://localhost:3000/api/blogs/${id}`);
   const blog = blogResponse?.data?.simplifiedBlogs;
 
+      const response = await axios.get(`http://localhost:3000/api/blogs?recent=true`);
+      const blogs = response?.data?.simplifiedBlogs || [];
+
   // Fetch blog categories for the sidebar
   const categoriesResponse = await axios.get(
     "http://localhost:3000/api/blogs/blog-categories"
@@ -35,6 +38,7 @@ const BlogDetailsPage = async ({ params }) => {
       categories={categories}
       // recentPosts={recentPosts}
       toolCategories={toolCategories}
+      recentPosts={blogs}
     />
   );
 };

@@ -5,7 +5,6 @@ const Navbar = () => {
   const navlinks = [
     { title: "Home", url: "/" },
     { title: "Blog", url: "/blogs" },
-    { title: "Plans", url: "/plans" },
     { title: "Our Services", url: "/our-services" },
   ];
   return (

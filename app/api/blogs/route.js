@@ -18,7 +18,7 @@ export async function GET(request) {
      if (recent === "true" || limitParam) {
        query = query.sort({ createdAt: -1 });
        if (limitParam) query = query.limit(parseInt(limitParam));
-       else query = query.limit(10); // default 10
+       else query = query.limit(5); // default 5
      }
 
 

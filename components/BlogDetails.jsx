@@ -8,6 +8,20 @@ import { marked } from "marked";
 import Link from "next/link";
 
 const headingMap = new Map();
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+  FaReddit,
+  FaWhatsapp,
+} from "react-icons/fa";
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  RedditShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
 
 // import { marked } from "marked";
 
@@ -85,6 +99,8 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [titles, setTitles] = useState([]);
+  const shareUrl = "https://seostudio.tools/";
+  const title = "Check out this awesome SEO tool!";
 
   useEffect(() => {
     const parseTitles = () => {
@@ -215,7 +231,7 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
 
         {/* Right Sidebar */}
         <motion.div
-          className={`col-span-1 lg:max-w-80 p-8 bg-white border shadow-sm sticky top-24 transition-opacity duration-700 ${
+          className={`col-span-1 lg:max-w-96 p-4 bg-white border shadow-sm sticky top-24 transition-opacity duration-700 ${
             sidebarVisible ? "opacity-100" : "opacity-0"
           }`}
           initial={{ opacity: 0 }}
@@ -241,18 +257,28 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
           {/* Recent Posts */}
           <div className="mb-8">
             <h3 className="text-xl font-bold mb-4">Recent Posts</h3>
-            <ul>
-              {recentPosts?.map((post) => (
-                <li key={post._id} className="mb-2">
-                  <Link
-                    href={`/blogs/${post._id}`}
-                    className="text-seo-forth-color font-bold hover:underline"
-                  >
-                    {post.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+
+            {recentPosts?.map((post) => (
+              <div key={post._id} className="flex items-center  gap-x- mb-4">
+                <div className=" flex-1/3">
+                  <img
+                    src={post.coverImage ?? ""}
+                    alt="post image"
+                    className="rounded-full w-16 h-16  object-cover"
+                  />
+                </div>
+                <Link
+                  href={`/blogs/${post._id}`}
+                  className="text-seo-forth-color font-bold hover:underline flex-2/3"
+                >
+                  <p className="text-wrap break-words break-after-auto text-lg">
+                    {post.title.length > 30
+                      ? post.title.slice(0, 35) + "..."
+                      : post.title}
+                  </p>
+                </Link>
+              </div>
+            ))}
           </div>
 
           <div className="mb-8">
@@ -271,6 +297,28 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
             </ul>
           </div>
         </motion.div>
+      </div>
+      {/* Social Icons */}
+      <div className="flex justify-center gap-4  max-w-sm p-4 mx-auto ">
+        <FacebookShareButton url={shareUrl} quote={title}>
+          <FaFacebookF className="text-blue-500 hover:text-blue-700 text-2xl cursor-pointer" />
+        </FacebookShareButton>
+
+        <TwitterShareButton url={shareUrl} title={title}>
+          <FaTwitter className="text-blue-400 hover:text-blue-600 text-2xl cursor-pointer" />
+        </TwitterShareButton>
+
+        <LinkedinShareButton url={shareUrl} title={title}>
+          <FaLinkedinIn className="text-blue-700 hover:text-blue-900 text-2xl cursor-pointer" />
+        </LinkedinShareButton>
+
+        <RedditShareButton url={shareUrl} title={title}>
+          <FaReddit className="text-red-500 hover:text-red-700 text-2xl cursor-pointer" />
+        </RedditShareButton>
+
+        <WhatsappShareButton url={shareUrl} title={title}>
+          <FaWhatsapp className="text-green-500 hover:text-green-700 text-2xl cursor-pointer" />
+        </WhatsappShareButton>
       </div>
     </section>
   );

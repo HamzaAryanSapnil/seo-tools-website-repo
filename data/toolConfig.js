@@ -154,6 +154,7 @@ export const TOOLS_CONFIG = [
     slug: "md5-generator",
     name: "MD5 Generator",
     category: "hashing",
+    
     description: "Generate MD5 hashes for files",
     fields: [
       {

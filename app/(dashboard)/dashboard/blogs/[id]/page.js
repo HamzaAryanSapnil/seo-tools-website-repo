@@ -9,7 +9,7 @@ const BlogEditPage = async ({ params }) => {
     "http://localhost:3000/api/blogs/blog-categories"
   );
   const categories = await blogCatRes?.data?.simplifiedBlogsCategories;
-  console.log("Single Blog: ", blog);
+
   
 
   return (

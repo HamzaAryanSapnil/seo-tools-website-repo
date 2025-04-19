@@ -63,6 +63,7 @@ const CreateBlogForm = ({ categories }) => {
       authorTwitterX: "",
       authorInstagram: "",
       authorImage: "",
+      featured: false,
     },
   });
 
@@ -524,6 +525,24 @@ const CreateBlogForm = ({ categories }) => {
             />
           </div>
         </div>
+
+        {/* Featured & Submit */}
+        <FormField
+          name="featured"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Featured</FormLabel>
+              <FormControl>
+                <input
+                  type="checkbox"
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
 
         <Button type="submit" disabled={loading}>
           {loading ? (
