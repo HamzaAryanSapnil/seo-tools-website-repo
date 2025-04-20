@@ -159,10 +159,10 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
           {blog.title}
         </h1>
       </div>
-      <div className="relative grid grid-cols-1 md:grid-cols-5 gap-x-6 container mx-auto justify-center items-start">
+      <div className="relative grid grid-cols-1 lg:grid-cols-5 gap-x-2 xl:gap-x-6 container mx-auto justify-center items-start">
         {/* TOC Sidebar */}
         <motion.div
-          className={`sticky top-24 col-span-1 lg:max-w-80 transition-opacity duration-700 ${
+          className={`lg:sticky top-24 col-span-1 lg:max-w-80 transition-opacity duration-700 order-3 lg:order-1  ${
             sidebarVisible ? "opacity-100" : "opacity-0"
           }`}
           initial={{ opacity: 0 }}
@@ -198,7 +198,7 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
         </motion.div>
 
         {/* Blog Content */}
-        <div className="col-span-3 bg-white border shadow-sm">
+        <div className="col-span-3 bg-white border shadow-sm order-1 lg:order-2">
           <figure>
             <img
               src={blog?.coverImage}
@@ -231,14 +231,30 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
 
         {/* Right Sidebar */}
         <motion.div
-          className={`col-span-1 lg:max-w-96 p-4 bg-white border shadow-sm sticky top-24 transition-opacity duration-700 ${
+          className={`order-2 lg:order-3  col-span-1 lg:max-w-96 p-4 bg-white border shadow-sm lg:sticky top-24 transition-opacity duration-700 ${
             sidebarVisible ? "opacity-100" : "opacity-0"
           }`}
           initial={{ opacity: 0 }}
           animate={{ opacity: sidebarVisible ? 1 : 0 }}
         >
+          {/* author card */}
+          <div className="p-2">
+            <h2 className="text-2xl font-bold mb-4">Author</h2>
+            <img
+              src={blog?.authorImage ? blog?.authorImage : null}
+              alt=""
+              className="w-32 h-32 rounded-full object-cover mb-4"
+            />
+            <h3 className="text-xl font-bold mb-2">{blog?.authorName}</h3>
+            <Link
+              href={`/author/${blog?.authorId}`}
+              className="text-seo-forth-color font-bold hover:underline"
+            >
+              View Profile
+            </Link>
+          </div>
           {/* Categories */}
-          <div className="mb-8">
+          <div className="mb-8 p-2">
             <h3 className="text-xl font-bold mb-4">Tools Categories</h3>
             <ul>
               {toolCategories?.map((category) => (
@@ -259,19 +275,22 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
             <h3 className="text-xl font-bold mb-4">Recent Posts</h3>
 
             {recentPosts?.map((post) => (
-              <div key={post._id} className="flex items-center  gap-x- mb-4">
+              <div
+                key={post._id}
+                className="flex justify-center items-center  gap-x- mb-4 xl:p-3"
+              >
                 <div className=" flex-1/3">
                   <img
                     src={post.coverImage ?? ""}
                     alt="post image"
-                    className="rounded-full w-16 h-16  object-cover"
+                    className="rounded-full w-10 h-10 xl:w-16 xl:h-16  object-cover"
                   />
                 </div>
                 <Link
                   href={`/blogs/${post._id}`}
                   className="text-seo-forth-color font-bold hover:underline flex-2/3"
                 >
-                  <p className="text-wrap break-words break-after-auto text-lg">
+                  <p className="text-wrap break-words break-after-auto xl:text-lg">
                     {post.title.length > 30
                       ? post.title.slice(0, 35) + "..."
                       : post.title}
@@ -281,7 +300,7 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
             ))}
           </div>
 
-          <div className="mb-8">
+          <div className="mb-8 p-2">
             <h3 className="text-xl font-bold mb-4">Blogs Categories</h3>
             <ul>
               {categories?.map((category) => (
