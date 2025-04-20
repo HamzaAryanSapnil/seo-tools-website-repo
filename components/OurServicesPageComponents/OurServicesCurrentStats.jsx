@@ -36,7 +36,7 @@ const OurServicesCurrentStats = () => {
     },
   ];
   return (
-    <div className="p-2 border border-black grid grid-cols-1  md:grid-cols-6 gap-6 justify-center items-center">
+    <div className="p-4 border border-black grid grid-cols-1  md:grid-cols-6 gap-6 justify-center justify-items-center  items-center">
       {statCards.map((statCard, index) => (
         <OurServicesStatsCards key={index} stats={statCard} />
       ))}
