@@ -1,6 +1,7 @@
 import { Activity, Briefcase, UsersRound } from "lucide-react";
 import React from "react";
 import { FaUsers } from "react-icons/fa";
+import { PiCursorFill } from "react-icons/pi";
 import OurServicesStatsCards from "./OurServicesStatsCards";
 
 const OurServicesCurrentStats = () => {
@@ -30,6 +31,7 @@ const OurServicesCurrentStats = () => {
       className: "md:col-span-3 justify-self-center align-self-center",
     },
     {
+      icon: <PiCursorFill />,
       title: "Search Clicks/Month",
       value: "400K+",
       className: "md:col-span-3 justify-self-center align-self-center",
