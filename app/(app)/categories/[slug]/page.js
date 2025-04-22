@@ -10,12 +10,14 @@ const AllToolsInThisCategoryPage = async ({ params }) => {
     );
     const tools = res?.data || [];
     console.log("Category Tools from API: ", tools);
+    console.log("Category Slug: ", categorySlug);
+    
 
   return (
     <div className="container mx-auto px-4 py-12 ">
       <div className="mb-8">
         <h1 className="text-3xl font-bold capitalize text-seo-light-green">
-          {slug.replace("-", " ")}
+          {categorySlug} 
         </h1>
         <p className="text-gray-600 mt-2">
           All tools in this category ({tools.length})
