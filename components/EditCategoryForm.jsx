@@ -19,6 +19,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { updateCategory } from "@/lib/actions/categoryAction";
+import { Checkbox } from "./ui/checkbox";
 
 const generateSlug = (str) => {
   return str

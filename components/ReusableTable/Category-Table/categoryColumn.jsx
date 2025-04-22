@@ -40,8 +40,50 @@ export const categoryColumns = [
     header: "Title",
   },
   {
+    accessorKey: "homepage",
+    header: "Homepage",
+    cell: ({ row, table }) => {
+      const category = row.original;
+      const homepage = row.getValue("homepage");
+
+
+
+      const handleClick = () => {
+        console.log("category", category._id, category.homepage);
+        
+        if (table?.options?.meta?.handleHomepageToggle) {
+          table?.options?.meta.handleHomepageToggle(
+            category._id,
+            category.homepage
+          );
+        }
+      };
+
+      return (
+        <div
+          onClick={handleClick}
+          className="text-center font-medium cursor-pointer hover:bg-gray-100 p-2 rounded-md transition-colors"
+        >
+          {homepage === true ? (
+            <span className="text-sm text-green-600 font-semibold">
+              Yes
+            </span>
+          ) : (
+            <span className="text-sm text-red-600 font-semibold">No</span>
+          )}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "toolsCount",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Tools" className="text-center justify-center items-center" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Tools"
+        className="text-center justify-center items-center"
+      />
+    ),
     cell: ({ row }) => {
       const count = row.getValue("toolsCount");
       return (

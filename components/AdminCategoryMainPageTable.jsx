@@ -32,12 +32,49 @@ const AdminCategoryMainPageTable = ({ categories }) => {
         meta={{
           entityType: "category",
           handleSingleDelete: async (id) => {
-            // Implement single category delete
-            const result = await deleteCategory(id);
-            if (result.status === "SUCCESS") {
-              setCategoriesData((prev) => prev.filter((cat) => cat._id !== id));
-              refreshData();
-              toast.success(result.message);
+            try {
+              const result = await deleteCategory(id);
+              if (result.status === "SUCCESS") {
+                setCategoriesData((prev) =>
+                  prev.filter((cat) => cat._id !== id)
+                );
+                toast.success(result.message);
+                await refreshData(); // Consider if you need this - local state is already updated
+              }
+            } catch (error) {
+              toast.error(error.message || "Failed to delete category");
+            }
+          },
+          handleHomepageToggle: async (id, currentStatus) => {
+            console.log("category from table: ", id, currentStatus);
+            
+            try {
+              const result = await axios.patch(
+                `/api/admin/categories/${id}/homepage`,
+                {
+                  homepage: !currentStatus,
+                }
+              );
+
+              if (result.data.status === "SUCCESS") {
+                setCategoriesData((prev) =>
+                  prev.map((cat) =>
+                    cat._id === id ? { ...cat, homepage: !currentStatus } : cat
+                  )
+                );
+                toast.success("Homepage status updated");
+                // await refreshData(); // Only needed if other fields might change
+              }
+            } catch (error) {
+              // Rollback optimistic update
+              setCategoriesData((prev) =>
+                prev.map((cat) =>
+                  cat._id === id ? { ...cat, homepage: currentStatus } : cat
+                )
+              );
+              toast.error(
+                error.response?.data?.error || "Failed to update status"
+              );
             }
           },
         }}
