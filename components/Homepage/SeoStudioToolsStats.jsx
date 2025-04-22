@@ -15,7 +15,7 @@ const SeoStudioToolsStats = () => {
       <div className="container mx-auto flex flex-col justify-center items-center gap-y-10">
         <div className="flex flex-col justify-center items-center gap-y-6">
           <h1 className="text-4xl font-bold font-playfair text-seo-first-color ">
-            SEOStudio Tools
+            Free Digital Tools
           </h1>
           <p className="text-seo-forth-color text-center md:w-3xl text-base/6  max-w-xl">
             Free online Seo, Text, Image, Youtube, Web Management, Web

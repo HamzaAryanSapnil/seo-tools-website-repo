@@ -5,7 +5,9 @@ import React from 'react'
 const layout = ({children}) => {
   return (
     <div className="">
-      <Navbar />
+      <section className='shadow-xl' >
+        <Navbar />
+      </section>
       {children}
       <Footer />
     </div>

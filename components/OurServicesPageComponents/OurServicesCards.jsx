@@ -62,7 +62,7 @@ const OurServicesCards = () => {
     },
   ];
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 my-10">
+    <section className="p-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 gap-y-20 my-10 justify-items-center justify-center items-center">
       {services.map((service, index) => (
         <OurServicesSingleCard key={index} service={service} />
       ))}

@@ -47,12 +47,12 @@ export default async function Home() {
     );
     const categories = toolsCatRes?.data?.data;
 
-  console.log("Tools and Categories: ", {categories, tools});
+
   
 
   return (
     <main className="">
-      <HeroSection />
+      {/* <HeroSection /> */}
       <SeoStudioToolsStats />
       <CategoriesGrid categories={categories} tools={tools}/>
       <FeedBackSliderDetails />

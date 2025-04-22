@@ -13,6 +13,8 @@ export default function CategoriesGrid({ categories, tools }) {
           (tool) => tool.category === category.name
         );
         console.log("matchedTools: ", matchedTools);
+        const categoryName = category.name.replace(/\s+/g, "-");
+        
         
         return (
           <div
@@ -20,7 +22,7 @@ export default function CategoriesGrid({ categories, tools }) {
             className="mb-12 border shadow-md rounded-lg p-6 bg-white "
           >
             <div className="flex justify-center items-center mb-10">
-              <Link href={`/categories/${category.slug}`}>
+              <Link href={`/categories/${categoryName}`}>
                 <h2 className="text-4xl font-bold font-inter text-center text-seo-first-color underline decoration-seo-light-green ">
                   {category.name}
                 </h2>

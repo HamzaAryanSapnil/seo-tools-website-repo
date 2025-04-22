@@ -101,6 +101,7 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
   const [titles, setTitles] = useState([]);
   const shareUrl = "https://seostudio.tools/";
   const title = "Check out this awesome SEO tool!";
+  const authorNameLink = blog?.authorName?.replace(/\s+/g, "-");
 
   useEffect(() => {
     const parseTitles = () => {
@@ -247,7 +248,7 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
             />
             <h3 className="text-xl font-bold mb-2">{blog?.authorName}</h3>
             <Link
-              href={`/author/${blog?.authorId}`}
+              href={`/blogs/author/${authorNameLink}`}
               className="text-seo-forth-color font-bold hover:underline"
             >
               View Profile

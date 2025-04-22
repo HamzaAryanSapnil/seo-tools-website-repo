@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Footer = () => {
@@ -8,11 +9,16 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-10">
           {/* Branding Section - Full width on mobile, 1 column on md/lg */}
           <div className="lg:col-span-1">
-            <img
-              src="/fdt-logo.png"
-              alt="Free tools website's logo"
-              className="w-36 h-36 my-5"
-            />
+            <Link
+              href={"/"}
+              className="md:px-3 text-xl h-auto  bg-none border-none bg-white border-white"
+            >
+              <img
+                src={"/free-dg-tools-more-resized.png"}
+                alt="free digital tools"
+                className=" w-40"
+              />
+            </Link>
             <p className="text-base">
               SeoStudio provides over 170 free tools for SEO experts, YouTubers,
               webmasters, students, and writers. These tools cover keyword
