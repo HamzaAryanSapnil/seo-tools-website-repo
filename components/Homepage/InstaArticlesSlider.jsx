@@ -9,7 +9,9 @@ import "./sliderStyle.css";
 import { Pagination, Autoplay } from "swiper/modules";
 import Link from "next/link";
 
-const InstaArticlesSlider = () => {
+const InstaArticlesSlider = ({ blogs }) => {
+  console.log("blogs", blogs);
+  
   const feedbacks = [
     {
       date: "Jan 20, 2025",
@@ -67,26 +69,35 @@ const InstaArticlesSlider = () => {
         modules={[Pagination, Autoplay]}
         className="mySwiper"
       >
-        {feedbacks.map((item, index) => (
+        {blogs?.map((item, index) => (
           <SwiperSlide key={index}>
             <div className=" flex justify-center items-center">
               <div className="card bg-white  shadow-sm xl:h-96 overflow-hidden">
-                <figure >
+                <figure>
                   <img
-                    src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                    src={
+                      item?.coverImage
+                        ? item?.coverImage
+                        : "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                    }
                     alt="Shoes"
                     className="rounded-lg h-52  object-cover w-80 "
                   />
                 </figure>
                 <div className="card-body justify-start ">
-                  <h2 className="card-title text-seo-second-color"> {item.title.length > 40 ? item.title.slice(0, 40) + "..." : item.title} </h2>
+                  <h2 className="card-title text-seo-second-color">
+                    {" "}
+                    {item?.title?.length > 40
+                      ? item.title.slice(0, 40) + "..."
+                      : item.title}{" "}
+                  </h2>
                   <p className="text-start text-seo-des-color-second font-medium">
-                    {item.description.length > 40
-                      ? item.description.slice(0, 40) + "..."
-                      : item.description}
+                    {item?.excerpt.length > 40
+                      ? item?.excerpt.slice(0, 40) + "..."
+                      : item?.excerpt}
                   </p>
                   <div className="card-actions justify-end">
-                    <Link href={`/blog/${item.slug}`} >
+                    <Link href={`/blogs/${item?._id}`}>
                       {" "}
                       <button className="btn bg-seo-forth-color text-white hover:bg-seo-first-color border-none">
                         Read More
