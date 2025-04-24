@@ -3,7 +3,6 @@
 import axios from "axios";
 
 import React, { useState } from "react";
-import { deleteCategory } from "@/lib/actions/categoryAction";
 import { toast } from "sonner";
 import { DataTable } from "../ReusableTable/data-table";
 

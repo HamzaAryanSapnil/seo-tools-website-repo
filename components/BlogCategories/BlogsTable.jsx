@@ -34,7 +34,7 @@ const BlogsTable = ({ blogs }) => {
             // Implement single category delete
             const result = await deleteBlogServerAction(id);
             if (result?.status === "SUCCESS") {
-              setCategoriesData((prev) => prev.filter((cat) => cat._id !== id));
+              setBlogsdata((prev) => prev.filter((cat) => cat._id !== id));
               await refreshBlogs();
               toast.success(result.message);
             }

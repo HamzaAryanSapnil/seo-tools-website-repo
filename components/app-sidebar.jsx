@@ -43,40 +43,10 @@ export function AppSidebar() {
       url: "/dashboard",
       icon: LayoutDashboard,
     },
-    // {
-    //   title: "Inbox",
-    //   url: "/inbox",
-    //   icon: Inbox,
-    // },
-    // {
-    //   title: "Calendar",
-    //   url: "#",
-    //   icon: Calendar,
-    // },
-    // {
-    //   title: "Search",
-    //   url: "#",
-    //   icon: Search,
-    // },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: Settings,
-    // },
+   
   ];
 
-  const blogPages = [
-    {
-      title: "Create Blog",
-      url: "/dashboard/blog/create-blog",
-      icon: MoveRight,
-    },
-    {
-      title: "Manage All Blogs",
-      url: "/dashboard/blog/manage-blogs",
-      icon: Book,
-    },
-  ];
+
 
   const data = {
     navMain: [
@@ -103,6 +73,18 @@ export function AppSidebar() {
           {
             title: "Tags",
             url: "/dashboard/blogs/tags",
+            icon: <ChevronRight />,
+          },
+        ],
+      },
+      {
+        title: "Contact Us",
+        url: "/dashboard/contact-us",
+        icon: <Inbox />,
+        items: [
+          {
+            title: "Manage All Contacts",
+            url: "/dashboard/contact-us",
             icon: <ChevronRight />,
           },
         ],

@@ -47,6 +47,7 @@ import { deleteMultipleAdvertisements } from "@/lib/actions/advertisements/adMul
 import { deleteMultiplePlansServerAction } from "@/lib/actions/plans/deleteMultiplePlans";
 import { deleteManyBlogCategoriesAction } from "@/lib/actions/blogs/blog-categories/deleteManyBlogCategories";
 import { deleteManyBlogsAction } from "@/lib/actions/blogs/deleteManyBlogs";
+import { deleteMultipleContacts } from "@/lib/actions/ContactUs/contactAction";
 
 export function DataTable({
   columns,
@@ -262,7 +263,8 @@ export function DataTable({
           await refreshData();
           table.resetRowSelection();
         }
-      }else if (table.options.meta?.entityType === "blogs") {
+      }
+      else if (table.options.meta?.entityType === "blogs") {
         const result = await deleteManyBlogsAction(selectedIds);
         if (result.status === "SUCCESS") {
           toast.success(result.message);
@@ -270,7 +272,14 @@ export function DataTable({
           table.resetRowSelection();
         }
       }
-       else {
+      else if (table.options.meta?.entityType === "contacts") {
+        const result = await deleteMultipleContacts(selectedIds);
+        if (result.status === "SUCCESS") {
+          toast.success(result.message);
+          await refreshData();
+          table.resetRowSelection();
+        }
+      } else {
         // Default to tools deletion
         const result = await deleteMultipleToolsServerAction(selectedIds);
         if (result.status === "SUCCESS") {
