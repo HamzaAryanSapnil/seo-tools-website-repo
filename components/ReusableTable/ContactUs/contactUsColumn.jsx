@@ -84,7 +84,7 @@ export const contactsColumns = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link href={`/admin/contacts/${contact._id}`}>
+              <Link href={`/dashboard/contact-us/${contact._id}`}>
                 <Eye className="mr-2 h-4 w-4" />
                 View
               </Link>
