@@ -17,7 +17,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 export function NavTools({ tools }) {
-    console.log(tools);
+
     
   const { isMobile } = useSidebar();
   return (

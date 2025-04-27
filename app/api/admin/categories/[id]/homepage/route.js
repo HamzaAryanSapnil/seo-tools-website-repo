@@ -7,7 +7,7 @@ export async function PATCH(req, { params }) {
     
     const { homepage } = await req.json();
 
-        console.log("Homepage Status", homepage);
+
 
 
     const result = await toggleHomepageStatus(id, homepage);

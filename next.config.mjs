@@ -21,6 +21,9 @@ const nextConfig = {
       },
     ],
   },
+  env: {
+    IPINFO_TOKEN: process.env.IPINFO_TOKEN,
+  },
 };
 
 export default nextConfig;

@@ -110,7 +110,7 @@ const CreateBlogForm = ({ categories }) => {
   const onSubmit = async (values) => {
     try {
       setLoading(true);
-      console.log("Form values before submission:", values);
+  
 
       const imgUrl = await uploadImageToImgbb(values?.coverImage);
       values.coverImage = imgUrl;
@@ -119,7 +119,7 @@ const CreateBlogForm = ({ categories }) => {
         values.authorImage = authorImgUrl; // Add the author's image URL
       }
 
-      console.log("Form values before submission:", values);
+  
 
       const result = await createBlogServerAction(values);
 

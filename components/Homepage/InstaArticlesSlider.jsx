@@ -10,7 +10,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 import Link from "next/link";
 
 const InstaArticlesSlider = ({ blogs }) => {
-  console.log("blogs", blogs);
+
   
   const feedbacks = [
     {

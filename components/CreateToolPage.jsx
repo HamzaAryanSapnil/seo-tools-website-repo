@@ -166,10 +166,10 @@ export default function CreateToolsForm({ categories }) {
 
     try {
       setToolCreating(true);
-      console.log("Submitting data:", data);
+
 
       const response = await createToolServerAction(data);
-      console.log(response);
+
 
       if (response.status === "SUCCESS") {
         // Redirect to the tool page

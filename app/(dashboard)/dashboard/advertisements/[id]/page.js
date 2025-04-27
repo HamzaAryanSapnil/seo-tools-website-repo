@@ -8,13 +8,13 @@ import axios from "axios";
 export const dynamic = "force-dynamic"; // Always fetch fresh data
 
 async function getAdData(id) {
-  console.log("Fetching advertisement data for ID:", id);
+
 
   const res = await axios.get(
     `http://localhost:3000/api/admin/advertisements/${id}`
   );
   const advertise = res.data;
-  console.log("Single ad from {id} page.js: ", advertise);
+
 
   if (advertise === null) {
     throw new Error("Failed to fetch advertisement.");

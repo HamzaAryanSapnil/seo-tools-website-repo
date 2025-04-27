@@ -46,7 +46,7 @@ const AdminCategoryMainPageTable = ({ categories }) => {
             }
           },
           handleHomepageToggle: async (id, currentStatus) => {
-            console.log("category from table: ", id, currentStatus);
+          
             
             try {
               const result = await axios.patch(

@@ -12,7 +12,7 @@ const ToolRenderer = ({ toolSlug }) => {
 
   try {
     return (
-      <div className="  flex justify-center items-center w-full">
+      <div className="  grid  justify-center items-center w-full">
         <ToolComponent />
       </div>
     );

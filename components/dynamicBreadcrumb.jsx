@@ -25,7 +25,7 @@ export const DynamicBreadCrumb = () => {
     <Breadcrumb className="w-full pl-5">
       <BreadcrumbList>
         {path?.map((item, index) => {
-          console.log("Breadcrumb", item);
+      
           const normalizedItem = item.toLowerCase(); // Ensure case-insensitivity
           const disabledLinks = ["tools", "advertisements", "plans"];
           const isDisabled = disabledLinks.includes(normalizedItem);

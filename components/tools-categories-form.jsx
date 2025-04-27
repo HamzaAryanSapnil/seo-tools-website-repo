@@ -119,7 +119,7 @@ const ToolsCategoryForm = () => {
       const res = await createCategory(values);
       if (res?.status === "SUCCESS") {
         toast.success(res?.message);
-        console.log("Category created successfully:", res?.data);
+ 
       }
     } catch (error) {
       console.error("Category form submission error:", error);

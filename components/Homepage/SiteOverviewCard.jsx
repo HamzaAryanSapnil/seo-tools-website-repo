@@ -37,15 +37,15 @@ const SiteOverviewCard = () => {
           {/* Body Section */}
           <div className="p-6 bg-white space-y-10">
             <p className="text-seo-des-color-first">
-              smallseo-tools.com offers a wide range of free online tools
-              designed to help you improve your website’s SEO and performance.
+              freedigitaltool.com offers a wide range of free online tools
+              designed to help you improve your website's SEO and performance.
               From keyword research and backlink analysis to plagiarism
               detection and grammar checks, these tools are easy to use and
               perfect for optimizing your content and boosting your online
               visibility. Whether you're a digital marketer, blogger, or small
-              business owner, smallseo-tools.com provides essential resources to
-              enhance your site’s rankings, monitor performance, and stay ahead
-              in the competitive online world — all without cost.
+              business owner, freedigitaltool.com provides essential resources
+              to enhance your site’s rankings, monitor performance, and stay
+              ahead in the competitive online world — all without cost.
             </p>
             <div className="w-full flex justify-center my-4 mb-10">
               <div className="w-20 h-1 bg-gray-300"></div>

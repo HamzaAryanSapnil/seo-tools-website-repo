@@ -12,10 +12,11 @@ export async function generateMetadata({
   };
 }
 
-export default function ToolPage({ params }) {
+export default async function ToolPage({ params }) {
+  const { slug } = await params;
   return (
     <div className="container py-8 mx-auto min-h-screen ">
-      <ToolRenderer toolSlug={params.slug} />
+      <ToolRenderer toolSlug={slug} />
     </div>
   );
 }
