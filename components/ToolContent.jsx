@@ -124,7 +124,7 @@ const ToolContent = ({ toolDetails, categories, recentPosts, toolCategories}) =>
       <div className="relative grid grid-cols-1 lg:grid-cols-5 gap-x-2 xl:gap-x-6 container mx-auto justify-center items-start">
         {/* TOC Sidebar */}
         <motion.div
-          className={`lg:sticky top-24 col-span-1 lg:max-w-80 transition-opacity duration-700 order-3 lg:order-1  ${
+          className={`hidden lg:block lg:sticky top-24 col-span-1 lg:max-w-80 transition-opacity duration-700 order-3 lg:order-1  ${
             sidebarVisible ? "opacity-100" : "opacity-0"
           }`}
           initial={{ opacity: 0 }}
@@ -168,12 +168,7 @@ const ToolContent = ({ toolDetails, categories, recentPosts, toolCategories}) =>
               className="w-full object-cover h-96 p-2"
             />
             <div className="flex gap-x-3 p-4">
-              <p className="text-seo-forth-color font-bold">
-                Views:{" "}
-                <span className="text-seo-des-color-second font-normal">
-                  {toolDetails?.views} views
-                </span>
-              </p>
+              
               <p className="text-seo-forth-color font-bold">
                 Category:{" "}
                 <span className="text-seo-des-color-second font-normal">
@@ -199,22 +194,7 @@ const ToolContent = ({ toolDetails, categories, recentPosts, toolCategories}) =>
           initial={{ opacity: 0 }}
           animate={{ opacity: sidebarVisible ? 1 : 0 }}
         >
-          {/* author card */}
-          <div className="p-2">
-            <h2 className="text-2xl font-bold mb-4">Author</h2>
-            <img
-              src={toolDetails?.authorImage ? toolDetails?.authorImage : null}
-              alt=""
-              className="w-32 h-32 rounded-full object-cover mb-4"
-            />
-            <h3 className="text-xl font-bold mb-2">{toolDetails?.authorName}</h3>
-            <Link
-              href={`/blogs/author/${authorNameLink}`}
-              className="text-seo-forth-color font-bold hover:underline"
-            >
-              View Profile
-            </Link>
-          </div>
+         
           {/* Categories */}
           <div className="mb-8 p-2">
             <h3 className="text-xl font-bold mb-4">Tools Categories</h3>

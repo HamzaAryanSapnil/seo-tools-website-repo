@@ -156,14 +156,14 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
   return (
     <section className="min-h-screen bg-seo-sixth-color py-5 ">
       <div className="w-full  flex justify-center items-center my-10">
-        <h1 className="font-bold mb-4   p-4 text-center text-4xl w-1/2">
+        <h1 className="font-bold mb-4 p-2  lg:p-4 text-center text-2xl md:text-3xl lg:text-4xl w-full lg:w-1/2">
           {blog.title}
         </h1>
       </div>
       <div className="relative grid grid-cols-1 lg:grid-cols-5 gap-x-2 xl:gap-x-6 container mx-auto justify-center items-start">
         {/* TOC Sidebar */}
         <motion.div
-          className={`lg:sticky top-24 col-span-1 lg:max-w-80 transition-opacity duration-700 order-3 lg:order-1  ${
+          className={` hidden lg:block lg:sticky top-24 col-span-1 lg:max-w-80 transition-opacity duration-700 order-3 lg:order-1  ${
             sidebarVisible ? "opacity-100" : "opacity-0"
           }`}
           initial={{ opacity: 0 }}
