@@ -3,24 +3,42 @@ import ToolContent from "@/components/ToolContent";
 import ToolRenderer from "@/components/ToolRenderer";
 import { getToolData } from "@/lib/tools";
 import axios from "axios";
+import { cache } from "react";
 
-export async function generateMetadata({
-  params,
-}) {
-  const { slug } = await params;
-  const tool = await getToolData(slug);
+const getBlogDetails = cache(async (slug) => {
+  const response = await fetch(`http://localhost:3000/api/admin/tools/${slug}`);
+  const tool = await response.json();
+  return tool;
+});
+export async function generateMetadata({ params }) {
+   const { slug } = await params;
+  const tool = await getBlogDetails(slug); // Fetch the blog details using the ID
   return {
-    title: `${tool.title} - MonsterTools`,
-    description: tool.description,
+    title: `${tool?.name}`,
+    description: tool?.excerpt
+      ? tool?.excerpt
+      : " This is our free digital marketing tool",
+    openGraph: {
+      title: `${tool?.name}`,
+      description: tool?.excerpt
+        ? tool?.excerpt
+        : "Free digital marketing tool",
+      type: "website",
+      url: `http://localhost:3000/tools/${slug}`,
+      images: [
+        {
+          url: tool?.image,
+          width: 800,
+          height: 600,
+        },
+      ],
+    },
   };
 }
 
 export default async function ToolPage({ params }) {
   const { slug } = await params;
-   const response = await fetch(
-     `http://localhost:3000/api/admin/tools/${slug}`
-   );
-   const tool = await response.json();
+  const tool = await getToolData(slug);
      const categoriesResponse = await axios.get(
        "http://localhost:3000/api/blogs/blog-categories"
      );

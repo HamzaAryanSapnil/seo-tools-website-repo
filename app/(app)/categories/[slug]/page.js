@@ -1,16 +1,43 @@
 import axios from "axios";
 import Link from "next/link";
+import { cache } from "react";
 import { FaTemperatureHigh } from "react-icons/fa";
+
+
+
+
+const getCategoryTools = cache(async (categorySlug) => {
+  const res = await axios.get(
+    `http://localhost:3000/api/admin/tools?category=${categorySlug}`
+  );
+  const tools = res?.data || [];
+  return tools;
+});
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const categorySlug = slug?.replace(/-/g, " ");
+  const tools = await getCategoryTools(categorySlug); // Fetch the blog details using the ID
+  return {
+    title: `${categorySlug}`,
+    description: `Explore our collection of ${categorySlug} tools. We have ${tools.length} tools available in this category.`,
+  };
+}
 
 const AllToolsInThisCategoryPage = async ({ params }) => {
   const { slug } = await params;
   const categorySlug = slug?.replace(/-/g, " "); // Convert "pdf-tools" to "Pdf Tools"
-    const res = await axios.get(
-      `http://localhost:3000/api/admin/tools?category=${categorySlug}`
-    );
-    const tools = res?.data || [];
-   
+  const tools = await getCategoryTools(categorySlug); // Fetch the tools for the category
     
+  if (!tools || tools.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-12 ">
+        <h1 className="text-3xl font-bold capitalize text-seo-light-green">
+          {categorySlug} 
+        </h1>
+        <p className="text-gray-600 mt-2">No tools found in this category.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-12 ">

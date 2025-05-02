@@ -55,11 +55,12 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    default: "Seo Studio",
-    template: "%s | Seo Studio",
+    default: "FreeDigitalTool - 100% Free Online Digital Tools",
+    template: "%s - FreeDigitalTool",
     card: "summary_large_image",
   },
-  description: "Your best seo tools just in one place",
+  description:
+    "FreeDigitalTool offers 100% free online tools calculators, converters, text editors & more. No signup, no download, just instant access anytime, anywhere!",
 };
 
 export default function RootLayout({ children }) {

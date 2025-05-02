@@ -1,4 +1,10 @@
 import React from "react";
+export const metadata = {
+  title: {
+    default: "Terms and Conditions",
+    card: "summary_large_image",
+  },
+};
 
 const TermsPage = () => {
   return (

@@ -1,4 +1,10 @@
 import React from "react";
+export const metadata = {
+  title: {
+    default: "Privacy Policy",
+    card: "summary_large_image",
+  },
+};
 
 const PrivacyPolicyPage = () => {
   return (

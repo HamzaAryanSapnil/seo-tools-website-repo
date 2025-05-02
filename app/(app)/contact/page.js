@@ -18,6 +18,13 @@ import { toast } from "sonner";
 import { contactFormSchema } from "@/schemas/contactFormSchema";
 import { saveContact } from "@/lib/actions/ContactUs/contactAction";
 
+export const metadata = {
+  title: {
+    default: "Contact Us",
+    card: "summary_large_image",
+  },
+};
+
 const ContactPage = () => {
   const form = useForm({
     resolver: zodResolver(contactFormSchema),

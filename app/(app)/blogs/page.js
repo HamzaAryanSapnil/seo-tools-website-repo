@@ -3,6 +3,13 @@ import axios from "axios";
 import BlogsCard from "@/components/BlogsCard";
 
 // Fetch all blogs server-side with revalidation
+
+export const metadata = {
+  title: {
+    default: "Blogs",
+    card: "summary_large_image",
+  }
+}
 export default async function BlogsPage() {
   try {
     const response = await axios.get(`http://localhost:3000/api/blogs`);

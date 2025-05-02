@@ -1,7 +1,7 @@
 import BlogsCard from "@/components/BlogsCard";
 import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import React, { cache } from "react";
 import {
   FaFacebook,
   FaLinkedin,
@@ -10,15 +10,54 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 
+const getAuthorBlogs = cache(async (authorName) => {
+  const authorBlogsRes = await axios.get(
+    `http://localhost:3000/api/blogs/author/${authorName}`
+  );
+  const authorsBlogs = authorBlogsRes?.data?.data || [];
+  return authorsBlogs;
+});
+export async function generateMetadata({ params }) {
+  const { authorName: kebabAuthor } = params;
+
+  // convert “hamza-aryan-sapnil” → “hamza aryan sapnil”
+  const authorName = kebabAuthor.replace(/-/g, " ");
+  const authorsBlogs = await getAuthorBlogs(authorName); 
+  const {
+    authorImage,
+    authorName: displayName,
+    authorProfession,
+    authorBio,
+  } = authorsBlogs[0];
+  return {
+    title: `${displayName}`,
+    description: authorBio ? authorBio : "Author Bio",
+    openGraph: {
+      title: `${displayName}`,
+      description: authorBio ? authorBio : "Author Bio",
+      url: `http://localhost:3000/blogs/author/${authorName}`,
+      images: [
+        {
+          url: authorImage,
+          width: 800,
+          height: 600,
+        },
+      ],
+    },
+   
+  };
+}
 const AuthorPage = async ({ params }) => {
   const { authorName: kebabAuthor } = params;
 
   // convert “hamza-aryan-sapnil” → “hamza aryan sapnil”
   const authorName = kebabAuthor.replace(/-/g, " ");
-  const res = await axios.get(
-    `http://localhost:3000/api/blogs/author/${authorName}`
-  );
-  const authorsBlogs = res?.data?.data || [];
+
+  // const res = await axios.get(
+  //   `http://localhost:3000/api/blogs/author/${authorName}`
+  // );
+  // const authorsBlogs = res?.data?.data || [];
+  const authorsBlogs = await getAuthorBlogs(authorName);
 
   // if no blogs, you could return a 404 or a fallback UI
   if (authorsBlogs.length === 0) {

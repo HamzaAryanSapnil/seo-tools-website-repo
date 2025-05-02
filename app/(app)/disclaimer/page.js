@@ -1,4 +1,10 @@
 import React from "react";
+export const metadata = {
+  title: {
+    default: "Disclaimer",
+    card: "summary_large_image",
+  },
+};
 
 const DisclaimerPage = () => {
   return (

@@ -3,7 +3,12 @@ import OurServicesPage from '@/components/OurServicesPageComponents/OurServicesP
 import { TOOLS_CONFIG } from '@/data/toolConfig';
 import React from 'react'
 
-
+export const metadata = {
+  title: {
+    default: "Our Services",
+    card: "summary_large_image",
+  },
+};
 const getToolsByCategory = () => {
   // Group tools by category from TOOLS_CONFIG with validation
   const categoriesMap = TOOLS_CONFIG.reduce((acc, tool) => {
