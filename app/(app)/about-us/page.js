@@ -1,6 +1,11 @@
 import Link from "next/link";
 import React from "react";
-
+export const metadata = {
+  title: {
+    default: "About Us",
+    card: "summary_large_image",
+  },
+};
 const AboutPage = () => {
   return (
     <div className="container mx-auto px-6 py-12">
