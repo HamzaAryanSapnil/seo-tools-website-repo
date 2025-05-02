@@ -7,6 +7,7 @@ export default async function BlogsPage() {
   try {
     const response = await axios.get(`http://localhost:3000/api/blogs`);
     const blogs = response?.data?.simplifiedBlogs || [];
+    
 
     return (
       <div className="container mx-auto p-8 min-h-screen">
