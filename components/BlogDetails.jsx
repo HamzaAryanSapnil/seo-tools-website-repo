@@ -35,27 +35,6 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
 
   const parsedContent = md.render(blog?.content || "");
 
-  useEffect(() => {
-    const parseTitles = () => {
-      const tempTitles = [];
-      const contentElement = document.createElement("div");
-      contentElement.innerHTML = renderContent(blog?.content);
-
-      const hTags = contentElement.querySelectorAll("h1, h2, h3");
-      hTags.forEach((tag) => {
-        const id = tag.id || tag.textContent.replace(/\s+/g, "-").toLowerCase();
-        tempTitles.push({
-          id,
-          title: tag.textContent,
-          tag: tag.tagName.toLowerCase(),
-        });
-      });
-
-      setTitles(tempTitles);
-    };
-
-    parseTitles();
-  }, [blog.content]);
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
