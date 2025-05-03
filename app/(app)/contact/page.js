@@ -1,5 +1,6 @@
-import ContactUsComponent from '@/components/ContactUs';
-import React from 'react'
+export const dynamic = "force-dynamic";
+import ContactUsComponent from "@/components/ContactUs";
+import React from "react";
 export const metadata = {
   title: {
     default: "Contact Us",
@@ -9,9 +10,9 @@ export const metadata = {
 const ContactUs = () => {
   return (
     <div>
-      <ContactUsComponent/>
+      <ContactUsComponent />
     </div>
-  )
-}
+  );
+};
 
-export default ContactUs
+export default ContactUs;

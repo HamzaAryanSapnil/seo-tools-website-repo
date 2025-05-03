@@ -54,6 +54,75 @@ const inter = Inter({
 })
 
 export const metadata = {
+  metadataBase: new URL("https://freedigitaltool.com"),
+  applicationName: "FreeDigitalTool",
+  authors: [{ name: "FreeDigitalTool" }],
+  creator: "FreeDigitalTool",
+  keywords: [
+    "Free Digital Tools",
+    "Online Calculators",
+    "Converters",
+    "Text Editors",
+    "Instant Access",
+    "No Signup",
+    "No Download",
+  ],
+  openGraph: {
+    title: "FreeDigitalTool - 100% Free Online Digital Tools",
+    description:
+      "FreeDigitalTool offers 100% free online tools calculators, converters, text editors & more. No signup, no download, just instant access anytime, anywhere!",
+    url: "https://freedigitaltool.com",
+    siteName: "FreeDigitalTool",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "FreeDigitalTool - 100% Free Online Digital Tools",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FreeDigitalTool - 100% Free Online Digital Tools",
+    description:
+      "FreeDigitalTool offers 100% free online tools calculators, converters, text editors & more. No signup, no download, just instant access anytime, anywhere!",
+    images: ["/images/og-image.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
+  // themeColor: "#ffffff",
+  // colorScheme: "light dark",
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
+  verification: {
+    google: "google-site-verification=your-google-verification-code",
+    yandex: "your-yandex-verification-code",
+    other: [
+      {
+        name: "other-verification",
+        value: "your-other-verification-code",
+      },
+    ],
+  },
+  alternates: {
+    canonical: "https://freedigitaltool.com",
+    languages: {
+      "en-US": "https://freedigitaltool.com",
+      "es-ES": "https://freedigitaltool.com/es",
+    },
+  },
+  appleWebApp: {
+    title: "FreeDigitalTool - 100% Free Online Digital Tools",
+    statusBarStyle: "default",
+  },
   title: {
     default: "FreeDigitalTool - 100% Free Online Digital Tools",
     template: "%s - FreeDigitalTool",

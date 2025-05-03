@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import HeroSection from "@/components/Homepage/Hero";
 import CategoriesGrid from "@/components/Homepage/CategoriesGrid";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
@@ -42,19 +43,16 @@ export default async function Home() {
   // const categories = getToolsByCategory();
   const res = await axios("http://localhost:3000/api/admin/tools");
   const tools = res?.data || [];
-    const toolsCatRes = await axios.get(
-      "http://localhost:3000/api/admin/getCategory?homepage=true"
-    );
-    const categories = toolsCatRes?.data?.data;
-
-
-  
+  const toolsCatRes = await axios.get(
+    "http://localhost:3000/api/admin/getCategory?homepage=true"
+  );
+  const categories = toolsCatRes?.data?.data;
 
   return (
     <main className="">
       {/* <HeroSection /> */}
       <SeoStudioToolsStats />
-      <CategoriesGrid categories={categories} tools={tools}/>
+      <CategoriesGrid categories={categories} tools={tools} />
       <FeedBackSliderDetails />
       <LatestInstagramArticlesSliderDetails />
       <WhyShouldYouSec />

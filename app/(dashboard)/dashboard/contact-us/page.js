@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import ContactTable from "@/components/ContactDashboard/ContactTable";
 import axios from "axios";
 
@@ -6,7 +7,6 @@ import React from "react";
 const ManageAllContactPage = async () => {
   const res = await axios.get("http://localhost:3000/api/admin/getContacts");
   const contacts = res?.data?.contacts || [];
-  
 
   return (
     <div className="container mx-auto py-10">

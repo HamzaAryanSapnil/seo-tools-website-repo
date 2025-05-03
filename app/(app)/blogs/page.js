@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 // app/blogs/page.js
 import axios from "axios";
 import BlogsCard from "@/components/BlogsCard";
@@ -8,13 +9,12 @@ export const metadata = {
   title: {
     default: "Blogs",
     card: "summary_large_image",
-  }
-}
+  },
+};
 export default async function BlogsPage() {
   try {
     const response = await axios.get(`http://localhost:3000/api/blogs`);
     const blogs = response?.data?.simplifiedBlogs || [];
-    
 
     return (
       <div className="container mx-auto p-8 min-h-screen">
@@ -40,6 +40,3 @@ export default async function BlogsPage() {
     return <div>Error loading blogs</div>;
   }
 }
-
-// Set revalidation to make the page dynamic
-export const revalidate = 10; // Revalidate every 10 seconds

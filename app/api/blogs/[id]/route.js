@@ -1,3 +1,4 @@
+ // This is to make sure the page is not cached by Next.js
 import dbConnect from "@/lib/db";
 import Blog from "@/models/Blog";
 import BlogCategory from "@/models/BlogCategory";

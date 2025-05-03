@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
 import EditToolForm from "@/components/EditToolsPage";
@@ -17,9 +18,6 @@ const DashboardToolsEditPage = async ({ params }) => {
   // use axios to fetch categories
   const res = await axios("http://localhost:3000/api/admin/getCategory");
   const categories = res?.data?.data;
-  
-
-  
 
   if (!tool) {
     return notFound();

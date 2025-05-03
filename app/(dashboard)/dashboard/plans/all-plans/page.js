@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import PlansDataTable from "@/components/Plans/PlansDataTable";
 import { columns } from "@/components/ReusableTable/column";
 import { DataTable } from "@/components/ReusableTable/data-table";
