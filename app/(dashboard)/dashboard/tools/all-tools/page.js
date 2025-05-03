@@ -10,6 +10,8 @@ import React from "react";
 const AllToolsPage = async () => {
   const res = await axiosClient.get("/api/admin/tools");
   const tools = res?.data || [];
+  console.log(tools, "tools data");
+  
 
   return (
     <div className="container mx-auto py-10">
