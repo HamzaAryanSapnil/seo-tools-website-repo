@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import axios from "axios";
+
 import {
   checkSlugServerAction,
   createToolServerAction,
@@ -131,9 +131,7 @@ export default function CreateToolsForm({ categories }) {
         try {
           setIsCheckingSlug(true);
           setSlugMessage("");
-          // const response = await axios.get(
-          //   `/api/tools/check-slug?slug=${slugValue}`
-          // );
+          
 
           const slugUniqueResponse = await checkSlugServerAction(slugValue);
 

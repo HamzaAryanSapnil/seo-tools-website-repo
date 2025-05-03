@@ -3,11 +3,12 @@ import BlogsTable from "@/components/BlogCategories/BlogsTable";
 import { refreshBlogs } from "@/components/Refresh-Functions/blogRefreshFunction";
 import { BlogsTableColumn } from "@/components/ReusableTable/BlogsTableColumn/BlogsTableColumn";
 import { DataTable } from "@/components/ReusableTable/data-table";
-import axios from "axios";
+import { axiosClient } from "@/lib/apiClient";
+
 import React from "react";
 
 const page = async () => {
-  const blogsRes = await axios.get("http://localhost:3000/api/blogs");
+  const blogsRes = await axiosClient.get("/api/blogs");
 
   const blogs = blogsRes?.data?.simplifiedBlogs || [];
 

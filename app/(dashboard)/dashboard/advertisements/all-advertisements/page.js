@@ -7,13 +7,14 @@ import { DataTable } from "@/components/ReusableTable/data-table";
 import { Button } from "@/components/ui/button";
 import { payments } from "@/data/payments";
 import { deleteAdvertisement } from "@/lib/actions/advertisements/adDelete";
-import axios from "axios";
+import { axiosClient } from "@/lib/apiClient";
+
 import Link from "next/link";
 import React from "react";
 import { toast } from "sonner";
 
 const ManageAdvertisements = async () => {
-  const res = await axios.get("http://localhost:3000/api/admin/advertisements");
+  const res = await axiosClient.get("/api/admin/advertisements");
   const allAd = res?.data;
 
   return (

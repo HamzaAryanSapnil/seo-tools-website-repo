@@ -3,15 +3,16 @@
 import EditCodeAdvertisementForm from "@/components/AdvertisementsForms/Edit-Code-Ad-Form";
 import EditImageAdvertisementForm from "@/components/AdvertisementsForms/Edit-Img-Ad-Form";
 import EditTextAdvertisementForm from "@/components/AdvertisementsForms/Edit-Text-Ad-Form";
-import axios from "axios";
+import { axiosClient } from "@/lib/apiClient";
+
 
 export const dynamic = "force-dynamic"; // Always fetch fresh data
 
 async function getAdData(id) {
 
 
-  const res = await axios.get(
-    `http://localhost:3000/api/admin/advertisements/${id}`
+  const res = await axiosClient.get(
+    `/api/admin/advertisements/${id}`
   );
   const advertise = res.data;
 

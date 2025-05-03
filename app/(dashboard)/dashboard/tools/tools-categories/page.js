@@ -6,11 +6,12 @@ import { columns } from "@/components/ReusableTable/column";
 import { DataTable } from "@/components/ReusableTable/data-table";
 import ToolsCategoryForm from "@/components/tools-categories-form";
 import { payments } from "@/data/payments";
-import axios from "axios";
+import { axiosClient } from "@/lib/apiClient";
+
 import React from "react";
 
 const ToolsCategoriesPage = async () => {
-  const res = await axios.get("http://localhost:3000/api/admin/getCategory");
+  const res = await axiosClient.get("/api/admin/getCategory");
   const categories = res?.data?.data;
 
   // refresh data function. will be used to refresh data after adding new category. but function cannot be passed to client component from server component.

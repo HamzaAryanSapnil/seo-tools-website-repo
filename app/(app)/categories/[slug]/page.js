@@ -1,4 +1,5 @@
-import axios from "axios";
+
+import { axiosClient } from "@/lib/apiClient";
 import Link from "next/link";
 import { cache } from "react";
 import { FaTemperatureHigh } from "react-icons/fa";
@@ -7,8 +8,8 @@ import { FaTemperatureHigh } from "react-icons/fa";
 
 
 const getCategoryTools = cache(async (categorySlug) => {
-  const res = await axios.get(
-    `http://localhost:3000/api/admin/tools?category=${categorySlug}`
+  const res = await axiosClient.get(
+    `/api/admin/tools?category=${categorySlug}`
   );
   const tools = res?.data || [];
   return tools;

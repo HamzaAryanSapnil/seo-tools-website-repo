@@ -1,5 +1,6 @@
 import BlogsCard from "@/components/BlogsCard";
-import axios from "axios";
+import { axiosClient } from "@/lib/apiClient";
+
 import Link from "next/link";
 import React, { cache } from "react";
 import {
@@ -11,8 +12,8 @@ import {
 } from "react-icons/fa";
 
 const getAuthorBlogs = cache(async (authorName) => {
-  const authorBlogsRes = await axios.get(
-    `http://localhost:3000/api/blogs/author/${authorName}`
+  const authorBlogsRes = await axiosClient.get(
+    `/api/blogs/author/${authorName}`
   );
   const authorsBlogs = authorBlogsRes?.data?.data || [];
   return authorsBlogs;
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: `${displayName}`,
       description: authorBio ? authorBio : "Author Bio",
-      url: `http://localhost:3000/blogs/author/${authorName}`,
+      url: `/blogs/author/${authorName}`,
       images: [
         {
           url: authorImage,
@@ -53,8 +54,8 @@ const AuthorPage = async ({ params }) => {
   // convert “hamza-aryan-sapnil” → “hamza aryan sapnil”
   const authorName = kebabAuthor.replace(/-/g, " ");
 
-  // const res = await axios.get(
-  //   `http://localhost:3000/api/blogs/author/${authorName}`
+  // const res = await axiosClient.get(
+  //   `/api/blogs/author/${authorName}`
   // );
   // const authorsBlogs = res?.data?.data || [];
   const authorsBlogs = await getAuthorBlogs(authorName);

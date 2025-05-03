@@ -1,10 +1,11 @@
 import BlogDetails from "@/components/BlogDetails";
-import axios from "axios";
+import { axiosClient } from "@/lib/apiClient";
+
 import {cache} from 'react'
 
 export const revalidate = 10; // Optional: Set revalidation for dynamic content
 const getBlogDetails = cache(async (id) => {
-  const blogResponse = await axios.get(`http://localhost:3000/api/blogs/${id}`);
+  const blogResponse = await axiosClient.get(`/api/blogs/${id}`);
   const blog = blogResponse?.data?.simplifiedBlogs;
   return blog;
 });
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: `${blog?.title}`,
       description: blog?.excerpt ? blog?.excerpt : "Read our latest blog post",
-      url: `http://localhost:3000/blogs/${id}`,
+      url: `/blogs/${id}`,
       images: [
         {
           url: blog?.coverImage ,
@@ -33,23 +34,23 @@ const BlogDetailsPage = async ({ params }) => {
   const { id } = await params; // Dynamic blog ID from URL
 
   // Fetch the single blog details
-  const blogResponse = await axios.get(`http://localhost:3000/api/blogs/${id}`);
+  const blogResponse = await axiosClient.get(`/api/blogs/${id}`);
   const blog = blogResponse?.data?.simplifiedBlogs;
 
-  const response = await axios.get(
-    `http://localhost:3000/api/blogs?recent=true`
+  const response = await axiosClient.get(
+    `/api/blogs?recent=true`
   );
   const blogs = response?.data?.simplifiedBlogs || [];
 
   // Fetch blog categories for the sidebar
-  const categoriesResponse = await axios.get(
-    "http://localhost:3000/api/blogs/blog-categories"
+  const categoriesResponse = await axiosClient.get(
+    "/api/blogs/blog-categories"
   );
   const categories = categoriesResponse?.data?.simplifiedBlogsCategories;
 
   // Fetch tool categories for the sidebar
-  const toolCategoriesResponse = await axios.get(
-    "http://localhost:3000/api/admin/getCategory"
+  const toolCategoriesResponse = await axiosClient.get(
+    "/api/admin/getCategory"
   );
   const toolCategories = toolCategoriesResponse?.data?.data;
 

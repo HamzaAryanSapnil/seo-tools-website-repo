@@ -1,12 +1,12 @@
 // app/tools/[slug]/page.tsx
 import ToolContent from "@/components/ToolContent";
 import ToolRenderer from "@/components/ToolRenderer";
+import { axiosClient } from "@/lib/apiClient";
 import { getToolData } from "@/lib/tools";
-import axios from "axios";
 import { cache } from "react";
 
 const getBlogDetails = cache(async (slug) => {
-  const response = await fetch(`http://localhost:3000/api/admin/tools/${slug}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/tools/${slug}`);
   const tool = await response.json();
   return tool;
 });
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
         ? tool?.excerpt
         : "Free digital marketing tool",
       type: "website",
-      url: `http://localhost:3000/tools/${slug}`,
+      url: `/tools/${slug}`,
       images: [
         {
           url: tool?.image,
@@ -39,19 +39,19 @@ export async function generateMetadata({ params }) {
 export default async function ToolPage({ params }) {
   const { slug } = await params;
   const tool = await getToolData(slug);
-     const categoriesResponse = await axios.get(
-       "http://localhost:3000/api/blogs/blog-categories"
+     const categoriesResponse = await axiosClient.get(
+       "/api/blogs/blog-categories"
      );
      const categories = categoriesResponse?.data?.simplifiedBlogsCategories;
 
-      const toolCategoriesResponse = await axios.get(
-        "http://localhost:3000/api/admin/getCategory"
+      const toolCategoriesResponse = await axiosClient.get(
+        "/api/admin/getCategory"
       );
       const toolCategories = toolCategoriesResponse?.data?.data;
 
 
-      const recentBlogResponse = await axios.get(
-        `http://localhost:3000/api/blogs?recent=true`
+      const recentBlogResponse = await axiosClient.get(
+        `/api/blogs?recent=true`
       );
       const blogs = recentBlogResponse?.data?.simplifiedBlogs || [];
  

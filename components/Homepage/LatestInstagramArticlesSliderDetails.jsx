@@ -1,9 +1,9 @@
 import React from 'react'
 import InstaArticlesSlider from './InstaArticlesSlider';
-import axios from 'axios';
+import { axiosClient } from '@/lib/apiClient';
 
 const LatestInstagramArticlesSliderDetails = async () => {
-     const response = await axios.get(`http://localhost:3000/api/blogs?recent=true`);
+     const response = await axiosClient.get(`/api/blogs?recent=true`);
       const blogs = response?.data?.simplifiedBlogs || [];
   return (
     <div className="my-14 font-roboto p-4">

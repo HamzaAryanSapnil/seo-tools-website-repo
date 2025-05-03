@@ -1,9 +1,10 @@
-import axios from "axios";
+
+import { axiosClient } from "@/lib/apiClient";
 import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = async () => {
-  const res = await axios.get("http://localhost:3000/api/admin/getCategory");
+  const res = await axiosClient.get("/api/admin/getCategory");
   const categories = res?.data?.data;
 
   const navlinks = [

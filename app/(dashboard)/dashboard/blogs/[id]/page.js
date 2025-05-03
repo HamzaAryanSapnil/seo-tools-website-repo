@@ -1,12 +1,13 @@
 import EditBlogForm from "@/components/EditBlogForm";
-import axios from "axios";
+import { axiosClient } from "@/lib/apiClient";
+
 
 const BlogEditPage = async ({ params }) => {
   const { id } = await params;
-  const blogsRes = await axios.get(`http://localhost:3000/api/blogs/${id}`);
+  const blogsRes = await axiosClient.get(`/api/blogs/${id}`);
   const blog = await blogsRes?.data?.simplifiedBlogs;
-  const blogCatRes = await axios(
-    "http://localhost:3000/api/blogs/blog-categories"
+  const blogCatRes = await axiosClient(
+    "/api/blogs/blog-categories"
   );
   const categories = await blogCatRes?.data?.simplifiedBlogsCategories;
 

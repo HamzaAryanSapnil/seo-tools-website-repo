@@ -27,10 +27,11 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import axios from "axios";
+
 import Image from "next/image";
 import { generateSlug } from "./tools-categories-form";
 import { Loader2 } from "lucide-react";
+import { axiosClient } from "@/lib/apiClient";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -76,14 +77,14 @@ const CreateBlogForm = ({ categories }) => {
     }
   }, [titleValue, slugManuallyModified, form]);
 
-  // Update uploadImageToImgbb function in CreateBlogForm.jsx using axios
+  // Update uploadImageToImgbb function in CreateBlogForm.jsx using axiosClient
   const uploadImageToImgbb = async (file) => {
     try {
       const formData = new FormData();
       formData.append("image", file);
 
-      const response = await axios.post(
-        "http://localhost:3000/api/uploadImage",
+      const response = await axiosClient.post(
+        "/api/uploadImage",
         formData,
         {
           headers: {

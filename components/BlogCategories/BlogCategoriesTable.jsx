@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+
 
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -8,13 +8,14 @@ import { DataTable } from "../ReusableTable/data-table";
 
 import { deleteBlogCategoryAction } from "@/lib/actions/blogs/blog-categories/deleteBlogCategory";
 import { blogCategoryColumns } from "../ReusableTable/BlogsTableColumn/BlogsCategoryTableColumn";
+import { axiosClient } from "@/lib/apiClient";
 
 const BlogCategoriesTable = ({ categories }) => {
   const [categoriesData, setCategoriesData] = useState(categories || []);
 
   const refreshData = async () => {
-    const res = await axios.get(
-      "http://localhost:3000/api/blogs/blog-categories"
+    const res = await axiosClient.get(
+      "/api/blogs/blog-categories"
     );
     const categories = res?.data?.categories;
     return categories;

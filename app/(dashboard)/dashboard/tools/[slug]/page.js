@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 
 const DashboardToolsEditPage = async ({ params }) => {
   const { slug } = await params;
-  const response = await fetch(`http://localhost:3000/api/admin/tools/${slug}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/tools/${slug}`);
   const tool = await response.json();
 
   // use axios to fetch categories

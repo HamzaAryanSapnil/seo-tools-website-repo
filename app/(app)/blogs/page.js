@@ -1,7 +1,8 @@
 export const dynamic = "force-dynamic";
 // app/blogs/page.js
-import axios from "axios";
+
 import BlogsCard from "@/components/BlogsCard";
+import { axiosClient } from "@/lib/apiClient";
 
 // Fetch all blogs server-side with revalidation
 
@@ -13,7 +14,7 @@ export const metadata = {
 };
 export default async function BlogsPage() {
   try {
-    const response = await axios.get(`http://localhost:3000/api/blogs`);
+    const response = await axiosClient.get(`/api/blogs`);
     const blogs = response?.data?.simplifiedBlogs || [];
 
     return (

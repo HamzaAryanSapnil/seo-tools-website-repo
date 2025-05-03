@@ -1,18 +1,19 @@
 "use client";
 
-import axios from "axios";
+
 import { categoryColumns } from "./ReusableTable/Category-Table/categoryColumn";
 import { DataTable } from "./ReusableTable/data-table";
 
 import React, { useState } from "react";
 import { deleteCategory } from "@/lib/actions/categoryAction";
 import { toast } from "sonner";
+import { axiosClient } from "@/lib/apiClient";
 
 const AdminCategoryMainPageTable = ({ categories }) => {
   const [categoriesData, setCategoriesData] = useState(categories || []);
 
   const refreshData = async () => {
-    const res = await axios.get("http://localhost:3000/api/admin/getCategory");
+    const res = await axiosClient.get("/api/admin/getCategory");
     const categories = res.data.data;
     return categories;
   };
@@ -49,7 +50,7 @@ const AdminCategoryMainPageTable = ({ categories }) => {
           
             
             try {
-              const result = await axios.patch(
+              const result = await axiosClient.patch(
                 `/api/admin/categories/${id}/homepage`,
                 {
                   homepage: !currentStatus,

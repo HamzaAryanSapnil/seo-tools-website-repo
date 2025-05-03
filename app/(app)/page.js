@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-import HeroSection from "@/components/Homepage/Hero";
+
 import CategoriesGrid from "@/components/Homepage/CategoriesGrid";
 import { TOOLS_CONFIG } from "@/data/toolConfig";
 import SeoStudioToolsStats from "@/components/Homepage/SeoStudioToolsStats";
@@ -8,6 +8,7 @@ import LatestInstagramArticlesSliderDetails from "@/components/Homepage/LatestIn
 import WhyShouldYouSec from "@/components/Homepage/WhyShouldYouSec";
 import SiteOverviewCard from "@/components/Homepage/SiteOverviewCard";
 import axios from "axios";
+import { axiosClient } from "@/lib/apiClient";
 
 const getToolsByCategory = () => {
   // Group tools by category from TOOLS_CONFIG with validation
@@ -41,16 +42,16 @@ const getToolsByCategory = () => {
 
 export default async function Home() {
   // const categories = getToolsByCategory();
-  const res = await axios("http://localhost:3000/api/admin/tools");
+  const res = await axiosClient.get("/api/admin/tools");
   const tools = res?.data || [];
-  const toolsCatRes = await axios.get(
-    "http://localhost:3000/api/admin/getCategory?homepage=true"
+  const toolsCatRes = await axiosClient.get(
+    "/api/admin/getCategory?homepage=true"
   );
   const categories = toolsCatRes?.data?.data;
 
   return (
     <main className="">
-      {/* <HeroSection /> */}
+
       <SeoStudioToolsStats />
       <CategoriesGrid categories={categories} tools={tools} />
       <FeedBackSliderDetails />
