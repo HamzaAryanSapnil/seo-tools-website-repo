@@ -132,10 +132,7 @@ const ToolContent = ({ toolDetails, categories, recentPosts, toolCategories}) =>
           </figure>
 
           <div className="mb-8 p-4">
-            {/* <div
-              className="toolDetails-content"
-              dangerouslySetInnerHTML={{ __html: renderContent(toolDetails?.content) }}
-            /> */}
+           
 
             {parsedContent ? (
               <article

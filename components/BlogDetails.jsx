@@ -22,78 +22,7 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
-
-// import { marked } from "marked";
-
-// const headingMap = new Map();
-
-// marked.use({
-//   walkTokens(token) {
-//     if (token.type === "heading") {
-//       const raw = token.text || "";
-//       const id = raw
-//         .toLowerCase()
-//         .trim()
-//         .replace(/\s+/g, "-")
-//         .replace(/[^\w\-]+/g, "");
-//       token.id = id;
-//       headingMap.set(raw, id);
-//     }
-//   },
-//   renderer: {
-//     heading(text, level) {
-//       let plainText = "";
-
-//       if (typeof text === "string") {
-//         plainText = text;
-//       } else if (typeof text === "object" && Array.isArray(text.tokens)) {
-//         plainText = text.tokens.map((t) => t.text).join(" ");
-//       } else {
-//         plainText = String(text || "heading");
-//       }
-
-//       const id =
-//         headingMap.get(plainText) ||
-//         plainText.toLowerCase().replace(/\s+/g, "-");
-
-//       return `<h${level} id="${id}" class="blog-heading blog-h${level}">${plainText}</h${level}>`;
-//     },
-//   },
-// });
-
-marked.use({
-  walkTokens(token) {
-    if (token.type === "heading") {
-      const raw = token.text || "";
-      const id = raw
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")
-        .replace(/[^\w\-]+/g, "");
-      token.id = id;
-      headingMap.set(raw, id);
-    }
-  },
-  renderer: {
-    heading(text) {
-      let plainText = "";
-
-      if (typeof text === "string") {
-        plainText = text;
-      } else if (typeof text === "object" && Array.isArray(text.text)) {
-        plainText = text?.text?.join("");
-      } else {
-        plainText = String(text || "heading");
-      }
-
-      const id = text;
-      return `<h${text?.depth} id="${text.id}" class="blog-heading blog-h${text.depth}">${text.text}</h${text.depth}>`;
-    },
-  },
-});
-const renderContent = (content) => {
-  return marked.parse(content);
-};
+import MarkdownIt from "markdown-it";
 
 const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -102,6 +31,9 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
   const shareUrl = "https://seostudio.tools/";
   const title = "Check out this awesome SEO tool!";
   const authorNameLink = blog?.authorName?.replace(/\s+/g, "-");
+  const md = MarkdownIt();
+
+  const parsedContent = md.render(blog?.content || "");
 
   useEffect(() => {
     const parseTitles = () => {
@@ -223,10 +155,16 @@ const BlogDetails = ({ blog, categories, recentPosts, toolCategories }) => {
           </figure>
 
           <div className="mb-8 p-4">
-            <div
-              className="blog-content"
-              dangerouslySetInnerHTML={{ __html: renderContent(blog?.content) }}
-            />
+            {parsedContent ? (
+              <article
+                className="blog-content"
+                dangerouslySetInnerHTML={{ __html: parsedContent }}
+              />
+            ) : (
+              <p className="text-center font-medium text-seo-primary my-5">
+                No Content To show
+              </p>
+            )}
           </div>
         </div>
 
