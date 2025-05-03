@@ -5,6 +5,7 @@ import { axiosClient } from "@/lib/apiClient";
 import { getToolData } from "@/lib/tools";
 import { cache } from "react";
 
+
 const getBlogDetails = cache(async (slug) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/tools/${slug}`);
   const tool = await response.json();

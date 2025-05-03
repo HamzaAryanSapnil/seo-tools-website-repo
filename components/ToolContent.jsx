@@ -22,6 +22,8 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
+import markdownit from "markdown-it";
+
 
 marked.use({
   walkTokens(token) {
@@ -64,6 +66,10 @@ const ToolContent = ({ toolDetails, categories, recentPosts, toolCategories}) =>
      const shareUrl = "https://seostudio.tools/";
      const title = "Check out this awesome SEO tool!";
      const authorNameLink = toolDetails?.authorName?.replace(/\s+/g, "-");
+
+     const md = markdownit();
+
+     const parsedContent = md.render(toolDetails?.content || "");
 
        useEffect(() => {
          const parseTitles = () => {
@@ -179,10 +185,21 @@ const ToolContent = ({ toolDetails, categories, recentPosts, toolCategories}) =>
           </figure>
 
           <div className="mb-8 p-4">
-            <div
+            {/* <div
               className="toolDetails-content"
               dangerouslySetInnerHTML={{ __html: renderContent(toolDetails?.content) }}
-            />
+            /> */}
+
+              {parsedContent ? (
+                <article className="toolDetails-content"  dangerouslySetInnerHTML={{ __html: parsedContent }} />
+              ) : 
+              
+               (
+                <p className="text-center font-medium text-seo-primary my-5">
+                  No Content To show
+                </p>
+               )}
+
           </div>
         </div>
 
